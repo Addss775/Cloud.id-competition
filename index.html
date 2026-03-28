@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalangoan Catur Desa - Pupuan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <nav class="navbar">
+    <!-- Logo/Brand -->
+    <div class="judul">Kalangoan Catur Desa</div>
+    
+    <!-- Desktop Menu -->
+    <ul class="menu desktop-menu">
+        <li>
+            <a href="#home" class="menu-link" data-scroll="#home">
+                <i class="fas fa-home"></i> Beranda
+            </a>
+        </li>
+        
+        <li>
+            <a href="#tentang" class="menu-link" data-scroll="#tentang">
+                <i class="fa-solid fa-info-circle"></i> Tentang
+            </a>
+        </li>
+        
+        <!-- Tradisi Dropdown -->
+        <li class="dropdown">
+            <a href="#tradisi" class="menu-link dropdown-toggle" data-scroll="#tradisi">
+                <i class="fas fa-book-open"></i>
+                Tradisi 
+                <i class="fas fa-chevron-down"></i>
+            </a>
+            <ul class="submenu">
+                <li><a href="#rejong-ayunan" data-scroll="#rejong-ayunan">Rejang Ayunan</a></li>
+                <li><a href="#mandolin" data-scroll="#mandolin">Mandolin</a></li>
+                <li><a href="#perang-bolong" data-scroll="#perang-bolong">Perang Bolong</a></li>
+                <li><a href="#lainnya" data-scroll="#lainnya">Lainnya</a></li>
+            </ul>
+        </li>
+        
+        <!-- Destinasi Dropdown -->
+        <li class="dropdown">
+            <a href="#destinasi" class="menu-link dropdown-toggle" data-scroll="#destinasi">
+                <i class="fas fa-tree"></i>
+                Destinasi 
+                <i class="fas fa-chevron-down"></i>
+            </a>
+            <ul class="submenu">
+                <li><a href="#kampung-kopi" data-scroll="#kampung-kopi">Kampung Kopi Kamp</a></li>
+                <li><a href="#air-terjun" data-scroll="#air-terjun">Air Terjun</a></li>
+            </ul>
+        </li>
+    </ul>
+    
+    <!-- Mobile Burger -->
+    <div class="burger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</nav>
+
+<!-- Mobile Menu Overlay -->
+<div class="menu-overlay"></div>
+
+<!-- Mobile Menu Panel -->
+<div class="mobile-menu">
+    <ul class="menu mobile-menu-list">
+        <li>
+            <a href="#home" class="menu-link" data-scroll="#home">
+                <i class="fas fa-home"></i> Beranda
+            </a>
+        </li>
+        
+        <li>
+            <a href="#tentang" class="menu-link" data-scroll="#tentang">
+                <i class="fa-solid fa-info-circle"></i> Tentang
+            </a>
+        </li>
+        
+        <!-- Tradisi Mobile Dropdown -->
+        <li class="dropdown">
+            <a href="#tradisi" class="menu-link dropdown-toggle" data-scroll="#tradisi">
+                <i class="fas fa-book-open"></i>
+                Tradisi 
+                <i class="fas fa-chevron-down"></i>
+            </a>
+            <ul class="submenu">
+                <li><a href="#rejong-ayunan" data-scroll="#rejong-ayunan">Rejang Ayunan</a></li>
+                <li><a href="#mandolin" data-scroll="#mandolin">Mandolin</a></li>
+                <li><a href="#perang-bolong" data-scroll="#perang-bolong">Perang Bolong</a></li>
+                <li><a href="#lainnya" data-scroll="#lainnya">Lainnya</a></li>
+            </ul>
+        </li>
+        
+        <!-- Destinasi Mobile Dropdown -->
+        <li class="dropdown">
+            <a href="#destinasi" class="menu-link dropdown-toggle" data-scroll="#destinasi">
+                <i class="fas fa-tree"></i>
+                Destinasi 
+                <i class="fas fa-chevron-down"></i>
+            </a>
+            <ul class="submenu">
+                <li><a href="#kampung-kopi" data-scroll="#kampung-kopi">Kampung Kopi Kamp</a></li>
+                <li><a href="#air-terjun" data-scroll="#air-terjun">Air Terjun</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+        <!-- HERO SECTION -->
+        <section class="home-animate" id="home">
+            <div class="home-text">
+                <h1>Kalangoan Catur Desa: Simfoni Tradisi dan Alam</h1>
+                <p>Telusuri kekayaan tradisi serta keindahan alam yang membentuk identitas Kecamatan Pupuan</p>
+                <div class="hero-btn">
+                    <a href="#tentang" class="btn-primary" data-scroll="#tentang">
+                        <i class="fas fa-play"></i> Mulai Jelajah
+                    </a>
+                    <a href="#rejong-ayunan" class="btn-secondary" data-scroll="#rejong-ayunan">
+                        <i class="fas fa-book"></i> Baca Sejarah
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- TENTANG SECTION -->
+        <section class="tentang-animate" id="tentang">
+            <div class="tentang-text">
+                <h2>Tradisi dan Destinasi Wisata Alam</h2>
+                <p>Kecamatan Pupuan dikenal dengan tradisi-tradisi unik yang mencerminkan harmoni antara manusia, alam, dan spiritualitas. Kali ini kami membahas 4 dari 14 desa di Kecamatan Pupuan yakni, Pupuan, Pujungan, Bantiran, dan Batungsel. Mulai dari tradisi, budaya, hingga destinasi wisata alam yang memanjakan mata.</p>
+            </div>
+            
+            <!-- GRID 4 PHOTO CARD -->
+            <div class="photo-grid">
+                <div class="photo-card">
+                    <div class="photo-container">
+                        <img src="Rejang_1.jpeg" alt="Rejang Ayunan Pupuan" loading="lazy">
+                    </div>
+                    <div class="teks-container">
+                        <h3>Desa Pupuan</h3>
+                        <p>Desa Pupuan memiliki sejumlah tradisi, namun yang paling mencolok adalah tari Rejang Ayunan yang penuh makna spiritual.</p>
+                    </div>
+                </div>
+                
+                <div class="photo-card">
+                    <div class="photo-container">
+                        <img src="Background-reejang.jpeg" alt="Rejang Ayunan Bantiran" loading="lazy">
+                    </div>
+                    <div class="teks-container">
+                        <h3>Desa Bantiran</h3>
+                        <p>Bantiran melestarikan Rejang dengan formasi unik yang mencerminkan kesatuan komunitas.</p>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <div class="photo-container">
+                        <img src="mandolin.jpg" alt="Mandolin Pujungan" loading="lazy">
+                    </div>
+                    <div class="teks-container">
+                        <h3>Desa Pujungan</h3>
+                        <p>Memiliki salah satu alat musik yang masuk dalam warisan takbenda, hingga menjadi ciri khas Desa Pujungan.</p>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <div class="photo-container">
+                        <img src="Kopi-camp.jpg" alt="Kampung Kopi Batungsel" loading="lazy">
+                    </div>
+                    <div class="teks-container">
+                        <h3>Desa Batungsel</h3>
+                        <p>Batungsel menghidupkan Rejang dengan irama gamelan yang memukau dan penuh makna.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- REJANG AYUNAN SECTION -->
+        <section class="tradisi-animate rejong-ayunan-section" id="rejong-ayunan">
+            <div class="tradisi-text">
+                <h2>Rejang Ayunan</h2>
+            </div>
+            
+            <div class="tradisi-grid">
+                <div class="tradisi-card">
+                    <div class="photo-container">
+                        <img src="Rejang2.jpeg" alt="Rejang Ayunan Pupuan & Bantiran" loading="lazy">
+                    </div>
+                    <div class="text-container">
+                        <h3>Rejang Ayunan Desa Pupuan & Bantiran</h3>
+                        <p>Rejang Ayunan merupakan tarian sakral yang penuh makna spiritual, menggambarkan harmoni antara manusia, alam, dan Tuhan.</p>
+                        <div class="photo-container">
+                          <img src="Background-reejang.jpeg" alt="rejang-ayunan">
+                        </div>
+                        <h3>Sejarah Panyunggalan: Desa Bantiran dan Desa Pupuan</h3>
+                        
+                        <h4>Akar Kuno dan Jejak Prasasti</h4>
+                        <p>Jejak peradaban di wilayah ini bermula dari Desa Bantiran, sebuah desa kuno yang memegang peranan vital dalam tatanan sejarah Bali. Keberadaan Bantiran telah tercatat dalam berbagai prasasti penting, di antaranya Prasasti berangka tahun Saka 923 (1001 Masehi) pada masa pemerintahan Ratu Sri Gunapriyadharmapatni dan Raja Sri Dharmodayana Warmadewa.</p>
+                        
+                        <p>Jauh sebelumnya, nama Nayakan Bantiran (Tetua Desa Bantiran) juga telah disebut dalam Prasasti Gobleg (Pura Batur A) pada era Raja Sri Ugrasena (915-936 Masehi). Ketangguhan masyarakatnya pun teruji dalam sejarah; pada tahun 1150 Masehi, Raja Sri Maharaja Jayasakti bahkan pernah memberikan keringanan pajak selama lima tahun bagi penduduk Bantiran yang tersisa pasca-peristiwa besar.</p>
+
+                        <h4>Lahirnya Pupuan dan Ikatan Spiritual Pura Kayu Padi</h4>
+                        <p>Pada mulanya, wilayah Pupuan bukanlah sebuah pemukiman, melainkan area terbuka yang berfungsi sebagai peluputan sapi (tempat penggembalaan). Hingga tahun 1988, Pupuan secara administratif dan adat masih menjadi satu kesatuan dengan Desa Bantiran.</p>
+                        
+                        <p>Momentum transisi terjadi pada tahun 1988 saat terjadi pemekaran wilayah kedinasan dan adat. Pura Kayu Padi yang semula milik Bantiran diserahkan kepada Pupuan sebagai pengikat spiritual (Tetamian).</p>
+
+                        <h4>Pusaka Budaya: Tari Rejang Ayunan</h4>
+                        <p>Tari Rejang Ayunan diperkirakan lahir bersamaan dengan mulai terbentuknya pemukiman di Pupuan. Pementasan perdana tercatat saat upacara Ngusaba Tegteg setelah pembangunan Pura Puseh dan Pura Desa selesai. Tarian ini mencerminkan pengaruh ajaran Mpu Kuturan melalui konsep Tri Khayangan.</p>
+                        
+                        <h3>Sumber Informasi:</h3>
+                            <p>Hasil Wawancara dengan Tokoh Adat dan Penglingsir Desa Adat Pupuan & Bantiran (2026)
+                            <br>Arsip Sejarah Desa dan Kebudayaan
+                            <li><a href="https://ceraken.baliprov.go.id/detail/tari-rejang-ayunan-1745804742" target="_blank" rel="noopener noreferrer" class="source-link">
+                               <p> Portal Resmi Pemerintah Provinsi Bali</p>
+                            </a></li>
+                            <p>Kajian Prasasti Bali Kuno (Prasasti Saka 923, Prasasti Gobleg, Prasasti Pura Desa Sading)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script src="script.js" defer></script>
+</body>
+</html>
