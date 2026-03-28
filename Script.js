@@ -10,67 +10,84 @@ class NavbarController {
         if (!this.elements.burger) console.error('Burger button not found. Check .burger selector.');
         if (!this.elements.mobileMenu) console.error('Mobile menu not found. Check .mobile-menu selector.');
         if (!this.elements.overlay) console.error('Menu overlay not found. Check .menu-overlay selector.');
+        if (!this.elements.navbar) console.error('Navbar not found. Check .navbar selector.');
+        
+        // Scroll-hide init
+        this.lastScrollY = window.scrollY;
+        this.ticking = false;
         
         this.bindEvents();
+        this.bindScrollHideEvents();
         this.initScrollObserver();
-        console.log('NavbarController initialized successfully'); // ✅ Debug confirmation
+        console.log('NavbarController with Scroll-Hide initialized');
     }
 
     cacheElements() {
         this.elements = {
             burger: document.querySelector('.burger'),
             mobileMenu: document.querySelector('.mobile-menu'),
+            navbar: document.querySelector('.navbar'),
             overlay: document.querySelector('.menu-overlay'),
             dropdowns: document.querySelectorAll('.dropdown'),
             scrollLinks: document.querySelectorAll('a[data-scroll]'),
             body: document.body,
-            navbarLinks: document.querySelectorAll('.menu-link, .submenu a') // ✅ Cache semua links
+            navbarLinks: document.querySelectorAll('.menu-link, .submenu a, .back-to-top') // ✅ Added back-to-top
         };
     }
 
-bindEvents() {
-    // ✅ BURGER SINGLE EVENT HANDLER (handles both click & touch)
-    this.elements.burger?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        this.toggleMobileMenu();
-    }, { passive: false });
-
-    // ✅ OVERLAY & OUTSIDE CLICK CLOSE
-    this.elements.overlay?.addEventListener('click', this.closeMobileMenu.bind(this));
-    
-    // Global click listener untuk close outside menu
-    document.addEventListener('click', (e) => this.handleOutsideClick(e));
-
-    // Mobile dropdowns
-    this.elements.dropdowns.forEach(dropdown => {
-        const toggle = dropdown.querySelector('.dropdown-toggle');
-        toggle?.addEventListener('click', (e) => this.handleMobileDropdown(e, dropdown));
-    });
-
-    // ✅ ALL NAVIGATION LINKS (smooth scroll + auto close)
-    this.elements.navbarLinks.forEach(link => {
-        link.addEventListener('click', (e) => this.handleNavigationClick(e, link));
-    });
-
-    // Keyboard ESC
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') this.closeMobileMenu();
-    });
-
-    // Resize auto-close
-    window.addEventListener('resize', () => {
-        if (window.innerWidth > 768) this.closeMobileMenu();
-    });
-
-    // Touchmove prevention
-    this.elements.body.addEventListener('touchmove', (e) => {
-        if (this.elements.mobileMenu?.classList.contains('active') && 
-            !e.target.closest('.mobile-menu')) {
+    bindEvents() {
+        // ✅ BURGER SINGLE EVENT HANDLER (handles both click & touch)
+        this.elements.burger?.addEventListener('click', (e) => {
+            e.stopPropagation();
             e.preventDefault();
-        }
-    }, { passive: false });
-}
+            this.toggleMobileMenu();
+        }, { passive: false });
+
+        // ✅ OVERLAY & OUTSIDE CLICK CLOSE
+        this.elements.overlay?.addEventListener('click', this.closeMobileMenu.bind(this));
+        
+        // Global click listener untuk close outside menu
+        document.addEventListener('click', (e) => this.handleOutsideClick(e));
+
+        // Mobile dropdowns
+        this.elements.dropdowns.forEach(dropdown => {
+            const toggle = dropdown.querySelector('.dropdown-toggle');
+            toggle?.addEventListener('click', (e) => this.handleMobileDropdown(e, dropdown));
+        });
+
+        // ✅ ALL NAVIGATION LINKS (smooth scroll + auto close)
+        this.elements.navbarLinks.forEach(link => {
+            link.addEventListener('click', (e) => this.handleNavigationClick(e, link));
+        });
+
+        // Keyboard ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') this.closeMobileMenu();
+        });
+
+        // Resize auto-close
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) this.closeMobileMenu();
+        });
+
+        // Touchmove prevention
+        this.elements.body.addEventListener('touchmove', (e) => {
+            if (this.elements.mobileMenu?.classList.contains('active') && 
+                !e.target.closest('.mobile-menu')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    }
+
+    bindScrollHideEvents() {
+        // Scroll listener - passive for perf
+        window.addEventListener('scroll', this.handleScroll.bind(this), { passive: true });
+        
+        // Hover show
+        this.elements.navbar?.addEventListener('mouseenter', this.showNavbar.bind(this));
+        this.elements.navbar?.addEventListener('mouseleave', this.handleNavbarMouseLeave.bind(this));
+    }
+
 
 /**
  * Handle click outside menu to close
@@ -112,23 +129,79 @@ toggleMobileMenu() {
 /**
  * Close mobile menu & reset burger
  */
-closeMobileMenu() {
-    const { burger, mobileMenu, overlay, body } = this.elements;
-    
-    burger?.classList.remove('active');
-    mobileMenu?.classList.remove('active');
-    overlay?.classList.remove('active');
-    
-    // Reset body
-    body.style.overflow = '';
-    body.style.position = '';
-    body.style.width = '';
-    
-    // Close all dropdowns
-    document.querySelectorAll('.dropdown').forEach(dropdown => {
-        dropdown.classList.remove('active');
-    });
-}
+    closeMobileMenu() {
+        const { burger, mobileMenu, overlay, body } = this.elements;
+        
+        burger?.classList.remove('active');
+        mobileMenu?.classList.remove('active');
+        overlay?.classList.remove('active');
+        
+        // Reset body
+        body.style.overflow = '';
+        body.style.position = '';
+        body.style.width = '';
+        
+        // Close all dropdowns
+        document.querySelectorAll('.dropdown').forEach(dropdown => {
+            dropdown.classList.remove('active');
+        });
+    }
+
+    // ========== SCROLL-HIDE LOGIC ==========
+    // Smart Scroll-Hide Navbar - hides on scroll down, shows on up/hover
+    handleScroll() {
+        if (!this.ticking) {
+            requestAnimationFrame(() => {
+                this.updateNavbarVisibility();
+                this.ticking = false;
+            });
+            this.ticking = true;
+        }
+    }
+
+    updateNavbarVisibility() {
+        const currentScrollY = window.scrollY;
+        const delta = currentScrollY - this.lastScrollY;
+        const hideThreshold = 30; // Hide after scrolling down 30px
+
+        if (currentScrollY > hideThreshold) { // Don't hide at very top
+            if (delta > hideThreshold) {
+                // Scrolling down → hide
+                this.hideNavbar();
+            } else if (delta < -hideThreshold) {
+                // Scrolling up → show
+                this.showNavbar();
+            }
+        }
+
+        this.lastScrollY = currentScrollY;
+    }
+
+    showNavbar() {
+        this.elements.navbar?.classList.remove('hide');
+        // Clear any pending hide timeout
+        if (this.hideTimeout) {
+            clearTimeout(this.hideTimeout);
+            this.hideTimeout = null;
+        }
+    }
+
+    hideNavbar() {
+        this.elements.navbar?.classList.add('hide');
+    }
+
+    handleNavbarMouseLeave() {
+        // Delay hide by 500ms, only if scrolling down
+        if (this.hideTimeout) clearTimeout(this.hideTimeout);
+        
+        this.hideTimeout = setTimeout(() => {
+            const currentScrollY = window.scrollY;
+            const delta = currentScrollY - this.lastScrollY;
+            if (delta > 10) { // Still scrolling down
+                this.hideNavbar();
+            }
+        }, 500);
+    }
 
     /**
      * Mobile dropdown toggle
@@ -221,9 +294,22 @@ closeMobileMenu() {
     }
 }
 
+// Back to Top visibility toggle
+function toggleBackToTop() {
+    const btn = document.querySelector('.back-to-top');
+    if (window.scrollY > 300) {
+        btn.classList.add('show');
+    } else {
+        btn.classList.remove('show');
+    }
+}
+
+window.addEventListener('scroll', toggleBackToTop);
+
 // Initialize controller
 document.addEventListener('DOMContentLoaded', () => {
     new NavbarController();
+    toggleBackToTop(); // Initial check
 });
 
 // ✅ TOUCH OPTIMIZATION

@@ -126,6 +126,16 @@ header {
     position: relative;
     z-index: 1003;
     min-height: clamp(60px, 12vw, 80px);
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.navbar.hide {
+    transform: translateY(-100%);
+}
+
+.navbar.hide:hover,
+.navbar:hover {
+    transform: translateY(0) !important;
 }
 
 .judul {
@@ -486,6 +496,52 @@ header {
 }
 
 main { margin-top: clamp(80px, 15vh, 110px); }
+
+/* Back to Top Button - Fixed bottom-right FAB */
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FF8C00, #FFB347);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 25px rgba(255, 140, 0, 0.4);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    color: white !important;
+    font-size: 1.2rem;
+    text-decoration: none;
+}
+
+.back-to-top:hover {
+    transform: translateY(-4px) scale(1.1);
+    box-shadow: 0 12px 35px rgba(255, 140, 0, 0.6);
+    background: linear-gradient(135deg, #FF7A00, #FF9500);
+}
+
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .back-to-top {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 52px;
+        height: 52px;
+        font-size: 1.1rem;
+    }
+}
 
 .menu-link.active,
 .submenu a.active {
