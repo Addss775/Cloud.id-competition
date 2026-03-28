@@ -1,7 +1,3 @@
-/**
- * Navbar Interactive Controller
- * Handles burger menu, dropdowns, smooth scroll, dan active states
- */
 class NavbarController {
     constructor() {
         this.init();
@@ -20,14 +16,23 @@ class NavbarController {
             overlay: document.querySelector('.menu-overlay'),
             dropdowns: document.querySelectorAll('.dropdown'),
             scrollLinks: document.querySelectorAll('a[data-scroll]'),
-            body: document.body
+            body: document.body,
+            navbarLinks: document.querySelectorAll('.menu-link, .submenu a') // ✅ Cache semua links
         };
     }
 
     bindEvents() {
-        // Mobile menu toggle
-        this.elements.burger?.addEventListener('click', () => this.toggleMobileMenu());
-        this.elements.overlay?.addEventListener('click', () => this.closeMobileMenu());
+        // ✅ BURGER DOUBLE FUNCTION (Open/Close)
+        this.elements.burger?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.toggleMobileMenu();
+        });
+
+        // ✅ OVERLAY & OUTSIDE CLICK CLOSE
+        this.elements.overlay?.addEventListener('click', this.closeMobileMenu.bind(this));
+        
+        // Global click listener untuk close outside menu
+        document.addEventListener('click', (e) => this.handleOutsideClick(e));
 
         // Mobile dropdowns
         this.elements.dropdowns.forEach(dropdown => {
@@ -35,28 +40,67 @@ class NavbarController {
             toggle?.addEventListener('click', (e) => this.handleMobileDropdown(e, dropdown));
         });
 
-        // Smooth scroll links
-        this.elements.scrollLinks.forEach(link => {
-            link.addEventListener('click', (e) => this.handleSmoothScroll(e, link));
+        // ✅ ALL NAVIGATION LINKS (smooth scroll + auto close)
+        this.elements.navbarLinks.forEach(link => {
+            link.addEventListener('click', (e) => this.handleNavigationClick(e, link));
         });
+
+        // Keyboard ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') this.closeMobileMenu();
+        });
+
+        // Resize auto-close
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) this.closeMobileMenu();
+        });
+
+        // Touchmove prevention
+        this.elements.body.addEventListener('touchmove', (e) => {
+            if (this.elements.mobileMenu?.classList.contains('active') && 
+                !e.target.closest('.mobile-menu')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
     }
 
     /**
-     * Toggle mobile menu visibility
+     * Handle click outside menu to close
+     */
+    handleOutsideClick(e) {
+        const isClickInsideMenu = e.target.closest('.mobile-menu');
+        const isBurgerClick = e.target.closest('.burger');
+        
+        if (this.elements.mobileMenu?.classList.contains('active') && 
+            !isClickInsideMenu && !isBurgerClick) {
+            this.closeMobileMenu();
+        }
+    }
+
+    /**
+     * Toggle burger menu ☰ ↔ ❌
      */
     toggleMobileMenu() {
         const { burger, mobileMenu, overlay, body } = this.elements;
         
-        burger?.classList.toggle('active');
-        mobileMenu?.classList.toggle('active');
-        overlay?.classList.toggle('active');
-        
-        // Prevent body scroll when menu open
-        body.style.overflow = mobileMenu?.classList.contains('active') ? 'hidden' : '';
+        if (!burger || !mobileMenu || !overlay) return;
+
+        const isActive = mobileMenu.classList.contains('active');
+
+        if (isActive) {
+            this.closeMobileMenu();
+        } else {
+            burger.classList.add('active');
+            mobileMenu.classList.add('active');
+            overlay.classList.add('active');
+            body.style.overflow = 'hidden';
+            body.style.position = 'fixed';
+            body.style.width = '100%';
+        }
     }
 
     /**
-     * Close mobile menu
+     * Close mobile menu & reset burger
      */
     closeMobileMenu() {
         const { burger, mobileMenu, overlay, body } = this.elements;
@@ -64,11 +108,20 @@ class NavbarController {
         burger?.classList.remove('active');
         mobileMenu?.classList.remove('active');
         overlay?.classList.remove('active');
+        
+        // Reset body
         body.style.overflow = '';
+        body.style.position = '';
+        body.style.width = '';
+        
+        // Close all dropdowns
+        document.querySelectorAll('.dropdown').forEach(dropdown => {
+            dropdown.classList.remove('active');
+        });
     }
 
     /**
-     * Handle mobile dropdown toggle
+     * Mobile dropdown toggle
      */
     handleMobileDropdown(event, dropdown) {
         if (window.innerWidth > 768) return;
@@ -79,42 +132,47 @@ class NavbarController {
     }
 
     /**
-     * Smooth scroll to target section
+     * Universal navigation handler (desktop + mobile)
      */
-    handleSmoothScroll(event, link) {
-        event.preventDefault();
-        event.stopPropagation();
-
+    handleNavigationClick(event, link) {
         const targetId = link.getAttribute('data-scroll');
-        const targetSection = document.querySelector(targetId);
+        
+        if (targetId && targetId.startsWith('#')) {
+            event.preventDefault();
+            event.stopPropagation();
 
-        if (!targetSection) return;
+            const targetSection = document.querySelector(targetId);
+            if (targetSection) {
+                // Smooth scroll
+                targetSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
 
-        // Smooth scroll
-        targetSection.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
+                // Update active state
+                this.setActiveMenu(link);
 
-        // Update active state
-        this.setActiveMenu(link);
+                // Auto close mobile menu
+                this.closeMobileMenu();
 
-        // Close mobile menu
-        this.closeMobileMenu();
+                // Offset adjustment
+                setTimeout(() => window.scrollBy(0, -20), 600);
+            }
+        }
     }
 
     /**
      * Set active menu item
      */
     setActiveMenu(activeLink) {
-        document.querySelectorAll('.menu-link, .submenu a').forEach(item => {
+        this.elements.navbarLinks.forEach(item => {
             item.classList.remove('active');
         });
         activeLink.classList.add('active');
     }
 
     /**
-     * Intersection Observer untuk auto-active menu
+     * Scroll-based active menu (Intersection Observer)
      */
     initScrollObserver() {
         const sections = document.querySelectorAll('section[id]');
@@ -138,10 +196,10 @@ class NavbarController {
     }
 
     /**
-     * Update active menu based on current section
+     * Update active menu from scroll
      */
     updateActiveMenu(currentId) {
-        document.querySelectorAll('.menu-link, .submenu a').forEach(link => {
+        this.elements.navbarLinks.forEach(link => {
             link.classList.remove('active');
             if (link.getAttribute('data-scroll') === `#${currentId}`) {
                 link.classList.add('active');
@@ -150,15 +208,15 @@ class NavbarController {
     }
 }
 
-// Initialize when DOM is ready
+// Initialize controller
 document.addEventListener('DOMContentLoaded', () => {
     new NavbarController();
 });
 
-// Prevent dropdown scroll issues on touch devices
+// ✅ TOUCH OPTIMIZATION
 document.addEventListener('touchstart', (e) => {
-    const dropdownToggle = e.target.closest('.dropdown-toggle[data-scroll]');
-    if (dropdownToggle) {
+    // Prevent dropdown interference
+    if (e.target.closest('.dropdown-toggle') && window.innerWidth <= 768) {
         e.stopPropagation();
     }
 }, { passive: true });
