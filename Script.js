@@ -1,3 +1,7 @@
+/**
+ * Navbar Controller - Simple & Reliable
+ * Burger Menu | Mobile Dropdown | Smooth Scroll
+ */
 class NavbarController {
     constructor() {
         this.init();
@@ -16,65 +20,30 @@ class NavbarController {
             overlay: document.querySelector('.menu-overlay'),
             dropdowns: document.querySelectorAll('.dropdown'),
             scrollLinks: document.querySelectorAll('a[data-scroll]'),
-            body: document.body,
-            navbarLinks: document.querySelectorAll('.menu-link, .submenu a') // ✅ Cache semua links
+            body: document.body
         };
     }
 
     bindEvents() {
-        // ✅ BURGER DOUBLE FUNCTION (Open/Close)
+        // Burger toggle ☰ ↔ ❌
         this.elements.burger?.addEventListener('click', (e) => {
             e.stopPropagation();
             this.toggleMobileMenu();
         });
 
-        // ✅ OVERLAY & OUTSIDE CLICK CLOSE
-        this.elements.overlay?.addEventListener('click', this.closeMobileMenu.bind(this));
-        
-        // Global click listener untuk close outside menu
-        document.addEventListener('click', (e) => this.handleOutsideClick(e));
+        // Overlay close
+        this.elements.overlay?.addEventListener('click', () => this.closeMobileMenu());
 
         // Mobile dropdowns
         this.elements.dropdowns.forEach(dropdown => {
             const toggle = dropdown.querySelector('.dropdown-toggle');
-            toggle?.addEventListener('click', (e) => this.handleMobileDropdown(e, dropdown));
+            toggle?.addEventListener('click', (e) => this.toggleDropdown(e, dropdown));
         });
 
-        // ✅ ALL NAVIGATION LINKS (smooth scroll + auto close)
-        this.elements.navbarLinks.forEach(link => {
-            link.addEventListener('click', (e) => this.handleNavigationClick(e, link));
+        // Smooth scroll links
+        this.elements.scrollLinks.forEach(link => {
+            link.addEventListener('click', (e) => this.smoothScroll(e, link));
         });
-
-        // Keyboard ESC
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') this.closeMobileMenu();
-        });
-
-        // Resize auto-close
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) this.closeMobileMenu();
-        });
-
-        // Touchmove prevention
-        this.elements.body.addEventListener('touchmove', (e) => {
-            if (this.elements.mobileMenu?.classList.contains('active') && 
-                !e.target.closest('.mobile-menu')) {
-                e.preventDefault();
-            }
-        }, { passive: false });
-    }
-
-    /**
-     * Handle click outside menu to close
-     */
-    handleOutsideClick(e) {
-        const isClickInsideMenu = e.target.closest('.mobile-menu');
-        const isBurgerClick = e.target.closest('.burger');
-        
-        if (this.elements.mobileMenu?.classList.contains('active') && 
-            !isClickInsideMenu && !isBurgerClick) {
-            this.closeMobileMenu();
-        }
     }
 
     /**
@@ -83,24 +52,16 @@ class NavbarController {
     toggleMobileMenu() {
         const { burger, mobileMenu, overlay, body } = this.elements;
         
-        if (!burger || !mobileMenu || !overlay) return;
-
-        const isActive = mobileMenu.classList.contains('active');
-
-        if (isActive) {
-            this.closeMobileMenu();
-        } else {
-            burger.classList.add('active');
-            mobileMenu.classList.add('active');
-            overlay.classList.add('active');
-            body.style.overflow = 'hidden';
-            body.style.position = 'fixed';
-            body.style.width = '100%';
-        }
+        burger?.classList.toggle('active');
+        mobileMenu?.classList.toggle('active');
+        overlay?.classList.toggle('active');
+        
+        // Body scroll lock
+        body.style.overflow = mobileMenu?.classList.contains('active') ? 'hidden' : '';
     }
 
     /**
-     * Close mobile menu & reset burger
+     * Close mobile menu
      */
     closeMobileMenu() {
         const { burger, mobileMenu, overlay, body } = this.elements;
@@ -108,115 +69,75 @@ class NavbarController {
         burger?.classList.remove('active');
         mobileMenu?.classList.remove('active');
         overlay?.classList.remove('active');
-        
-        // Reset body
         body.style.overflow = '';
-        body.style.position = '';
-        body.style.width = '';
         
         // Close all dropdowns
-        document.querySelectorAll('.dropdown').forEach(dropdown => {
-            dropdown.classList.remove('active');
-        });
+        document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('active'));
     }
 
     /**
      * Mobile dropdown toggle
      */
-    handleMobileDropdown(event, dropdown) {
+    toggleDropdown(e, dropdown) {
         if (window.innerWidth > 768) return;
-
-        event.preventDefault();
-        event.stopPropagation();
+        
+        e.preventDefault();
+        e.stopPropagation();
         dropdown.classList.toggle('active');
     }
 
     /**
-     * Universal navigation handler (desktop + mobile)
+     * Smooth scroll + close menu
      */
-    handleNavigationClick(event, link) {
+    smoothScroll(e, link) {
+        e.preventDefault();
+        e.stopPropagation();
+
         const targetId = link.getAttribute('data-scroll');
-        
-        if (targetId && targetId.startsWith('#')) {
-            event.preventDefault();
-            event.stopPropagation();
+        const target = document.querySelector(targetId);
 
-            const targetSection = document.querySelector(targetId);
-            if (targetSection) {
-                // Smooth scroll
-                targetSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-
-                // Update active state
-                this.setActiveMenu(link);
-
-                // Auto close mobile menu
-                this.closeMobileMenu();
-
-                // Offset adjustment
-                setTimeout(() => window.scrollBy(0, -20), 600);
-            }
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            // Active state
+            this.setActiveLink(link);
+            
+            // Close mobile menu
+            this.closeMobileMenu();
         }
     }
 
     /**
-     * Set active menu item
+     * Set active link
      */
-    setActiveMenu(activeLink) {
-        this.elements.navbarLinks.forEach(item => {
-            item.classList.remove('active');
+    setActiveLink(activeLink) {
+        document.querySelectorAll('a[data-scroll]').forEach(link => {
+            link.classList.remove('active');
         });
         activeLink.classList.add('active');
     }
 
     /**
-     * Scroll-based active menu (Intersection Observer)
+     * Auto active on scroll
      */
     initScrollObserver() {
         const sections = document.querySelectorAll('section[id]');
         if (!sections.length) return;
 
-        const observerOptions = {
-            rootMargin: '-20% 0px -80% 0px',
-            threshold: 0
-        };
-
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    const currentId = entry.target.getAttribute('id');
-                    this.updateActiveMenu(currentId);
+                    const id = entry.target.id;
+                    document.querySelectorAll('a[data-scroll]').forEach(link => {
+                        link.classList.toggle('active', link.getAttribute('data-scroll') === `#${id}`);
+                    });
                 }
             });
-        }, observerOptions);
+        }, { rootMargin: '-20% 0px -75% 0px' });
 
         sections.forEach(section => observer.observe(section));
     }
-
-    /**
-     * Update active menu from scroll
-     */
-    updateActiveMenu(currentId) {
-        this.elements.navbarLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('data-scroll') === `#${currentId}`) {
-                link.classList.add('active');
-            }
-        });
-    }
 }
 
-// Initialize controller
-document.addEventListener('DOMContentLoaded', () => {
-    new NavbarController();
-});
-
-// ✅ TOUCH OPTIMIZATION
-document.addEventListener('touchstart', (e) => {
-    // Prevent dropdown interference
-    if (e.target.closest('.dropdown-toggle') && window.innerWidth <= 768) {
-        e.stopPropagation();
-    }
-}, { passive: true });
+// Initialize
+document.addEventListener('DOMContentLoaded', () => new NavbarController());
