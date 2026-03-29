@@ -120,7 +120,7 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: clamp(0.75rem, 4vw, 1.5rem) clamp(1rem, 5vw, 2.5rem);
-    background: rgb(190,122,0);
+    background: rgba(255,182,18,0.733);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     position: relative;
@@ -633,15 +633,15 @@ main { margin-top: clamp(80px, 15vh, 110px); }
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #087b01, #017b3ad6);
-    box-shadow: 0 8px 25px rgba(8, 123, 1, 0.4);
+    background: linear-gradient(135deg, #ff8012, #ffb612);
+    box-shadow: 0 8px 25px rgba(234,172,32,0.489);
     border: 2px solid transparent;
 }
 
 .btn-primary:hover {
     transform: translateY(-4px);
-    box-shadow: 0 15px 35px rgba(8, 123, 1, 0.5);
-    background: linear-gradient(135deg, #0a9c02, #0284d6);
+    box-shadow: 0 15px 35px rgba(234,172,32,0.489);
+    background: linear-gradient(135deg, #ff8012, #ffb619);
 }
 
 .btn-secondary {
@@ -678,7 +678,8 @@ main { margin-top: clamp(80px, 15vh, 110px); }
 
 .tentang-text h2 {
     font-size: clamp(2.5rem, 6vw, 4rem);
-    font-weight: 700;
+    font-weight: 800;
+    font-size: 40px;
     margin-bottom: 1rem;
     position: relative;
     color: black;
@@ -823,6 +824,7 @@ main { margin-top: clamp(80px, 15vh, 110px); }
 .text-container h3 {
     font-size: clamp(2rem, 5vw, 3rem);
     font-weight: 800;
+    font-size: 25px;
     color: #1a1a1a;
     letter-spacing: -0.5px;
     margin: 0;

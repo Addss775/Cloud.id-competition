@@ -6,18 +6,14 @@ class NavbarController {
     init() {
         this.cacheElements();
         
-        // ✅ Validate cached elements
-        if (!this.elements.burger) console.error('Burger button not found.');
-        if (!this.elements.mobileMenu) console.error('Mobile menu not found.');
+        // Pastikan elemen dasar ada
+        if (!this.elements.burger || !this.elements.mobileMenu) return;
         
         this.lastScrollY = window.scrollY;
-        this.ticking = false;
-        this.hideTimeout = null;
+        this.isTicking = false;
         
         this.bindEvents();
-        this.bindScrollHideEvents();
-        this.initScrollObserver();
-        console.log('✅ NavbarController FIXED - Mobile navigation works!');
+        console.log('✅ NavbarController: System Stabilized.');
     }
 
     cacheElements() {
@@ -28,242 +24,119 @@ class NavbarController {
             overlay: document.querySelector('.menu-overlay'),
             menuCloseBtn: document.querySelector('.menu-close-btn'),
             dropdowns: document.querySelectorAll('.dropdown'),
-            scrollLinks: document.querySelectorAll('a[data-scroll]'),
             body: document.body,
-            navbarLinks: document.querySelectorAll('.menu-link, .submenu a, .back-to-top')
+            // Ambil semua link kecuali yang dropdown-toggle biar gak tabrakan logic
+            navLinks: document.querySelectorAll('.menu-link:not(.dropdown-toggle), .submenu a, .back-to-top')
         };
     }
 
     bindEvents() {
-        // ✅ BURGER TOGGLE
+        // 1. Burger & Close Toggle
         this.elements.burger?.addEventListener('click', (e) => {
-            e.stopPropagation();
+            e.preventDefault();
             this.toggleMobileMenu();
         });
 
-        // ✅ CLOSE BUTTON
         this.elements.menuCloseBtn?.addEventListener('click', (e) => {
-            e.stopPropagation();
+            e.preventDefault();
             this.closeMobileMenu();
         });
 
-        // ✅ OVERLAY CLOSE
         this.elements.overlay?.addEventListener('click', () => this.closeMobileMenu());
 
-        // ✅ OUTSIDE CLICK
-        document.addEventListener('click', (e) => this.handleOutsideClick(e));
-
-        // ✅ DROPDOWNS
+        // 2. Dropdown Logic (Hanya Mobile)
         this.elements.dropdowns.forEach(dropdown => {
             const toggle = dropdown.querySelector('.dropdown-toggle');
-            toggle?.addEventListener('click', (e) => this.handleMobileDropdown(e, dropdown));
+            toggle?.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault(); // Stop pindah halaman kalau dropdown diklik
+                    e.stopPropagation();
+                    
+                    // Close dropdown lain biar gak tumpang tindih
+                    this.elements.dropdowns.forEach(d => {
+                        if (d !== dropdown) d.classList.remove('active');
+                    });
+                    
+                    dropdown.classList.toggle('active');
+                }
+            });
         });
 
-        // 🔥 FIX MOBILE NAVIGATION - PENTING!
-        this.elements.navbarLinks.forEach(link => {
-            link.addEventListener('click', (e) => this.handleNavigationClick(e, link));
+        // 3. Smooth Scroll & Navigation
+        this.elements.navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                
+                // Jika internal link (pakai #)
+                if (href && href.startsWith('#') && href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        this.closeMobileMenu();
+                        // Delay dikit biar transisi menu tutup selesai dulu
+                        setTimeout(() => {
+                            target.scrollIntoView({ behavior: 'smooth' });
+                        }, 300);
+                    }
+                } else {
+                    // Biarkan link eksternal jalan, tapi tutup menu
+                    this.closeMobileMenu();
+                }
+            });
         });
 
-        // ESC & RESIZE
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') this.closeMobileMenu();
-        });
+        // 4. Scroll Header Hide/Show
+        window.addEventListener('scroll', () => this.onScroll(), { passive: true });
         
+        // 5. Global Fixes
         window.addEventListener('resize', () => {
             if (window.innerWidth > 768) this.closeMobileMenu();
         });
     }
 
-    handleOutsideClick(e) {
-        const isClickInsideMenu = e.target.closest('.mobile-menu');
-        const isBurgerClick = e.target.closest('.burger');
-        const isCloseBtnClick = e.target.closest('.menu-close-btn');
-        
-        if (this.elements.mobileMenu?.classList.contains('active') && 
-            !isClickInsideMenu && !isBurgerClick && !isCloseBtnClick) {
-            this.closeMobileMenu();
-        }
-    }
-
-    /** 🔥 FIXED: Navigation yang BENAR! */
-    handleNavigationClick(event, link) {
-        const href = link.getAttribute('href');
-        const isScrollLink = link.hasAttribute('data-scroll') || href?.startsWith('#');
-        const isExternal = href && !href.startsWith('#') && href !== '#';
-
-        console.log('🔗 Link clicked:', { href, isScrollLink, isExternal });
-
-        // ✅ HANYA block scroll links INTERNAL
-        if (isScrollLink) {
-            event.preventDefault();
-            event.stopPropagation();
-            
-            const targetId = href || link.getAttribute('data-scroll');
-            const targetSection = document.querySelector(targetId);
-            
-            if (targetSection) {
-                targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                this.setActiveMenu(link);
-                this.closeMobileMenu();
-            }
-        } 
-        // ✅ EXTERNAL LINKS - JALANKAN NORMAL + close menu delayed
-        else if (isExternal) {
-            // JANGAN preventDefault! Biar href jalan
-            console.log('🌐 Going to external:', href);
-            
-            // Close menu DELAYED biar navigation jalan dulu
-            setTimeout(() => {
-                this.closeMobileMenu();
-            }, 300);
-        }
-        // ✅ Anchor kosong atau internal non-scroll
-        else {
-            this.closeMobileMenu();
-        }
-    }
-
     toggleMobileMenu() {
-        const { burger, mobileMenu, overlay, body, menuCloseBtn } = this.elements;
-        
-        if (!burger || !mobileMenu) return;
-
-        const isActive = mobileMenu.classList.contains('active');
-
-        if (isActive) {
-            this.closeMobileMenu();
-        } else {
-            // Show elements
-            burger.classList.add('active');
-            mobileMenu.classList.add('active');
-            overlay?.classList.add('active');
-            body.classList.add('menu-open');
-            
-            // Show close button
-            menuCloseBtn?.classList.add('show');
-        }
+        const isOpen = this.elements.mobileMenu.classList.toggle('active');
+        this.elements.burger.classList.toggle('active');
+        this.elements.overlay?.classList.toggle('active');
+        this.elements.menuCloseBtn?.classList.toggle('show');
+        this.elements.body.classList.toggle('menu-open', isOpen);
     }
 
     closeMobileMenu() {
-        const { burger, mobileMenu, overlay, body, menuCloseBtn } = this.elements;
-        
-        burger?.classList.remove('active');
-        mobileMenu?.classList.remove('active');
-        overlay?.classList.remove('active');
-        body.classList.remove('menu-open');
-        
-        // Hide close button
-        menuCloseBtn?.classList.remove('show');
-        
-        // Close dropdowns
-        document.querySelectorAll('.dropdown').forEach(dropdown => {
-            dropdown.classList.remove('active');
-        });
+        this.elements.mobileMenu.classList.remove('active');
+        this.elements.burger?.classList.remove('active');
+        this.elements.overlay?.classList.remove('active');
+        this.elements.menuCloseBtn?.classList.remove('show');
+        this.elements.body.classList.remove('menu-open');
+        this.elements.dropdowns.forEach(d => d.classList.remove('active'));
     }
 
-    handleMobileDropdown(event, dropdown) {
-        if (window.innerWidth > 768) return;
-        event.preventDefault();
-        event.stopPropagation();
-        dropdown.classList.toggle('active');
-    }
-
-    // ========== SCROLL HIDE (tetap sama) ==========
-    bindScrollHideEvents() {
-        window.addEventListener('scroll', this.handleScroll.bind(this), { passive: true });
-        this.elements.navbar?.addEventListener('mouseenter', this.showNavbar.bind(this));
-        this.elements.navbar?.addEventListener('mouseleave', this.handleNavbarMouseLeave.bind(this));
-    }
-
-    handleScroll() {
-        if (!this.ticking) {
-            requestAnimationFrame(() => {
-                this.updateNavbarVisibility();
-                this.ticking = false;
-            });
-            this.ticking = true;
-        }
-    }
-
-    updateNavbarVisibility() {
-        const currentScrollY = window.scrollY;
-        const delta = currentScrollY - this.lastScrollY;
-        const hideThreshold = 30;
-
-        if (currentScrollY > hideThreshold) {
-            if (delta > hideThreshold) {
-                this.hideNavbar();
-            } else if (delta < -hideThreshold) {
-                this.showNavbar();
-            }
-        }
-        this.lastScrollY = currentScrollY;
-    }
-
-    showNavbar() {
-        this.elements.navbar?.classList.remove('hide');
-        if (this.hideTimeout) clearTimeout(this.hideTimeout);
-    }
-
-    hideNavbar() {
-        this.elements.navbar?.classList.add('hide');
-    }
-
-    handleNavbarMouseLeave() {
-        if (this.hideTimeout) clearTimeout(this.hideTimeout);
-        this.hideTimeout = setTimeout(() => {
-            const currentScrollY = window.scrollY;
-            if (currentScrollY - this.lastScrollY > 10) {
-                this.hideNavbar();
-            }
-        }, 500);
-    }
-
-    setActiveMenu(activeLink) {
-        this.elements.navbarLinks.forEach(item => item.classList.remove('active'));
-        activeLink.classList.add('active');
-    }
-
-    initScrollObserver() {
-        const sections = document.querySelectorAll('section[id]');
-        if (!sections.length) return;
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const currentId = entry.target.getAttribute('id');
-                    this.updateActiveMenu(currentId);
+    onScroll() {
+        if (!this.isTicking) {
+            window.requestAnimationFrame(() => {
+                const currentScrollY = window.scrollY;
+                
+                // Navbar Hide/Show Logic
+                if (currentScrollY > 100) {
+                    if (currentScrollY > this.lastScrollY) {
+                        this.elements.navbar.classList.add('hide');
+                    } else {
+                        this.elements.navbar.classList.remove('hide');
+                    }
+                } else {
+                    this.elements.navbar.classList.remove('hide');
                 }
+
+                // Back to Top Logic
+                const btt = document.querySelector('.back-to-top');
+                if (btt) btt.classList.toggle('show', currentScrollY > 500);
+
+                this.lastScrollY = currentScrollY;
+                this.isTicking = false;
             });
-        }, {
-            rootMargin: '-20% 0px -80% 0px',
-            threshold: 0
-        });
-
-        sections.forEach(section => observer.observe(section));
-    }
-
-    updateActiveMenu(currentId) {
-        this.elements.navbarLinks.forEach(link => {
-            link.classList.remove('active');
-            if ((link.getAttribute('data-scroll') || link.getAttribute('href')) === `#${currentId}`) {
-                link.classList.add('active');
-            }
-        });
+            this.isTicking = true;
+        }
     }
 }
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    new NavbarController();
-});
-
-// Back to top
-window.addEventListener('scroll', () => {
-    const btn = document.querySelector('.back-to-top');
-    if (btn && window.scrollY > 300) {
-        btn.classList.add('show');
-    } else if (btn) {
-        btn.classList.remove('show');
-    }
-});
+document.addEventListener('DOMContentLoaded', () => new NavbarController());
