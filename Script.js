@@ -4,6 +4,8 @@ class NavbarController {
     }
 
     init() {
+        this.scrollSaver = { enabled: true }; // 🐛 FIX: Scroll position saver untuk cegah jump ke #home
+        
         this.cacheElements();
         
         // Pastikan elemen dasar ada
@@ -13,7 +15,7 @@ class NavbarController {
         this.isTicking = false;
         
         this.bindEvents();
-        console.log('✅ NavbarController: System Stabilized.');
+        console.log('✅ NavbarController: System Stabilized. Burger menu scroll jump FIXED.');
     }
 
     cacheElements() {
@@ -31,9 +33,11 @@ class NavbarController {
     }
 
     bindEvents() {
-        // 1. Burger & Close Toggle
+        // 1. Burger & Close Toggle 🐛 PROBLEMATIC AREA: Burger click causing scroll jump to #home
         this.elements.burger?.addEventListener('click', (e) => {
             e.preventDefault();
+            e.stopPropagation(); // 🆕 FIX: Extra stop propagation untuk cegah bubble ke parent links
+            // console.log('🐛 Burger clicked, scrollY:', window.scrollY); // 🧹 CLEANUP: Debug removed
             this.toggleMobileMenu();
         });
 
@@ -44,7 +48,7 @@ class NavbarController {
 
         this.elements.overlay?.addEventListener('click', () => this.closeMobileMenu());
 
-        // 2. Dropdown Logic (Hanya Mobile)
+        // 2. Dropdown Logic (Hanya Mobile) 🐛 POTENTIAL: Dropdown interfering with scroll
         this.elements.dropdowns.forEach(dropdown => {
             const toggle = dropdown.querySelector('.dropdown-toggle');
             toggle?.addEventListener('click', (e) => {
@@ -62,7 +66,7 @@ class NavbarController {
             });
         });
 
-        // 3. Smooth Scroll & Navigation
+        // 3. Smooth Scroll & Navigation 🐛 PROBLEMATIC AREA: Race condition scroll after menu close causing homepage jump
         this.elements.navLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 const href = link.getAttribute('href');
@@ -70,13 +74,18 @@ class NavbarController {
                 // Jika internal link (pakai #)
                 if (href && href.startsWith('#') && href !== '#') {
                     e.preventDefault();
+                    e.stopPropagation();
+                    
                     const target = document.querySelector(href);
                     if (target) {
+                        // 🆕 FIX: Restore scroll before close to prevent jump
+                        this.restoreScrollPosition();
+                        
                         this.closeMobileMenu();
-                        // Delay dikit biar transisi menu tutup selesai dulu
+                        // Delay lebih panjang untuk sync dengan CSS transition
                         setTimeout(() => {
                             target.scrollIntoView({ behavior: 'smooth' });
-                        }, 300);
+                        }, 400);
                     }
                 } else {
                     // Biarkan link eksternal jalan, tapi tutup menu
@@ -95,6 +104,12 @@ class NavbarController {
     }
 
     toggleMobileMenu() {
+        // 🐛 FIX: PROBLEMATIC AREA - Menu open causes body position:fixed jump, resetting scrollY to 0 (homepage)
+        if (this.scrollSaver.enabled) {
+            this.savedScrollY = window.scrollY; // 🆕 Save current scroll pos
+            // console.log('🐛 Menu OPEN - Saved scrollY:', this.savedScrollY); // 🧹 CLEANUP: Debug removed
+        }
+        
         const isOpen = this.elements.mobileMenu.classList.toggle('active');
         this.elements.burger.classList.toggle('active');
         this.elements.overlay?.classList.toggle('active');
@@ -103,15 +118,35 @@ class NavbarController {
     }
 
     closeMobileMenu() {
+        // 🐛 FIX: Restore scroll pos setelah menu tutup untuk cegah homepage jump
         this.elements.mobileMenu.classList.remove('active');
         this.elements.burger?.classList.remove('active');
         this.elements.overlay?.classList.remove('active');
         this.elements.menuCloseBtn?.classList.remove('show');
         this.elements.body.classList.remove('menu-open');
         this.elements.dropdowns.forEach(d => d.classList.remove('active'));
+        
+        // 🆕 Restore scroll setelah DOM update
+        setTimeout(() => {
+            if (this.scrollSaver.enabled && this.savedScrollY !== undefined) {
+                window.scrollTo(0, this.savedScrollY);
+                // console.log('🐛 Menu CLOSE - Restored scrollY:', this.savedScrollY); // 🧹 CLEANUP: Debug removed
+                this.savedScrollY = undefined;
+            }
+        }, 350); // Sync dengan CSS transition
+    }
+
+    restoreScrollPosition() {
+        // 🆕 UTILITY: Restore saved scroll jika ada
+        if (this.savedScrollY !== undefined) {
+            window.scrollTo(0, this.savedScrollY);
+        }
     }
 
     onScroll() {
+        // 🐛 POTENTIAL: Scroll listener interfering during menu transitions
+        if (this.elements.body.classList.contains('menu-open')) return; // 🆕 Skip saat menu open
+        
         if (!this.isTicking) {
             window.requestAnimationFrame(() => {
                 const currentScrollY = window.scrollY;
