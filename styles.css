@@ -1090,144 +1090,109 @@ main { margin-top: clamp(80px, 15vh, 110px); }
     line-height: 1;
 }
 
-.footer {
-  background: #fff;
-  padding: 4rem 3rem 3rem; /* Lebih besar padding */
-  border-top: 6px solid #FFD700;
-  box-shadow: 0 -8px 40px rgba(255,215,0,0.15);
-  color: #333;
-  margin-top: 5rem;
+.main-footer {
+    position: relative;
+    background: #1a1a1a; /* Warna gelap sesuai gambar */
+    color: #fff;
+    padding: 0;
+    margin-top: 100px; /* Ruang untuk gelombang */
 }
 
-.footer h3 {
-  text-align: center;
-  color: #333;
-  font-size: 2rem; /* Lebih besar */
-  margin-bottom: 3rem;
-  position: relative;
-  padding-bottom: 1.2rem;
-  font-weight: 700;
-  letter-spacing: 1px;
+.footer-wave {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
 }
 
-.footer h3::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
-  height: 5px;
-  background: linear-gradient(90deg, #FFD700, #FFA500);
-  border-radius: 3px;
+.footer-wave svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 100px;
 }
 
-/* ✅ DESKTOP: 1x1 (satu kolom) */
+.footer-wave .shape-fill {
+    fill: #1a1a1a; /* Harus sama dengan background footer */
+}
+
+.footer-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px 20px;
+}
+
 .footer-grid {
-  display: grid;
-  grid-template-columns: 1fr; /* 1x1 */
-  gap: 1.5rem;
-  max-width: 800px; /* Lebih center */
-  margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
 }
 
-.footer-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  max-width: 700px; /* Batasi lebar biar ga kepanjangan */
-  margin: 0 auto;
+.footer-box h4 {
+    color: #FF8C00; /* Aksen warna emas/orange */
+    margin-bottom: 20px;
+    font-size: 1.2rem;
 }
 
-.footer-list li {
-  margin-bottom: 1.5rem;
+.footer-links {
+    list-style: none;
+    padding: 0;
 }
 
-/* TEKS BESAR + BORDER BOX BESAR */
-.source-link,
-.source-item {
-  display: flex;
-  align-items: flex-start;
-  padding: 1.8rem 2rem; /* Padding lebih besar */
-  background: #f8f9fa;
-  border: 3px solid #f1f3f4; /* Border lebih tebal */
-  border-radius: 16px; /* Lebih bulat */
-  color: #333;
-  font-size: 1.1rem; /* TEKS BESAR! */
-  font-weight: 600;
-  line-height: 1.6;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+.footer-links li {
+    margin-bottom: 10px;
 }
 
-.source-link {
-  text-decoration: none;
+.footer-links a {
+    color: #ccc;
+    text-decoration: none;
+    transition: 0.3s;
 }
 
-.source-link:hover,
-.source-item:hover {
-  border-color: #FFD700;
-  background: #fff;
-  transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(255,215,0,0.25);
-  color: #333;
+.footer-links a:hover {
+    color: #fff;
+    padding-left: 5px;
 }
 
-.source-link::before,
-.source-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,215,0,0.15), transparent);
-  transition: left 0.6s;
+.creators {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.source-link:hover::before,
-.source-item:hover::before {
-  left: 100%;
+.social-link {
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: 0.3s;
 }
 
-.bullet {
-  font-size: 1.8rem; /* Bullet lebih besar */
-  color: #FFD700;
-  margin-right: 1.2rem;
-  margin-top: 0.3rem;
-  flex-shrink: 0;
-  font-weight: bold;
+.social-link:hover {
+    background: #FF8C00;
 }
 
-/* TABLET & MOBILE: 2 KOLOM (optional) */
-@media (max-width: 1024px) {
-  .footer-grid {
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
-    max-width: 1000px;
-  }
-  
-  .footer-list {
-    max-width: none;
-  }
+.footer-bottom {
+    text-align: center;
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.8rem;
+    color: #777;
 }
 
-/* MOBILE */
+/* Responsif Mobile */
 @media (max-width: 768px) {
-  .footer {
-    padding: 2.5rem 1.5rem 2rem;
-    margin-top: 3rem;
-  }
-  
-  .footer h3 {
-    font-size: 1.6rem;
-  }
-  
-  .source-link,
-  .source-item {
-    padding: 1.5rem 1.5rem;
-    font-size: 1rem;
-  }
+    .footer-grid {
+        text-align: center;
+    }
+    .social-link {
+        justify-content: center;
+    }
 }
