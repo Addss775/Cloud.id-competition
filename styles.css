@@ -15,13 +15,7 @@ font-family: 'Poppins', sans-serif !important;
 font-weight: 400;
 color: #fff;
 line-height: 1.6;
-background:
-linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-url('Desain.png');
-background-repeat: no-repeat;
-background-position: center;
-background-size: cover;
-background-attachment: fixed;
+background-color: black;
 min-height: 100vh;
 scroll-behavior: smooth;
 }
@@ -588,6 +582,14 @@ main { margin-top: clamp(80px, 15vh, 110px); }
     justify-content: center;
     text-align: center;
     padding: 0 1.5rem;
+    
+    background: 
+        linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)),
+        url('Desain.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 .home-text {
