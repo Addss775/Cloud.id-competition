@@ -13,6 +13,7 @@ html {
 body {
 font-family: 'Poppins', sans-serif !important;
 font-weight: 400;
+padding-top: 100px;
 margin: 0;
 padding: 0;
 color: #fff;
@@ -67,7 +68,6 @@ a {
     font-weight: 600 !important;
 }
 
-/* GRID CARDS - Poppins */
 .teks-container h3,
 .teks-container p,
 .photo-card * {
@@ -104,7 +104,8 @@ input, textarea, select, button, label {
     top: 0;
     left: 0;
     right: 0;
-    width: 100vw;
+    height: 80px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 100%);
     z-index: 1000;
 }
 
@@ -130,16 +131,15 @@ input, textarea, select, button, label {
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-..hide {
+.hide {
     transform: translateY(-120%);
     opacity: 0;
 }
 
-..hide:hover,
-.:hover {
+.hide:hover,
+.navbar:hover {
     transform: translateY(0) !important;
 }
-
 .judul {
     font-weight: 100;
     font-size: clamp(0.95rem, 3vw, 1.3rem);
@@ -1082,6 +1082,45 @@ main { margin-top: clamp(80px, 15vh, 110px); }
     font-family: sans-serif;
     line-height: 1;
 }
+
+.destinasi-animate {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 1.5rem;
+    background: 
+        linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)),
+        url('Pixel.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.destunasi-text {
+    max-width: 100rem;
+    animation: fadeInUp 1.5s ease-out;
+}
+
+.destinasi-text h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 900;
+    font-size: 150px;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+    line-height: 1.1;
+}
+
+.destinasi-text p {
+    font-size: clamp(1.1rem, 4vw, 1.5rem);
+    font-weight: 400;
+    opacity: 0.95;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    margin-bottom: 3rem;
+}
+
 
 .main-footer {
     position: relative;
