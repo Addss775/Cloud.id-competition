@@ -1,43 +1,52 @@
 class NavbarController {
     constructor() {
+        this.scrollSaver = { enabled: true };
+        this.savedScrollY = 0;
+        this.lastScrollY = 0;
+        this.isTicking = false;
+        
         this.init();
     }
 
     init() {
-        this.scrollSaver = { enabled: true }; // 🐛 FIX: Scroll position saver untuk cegah jump ke #home
-        
         this.cacheElements();
         
-        // Pastikan elemen dasar ada
-        if (!this.elements.burger || !this.elements.mobileMenu) return;
-        
-        this.lastScrollY = window.scrollY;
-        this.isTicking = false;
-        
+        if (!this.elements.burger || !this.elements.mobileMenu) {
+            console.warn('❌ NavbarController: Required elements missing');
+            return;
+        }
+
         this.bindEvents();
-        console.log('✅ NavbarController: System Stabilized. Burger menu scroll jump FIXED.');
+        console.log('✅ NavbarController: Initialized - Mobile + Desktop Ready');
     }
 
     cacheElements() {
         this.elements = {
+            // Core elements
             burger: document.querySelector('.burger'),
             mobileMenu: document.querySelector('.mobile-menu'),
             navbar: document.querySelector('.navbar'),
-            overlay: document.querySelector('.menu-overlay'),
+            overlay: document.querySelector('.mobile-overlay'), // ✅ Fixed class name
             menuCloseBtn: document.querySelector('.menu-close-btn'),
-            dropdowns: document.querySelectorAll('.dropdown'),
-            body: document.body,
-            // Ambil semua link kecuali yang dropdown-toggle biar gak tabrakan logic
-            navLinks: document.querySelectorAll('.menu-link:not(.dropdown-toggle), .submenu a, .back-to-top')
+            
+            // Dropdowns - separate mobile/desktop
+            mobileDropdowns: document.querySelectorAll('.mobile-menu .dropdown'),
+            desktopDropdowns: document.querySelectorAll('.desktop-menu .dropdown'),
+            allDropdowns: document.querySelectorAll('.dropdown'),
+            
+            // Navigation links
+            navLinks: document.querySelectorAll('.menu-link:not(.dropdown-toggle), .submenu a'),
+            
+            // Body & utilities
+            body: document.body
         };
     }
 
     bindEvents() {
-        // 1. Burger & Close Toggle 🐛 PROBLEMATIC AREA: Burger click causing scroll jump to #home
+        // 1. MOBILE MENU TOGGLE
         this.elements.burger?.addEventListener('click', (e) => {
             e.preventDefault();
-            e.stopPropagation(); // 🆕 FIX: Extra stop propagation untuk cegah bubble ke parent links
-            // console.log('🐛 Burger clicked, scrollY:', window.scrollY); // 🧹 CLEANUP: Debug removed
+            e.stopPropagation();
             this.toggleMobileMenu();
         });
 
@@ -48,130 +57,198 @@ class NavbarController {
 
         this.elements.overlay?.addEventListener('click', () => this.closeMobileMenu());
 
-        // 2. Dropdown Logic (Hanya Mobile) 🐛 POTENTIAL: Dropdown interfering with scroll
-        this.elements.dropdowns.forEach(dropdown => {
+        // 2. MOBILE DROPDOWN - CLICK TO TOGGLE
+        this.elements.mobileDropdowns.forEach(dropdown => {
             const toggle = dropdown.querySelector('.dropdown-toggle');
-            toggle?.addEventListener('click', (e) => {
-                if (window.innerWidth <= 768) {
-                    e.preventDefault(); // Stop pindah halaman kalau dropdown diklik
-                    e.stopPropagation();
-                    
-                    // Close dropdown lain biar gak tumpang tindih
-                    this.elements.dropdowns.forEach(d => {
-                        if (d !== dropdown) d.classList.remove('active');
-                    });
-                    
-                    dropdown.classList.toggle('active');
-                }
-            });
-        });
-
-        // 3. Smooth Scroll & Navigation 🐛 PROBLEMATIC AREA: Race condition scroll after menu close causing homepage jump
-        this.elements.navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                const href = link.getAttribute('href');
-                
-                // Jika internal link (pakai #)
-                if (href && href.startsWith('#') && href !== '#') {
+            if (toggle) {
+                toggle.addEventListener('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    
-                    const target = document.querySelector(href);
-                    if (target) {
-                        // 🆕 FIX: Restore scroll before close to prevent jump
-                        this.restoreScrollPosition();
-                        
-                        this.closeMobileMenu();
-                        // Delay lebih panjang untuk sync dengan CSS transition
-                        setTimeout(() => {
-                            target.scrollIntoView({ behavior: 'smooth' });
-                        }, 400);
-                    }
-                } else {
-                    // Biarkan link eksternal jalan, tapi tutup menu
-                    this.closeMobileMenu();
+                    this.toggleMobileDropdown(dropdown);
+                });
+            }
+        });
+
+        // 3. DESKTOP DROPDOWN - HOVER TO TOGGLE
+        this.elements.desktopDropdowns.forEach(dropdown => {
+            dropdown.addEventListener('mouseenter', () => {
+                if (window.innerWidth > 1024) {
+                    dropdown.classList.add('active');
+                }
+            });
+            
+            dropdown.addEventListener('mouseleave', () => {
+                if (window.innerWidth > 1024) {
+                    dropdown.classList.remove('active');
                 }
             });
         });
 
-        // 4. Scroll Header Hide/Show
+        // 4. NAVIGATION LINKS - SMOOTH SCROLL
+        this.elements.navLinks.forEach(link => {
+            link.addEventListener('click', (e) => this.handleNavClick(e, link));
+        });
+
+        // 5. SCROLL & RESIZE EVENTS
         window.addEventListener('scroll', () => this.onScroll(), { passive: true });
-        
-        // 5. Global Fixes
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) this.closeMobileMenu();
+        window.addEventListener('resize', () => this.onResize(), { passive: true });
+
+        // 6. ESCAPE KEY CLOSE
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.closeMobileMenu();
+            }
         });
     }
 
     toggleMobileMenu() {
-        // 🐛 FIX: PROBLEMATIC AREA - Menu open causes body position:fixed jump, resetting scrollY to 0 (homepage)
-        if (this.scrollSaver.enabled) {
-            this.savedScrollY = window.scrollY; // 🆕 Save current scroll pos
-            // console.log('🐛 Menu OPEN - Saved scrollY:', this.savedScrollY); // 🧹 CLEANUP: Debug removed
-        }
+        const isOpening = !this.elements.mobileMenu.classList.contains('active');
         
-        const isOpen = this.elements.mobileMenu.classList.toggle('active');
+        // Save scroll position
+        if (isOpening && this.scrollSaver.enabled) {
+            this.savedScrollY = window.scrollY;
+        }
+
+        // Toggle all classes
+        this.elements.mobileMenu.classList.toggle('active');
         this.elements.burger.classList.toggle('active');
         this.elements.overlay?.classList.toggle('active');
         this.elements.menuCloseBtn?.classList.toggle('show');
-        this.elements.body.classList.toggle('menu-open', isOpen);
+        this.elements.body.classList.toggle('menu-open');
     }
 
     closeMobileMenu() {
-        // 🐛 FIX: Restore scroll pos setelah menu tutup untuk cegah homepage jump
+        // Close menu
         this.elements.mobileMenu.classList.remove('active');
         this.elements.burger?.classList.remove('active');
         this.elements.overlay?.classList.remove('active');
         this.elements.menuCloseBtn?.classList.remove('show');
         this.elements.body.classList.remove('menu-open');
-        this.elements.dropdowns.forEach(d => d.classList.remove('active'));
         
-        // 🆕 Restore scroll setelah DOM update
-        setTimeout(() => {
-            if (this.scrollSaver.enabled && this.savedScrollY !== undefined) {
+        // Close all dropdowns
+        this.elements.allDropdowns.forEach(dropdown => dropdown.classList.remove('active'));
+
+        // Restore scroll
+        if (this.scrollSaver.enabled && this.savedScrollY > 0) {
+            setTimeout(() => {
                 window.scrollTo(0, this.savedScrollY);
-                // console.log('🐛 Menu CLOSE - Restored scrollY:', this.savedScrollY); // 🧹 CLEANUP: Debug removed
-                this.savedScrollY = undefined;
-            }
-        }, 350); // Sync dengan CSS transition
+                this.savedScrollY = 0;
+            }, 350);
+        }
     }
 
-    restoreScrollPosition() {
-        // 🆕 UTILITY: Restore saved scroll jika ada
-        if (this.savedScrollY !== undefined) {
-            window.scrollTo(0, this.savedScrollY);
+    toggleMobileDropdown(targetDropdown) {
+        // Close other mobile dropdowns
+        this.elements.mobileDropdowns.forEach(dropdown => {
+            if (dropdown !== targetDropdown) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // Toggle target
+        targetDropdown.classList.toggle('active');
+    }
+
+    handleNavClick(e, link) {
+        const href = link.getAttribute('href');
+        
+        // Internal anchor links (#section)
+        if (href?.startsWith('#') && href !== '#') {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const target = document.querySelector(href);
+            if (target) {
+                this.closeMobileMenu();
+                
+                // Smooth scroll after animation
+                setTimeout(() => {
+                    target.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }, 450); // Sinkron dengan submenu expand
+            }
+        } else {
+            // External links
+            this.closeMobileMenu();
         }
     }
 
     onScroll() {
-        // 🐛 POTENTIAL: Scroll listener interfering during menu transitions
-        if (this.elements.body.classList.contains('menu-open')) return; // 🆕 Skip saat menu open
-        
+        if (this.elements.body.classList.contains('menu-open')) return;
+
         if (!this.isTicking) {
             window.requestAnimationFrame(() => {
-                const currentScrollY = window.scrollY;
-                
-                // Navbar Hide/Show Logic
-                if (currentScrollY > 100) {
-                    if (currentScrollY > this.lastScrollY) {
-                        this.elements.navbar.classList.add('hide');
-                    } else {
-                        this.elements.navbar.classList.remove('hide');
-                    }
-                } else {
-                    this.elements.navbar.classList.remove('hide');
-                }
-
-                // Back to Top Logic
-                const btt = document.querySelector('.back-to-top');
-                if (btt) btt.classList.toggle('show', currentScrollY > 500);
-
-                this.lastScrollY = currentScrollY;
+                this.handleScroll();
                 this.isTicking = false;
             });
             this.isTicking = true;
         }
     }
+
+    handleScroll() {
+        const currentScrollY = window.scrollY;
+
+        // Navbar hide/show logic
+        if (currentScrollY > 100) {
+            this.elements.navbar.classList.toggle(
+                'hide', 
+                currentScrollY > this.lastScrollY && !this.elements.body.classList.contains('menu-open')
+            );
+        } else {
+            this.elements.navbar.classList.remove('hide');
+        }
+
+        // Back to top (if exists)
+        const backToTop = document.querySelector('.back-to-top');
+        if (backToTop) {
+            backToTop.classList.toggle('show', currentScrollY > 500);
+        }
+
+        this.lastScrollY = currentScrollY;
+    }
+
+    onResize() {
+        // Auto close mobile menu on desktop
+        if (window.innerWidth > 1024) {
+            this.closeMobileMenu();
+        }
+        
+        // Rebind desktop hover if resized
+        this.elements.desktopDropdowns.forEach(dropdown => {
+            dropdown.classList.remove('active');
+        });
+    }
+
+    // Public API
+    openMobileMenu() {
+        this.toggleMobileMenu();
+    }
+
+    closeAll() {
+        this.closeMobileMenu();
+    }
+
+    destroy() {
+        // Cleanup
+        window.removeEventListener('scroll', this.onScroll);
+        window.removeEventListener('resize', this.onResize);
+        document.removeEventListener('keydown', this.keydownHandler);
+        console.log('🧹 NavbarController: Destroyed');
+    }
 }
 
-document.addEventListener('DOMContentLoaded', () => new NavbarController());
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    window.navbarController = new NavbarController();
+    
+    // Global access
+    window.openMobileMenu = () => window.navbarController?.openMobileMenu();
+    window.closeMobileMenu = () => window.navbarController?.closeAll();
+});
+
+// Module export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = NavbarController;
+}

@@ -8,109 +8,111 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="styles.css">
-
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-    <div class="judul">Kalangoan Catur Desa</div>
-    
-    <ul class="menu desktop-menu">
-        <li>
-            <a href="#home" class="menu-link" data-scroll="#home">
-                <i class="fas fa-home"></i> Beranda
-            </a>
-        </li>
+  <header>
+    <nav class="navbar">
+        <div class="judul">Kalangoan Catur Desa</div>
+        <ul class="menu desktop-menu">
+            <li>
+                <a href="#home" class="menu-link" data-scroll="#home">
+                    <i class="fas fa-home"></i> Beranda
+                </a>
+            </li>
+            
+            <li>
+                <a href="#tentang" class="menu-link" data-scroll="#tentang">
+                    <i class="fa-solid fa-info-circle"></i> Tentang
+                </a>
+            </li>
+            
+            <li class="dropdown">
+                <a href="#tradisi" class="menu-link dropdown-toggle" data-scroll="#tradisi">
+                    <i class="fas fa-book-open"></i>
+                    Tradisi 
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="#rejang-ayunan" data-scroll="#rejang-ayunan">Rejang Ayunan</a></li>
+                    <li><a href="#mandolin" data-scroll="#mandolin">Mandolin</a></li>
+                    <li><a href="#batungsel" data-scroll="#batungsel">Nusabe Nubeng</a></li>
+                    <li><a href="#lainnya" data-scroll="#lainnya">Lainnya</a></li>
+                </ul>
+            </li>
+            
+            <li class="dropdown">
+                <a href="#destinasi" class="menu-link dropdown-toggle" data-scroll="#destinasi">
+                    <i class="fas fa-tree"></i>
+                    Destinasi 
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="#kampung-kopi" data-scroll="#kampung-kopi">Kampung Kopi Kamp</a></li>
+                    <li><a href="#air-terjun" data-scroll="#air-terjun">Air Terjun</a></li>
+                </ul>
+            </li>
+        </ul>
         
-        <li>
-            <a href="#tentang" class="menu-link" data-scroll="#tentang">
-                <i class="fa-solid fa-info-circle"></i> Tentang
-            </a>
-        </li>
-        
-        <li class="dropdown">
-            <a href="#tradisi" class="menu-link dropdown-toggle" data-scroll="#tradisi">
-                <i class="fas fa-book-open"></i>
-                Tradisi 
-                <i class="fas fa-chevron-down"></i>
-            </a>
-            <ul class="submenu">
-                <li><a href="#rejang-ayunan" data-scroll="#rejang-ayunan">Rejang Ayunan</a></li>
-                <li><a href="#mandolin" data-scroll="#mandolin">Mandolin</a></li>
-                <li><a href="#perang-bolong" data-scroll="#perang-bolong">Perang Bolong</a></li>
-                <li><a href="#lainnya" data-scroll="#lainnya">Lainnya</a></li>
-            </ul>
-        </li>
-        
-        <li class="dropdown">
-            <a href="#destinasi" class="menu-link dropdown-toggle" data-scroll="#destinasi">
-                <i class="fas fa-tree"></i>
-                Destinasi 
-                <i class="fas fa-chevron-down"></i>
-            </a>
-            <ul class="submenu">
-                <li><a href="#kampung-kopi" data-scroll="#kampung-kopi">Kampung Kopi Kamp</a></li>
-                <li><a href="#air-terjun" data-scroll="#air-terjun">Air Terjun</a></li>
-            </ul>
-        </li>
-    </ul>
-    
-    <div class="burger">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-</nav>
+        <!-- BURGER BUTTON -->
+        <div class="burger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
 
-<div class="menu-overlay"></div>
+    <!-- MOBILE OVERLAY -->
+    <div class="mobile-overlay"></div>
 
-<div class="mobile-menu">
-    <button class="menu-close-btn" type="button" aria-label="Tutup Menu">
-        <i  class="fa-solid fa-angle-left" style="color: rgb(255, 212, 59);"></i>
-    </button>
-    <ul class="menu mobile-menu-list">
-        <li>
-            <a href="#home" class="menu-link" data-scroll="#home">
-                <i class="fas fa-home"></i> Beranda
-            </a>
-        </li>
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu">
+        <!-- CLOSE BUTTON -->
+        <button class="menu-close-btn" type="button" aria-label="Tutup Menu">
+            <i class="fa-solid fa-angle-left" style="color: rgb(255, 212, 59); font-size: 1.5rem;"></i>
+        </button>
         
-        <li>
-            <a href="#tentang" class="menu-link" data-scroll="#tentang">
-                <i class="fa-solid fa-info-circle"></i> Tentang
-            </a>
-        </li>
-        
-        <li class="dropdown">
-            <a href="#tradisi" class="menu-link dropdown-toggle" data-scroll="#tradisi">
-                <i class="fas fa-book-open"></i>
-                Tradisi 
-                <i class="fas fa-chevron-down"></i>
-            </a>
-            <ul class="submenu">
-                <li><a href="#rejang-ayunan" data-scroll="#rejang-ayunan">Rejang Ayunan</a></li>
-                <li><a href="#mandolin" data-scroll="#mandolin">Mandolin</a></li>
-                <li><a href="#batungsel" data-scroll="#batungsel">Nusabe Nubeng</a></li>
-                <li><a href="#lainnya" data-scroll="#lainnya">Lainnya</a></li>
-            </ul>
-        </li>
-        
-        <li class="dropdown">
-            <a href="#destinasi" class="menu-link dropdown-toggle" data-scroll="#destinasi">
-                <i class="fas fa-tree"></i>
-                Destinasi 
-                <i class="fas fa-chevron-down"></i>
-            </a>
-            <ul class="submenu">
-                <li><a href="#kampung-kopi" data-scroll="#kampung-kopi">Kampung Kopi Kamp</a></li>
-                <li><a href="#air-terjun" data-scroll="#air-terjun">Air Terjun</a></li>
-            </ul>
-        </li>
-    </u>
-    
+        <!-- MOBILE MENU LIST -->
+        <ul class="menu mobile-menu-list">
+            <li>
+                <a href="#home" class="menu-link" data-scroll="#home">
+                    <i class="fas fa-home"></i> Beranda
+                </a>
+            </li>
+            
+            <li>
+                <a href="#tentang" class="menu-link" data-scroll="#tentang">
+                    <i class="fa-solid fa-info-circle"></i> Tentang
+                </a>
+            </li>
+            
+            <li class="dropdown">
+                <a href="#tradisi" class="menu-link dropdown-toggle" data-scroll="#tradisi">
+                    <i class="fas fa-book-open"></i>
+                    Tradisi 
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="#rejang-ayunan" data-scroll="#rejang-ayunan">Rejang Ayunan</a></li>
+                    <li><a href="#mandolin" data-scroll="#mandolin">Mandolin</a></li>
+                    <li><a href="#batungsel" data-scroll="#batungsel">Nusabe Nubeng</a></li>
+                </ul>
+            </li>
+            
+            <li class="dropdown">
+                <a href="#destinasi" class="menu-link dropdown-toggle" data-scroll="#destinasi">
+                    <i class="fas fa-tree"></i>
+                    Destinasi 
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="#kampung-kopi" data-scroll="#kampung-kopi">Kampung Kopi Kamp</a></li>
+                    <li><a href="#air-terjun" data-scroll="#air-terjun">Air Terjun</a></li>
+                </ul>
+            </li>
+        </ul>
     </div>
-    </header>
+</header>
     <main>
         <section class="home-animate" id="home">
             <div class="home-text">
