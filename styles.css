@@ -9,6 +9,9 @@
 html {
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #FF8C00 rgba(255,255,255,0.1);
+    scroll-padding-top: 100px;
 }
 
 body {
@@ -49,13 +52,22 @@ p {
 .text-medium { font-weight: 500 !important; }
 
 /* Custom Scrollbar */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); }
+::-webkit-scrollbar { 
+    width: 6px; 
+    height: 6px;
+}
+::-webkit-scrollbar-track { 
+    background: rgba(255, 255, 255, 0.05); 
+    border-radius: 10px;
+}
 ::-webkit-scrollbar-thumb {
     background: linear-gradient(135deg, #FF8C00, #FFD700);
     border-radius: 10px;
 }
-::-webkit-scrollbar-thumb:hover { background: linear-gradient(135deg, #FF8C00, #FFA500); }
+::-webkit-scrollbar-thumb:hover { 
+    background: linear-gradient(135deg, #FF8C00, #FFA500); 
+}
+html { -webkit-overflow-scrolling: touch; }
 
 /* NAVBAR CONTAINER */
 .navbar {
@@ -320,21 +332,9 @@ p {
     padding: 3rem 1.5rem 2rem;
     transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     overflow-y: auto;
-    scrollbar-width: thin;
 }
 
-.mobile-menu::-webkit-scrollbar {
-    width: 4px;
-}
 
-.mobile-menu::-webkit-scrollbar-track {
-    background: rgba(255,255,255,0.05);
-}
-
-.mobile-menu::-webkit-scrollbar-thumb {
-    background: rgba(255,140,0,0.5);
-    border-radius: 2px;
-}
 
 .mobile-menu.active { right: 0; }
 
@@ -585,6 +585,12 @@ main {
     background-attachment: fixed;
 }
 
+@media (max-width: 768px) {
+    .home-animate, .destinasi-animate {
+        background-attachment: scroll;
+    }
+}
+
 .home-animate {
     background:linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.5)), 
         url('Desain.png') 
@@ -772,7 +778,7 @@ main {
     display: flex;
     flex-direction: column;
     height: 100%;
-    min-height: 500px;
+    flex: 1 0 auto;
 }
 
 .tradisi-card:hover, .photo-card:hover {
@@ -805,8 +811,6 @@ main {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    overflow-y: auto;
-    max-height: 60vh;
 }
 
 .text-container h3, .teks-container h3 {
