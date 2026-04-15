@@ -223,3 +223,257 @@ document.addEventListener('DOMContentLoaded', () => {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = NavbarController;
 }
+
+class ImageCarousel {
+    constructor() {
+        this.carousel = document.getElementById('carousel');
+        this.dotsContainer = document.getElementById('carouselDots');
+        this.slides = document.querySelectorAll('.carousel-slide');
+        this.currentIndex = 0;
+        this.isDragging = false;
+        this.startPos = 0;
+        this.currentTranslate = 0;
+        this.prevTranslate = 0;
+        this.animationID = 0;
+        this.threshold = 100;
+
+        this.init();
+    }
+
+    init() {
+        this.bindEvents();
+        this.createDots();
+        window.setInterval(() => this.next(), 5000); // Auto slide
+    }
+
+    bindEvents() {
+        this.carousel.addEventListener('mousedown', this.dragStart.bind(this));
+        document.addEventListener('mousemove', this.drag.bind(this));
+        document.addEventListener('mouseup', this.dragEnd.bind(this));
+        document.addEventListener('touchstart', this.dragStart.bind(this));
+        document.addEventListener('touchmove', this.drag.bind(this));
+        document.addEventListener('touchend', this.dragEnd.bind(this));
+    }
+
+    createDots() {
+        this.slides.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (index === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => this.goTo(index));
+            this.dotsContainer.appendChild(dot);
+        });
+        this.dots = document.querySelectorAll('.dot');
+    }
+
+    dragStart(e) {
+        this.startPos = this.getPositionX(e);
+        this.isDragging = true;
+        this.animationID = requestAnimationFrame(this.animation.bind(this));
+        this.carousel.classList.add('grabbing');
+    }
+
+    drag(e) {
+        if (this.isDragging) {
+            const currentPosition = this.getPositionX(e);
+            this.currentTranslate = this.prevTranslate + currentPosition - this.startPos;
+        }
+    }
+
+    dragEnd() {
+        this.isDragging = false;
+        cancelAnimationFrame(this.animationID);
+        this.carousel.classList.remove('grabbing');
+
+        const movedBy = this.currentTranslate - this.prevTranslate;
+
+        if (movedBy < -this.threshold && this.currentIndex < this.slides.length - 1) {
+            this.currentIndex += 1;
+        } else if (movedBy > this.threshold && this.currentIndex > 0) {
+            this.currentIndex -= 1;
+        }
+
+        this.setPositionByIndex();
+    }
+
+    getPositionX(e) {
+        return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+    }
+
+    animation() {
+        this.setSliderPosition();
+        if (this.isDragging) requestAnimationFrame(this.animation.bind(this));
+    }
+
+    setPositionByIndex() {
+        this.currentTranslate = this.currentIndex * -window.innerWidth;
+        this.prevTranslate = this.currentTranslate;
+        this.setSliderPosition();
+    }
+
+    setSliderPosition() {
+        this.carousel.style.transform = `translateX(${this.currentTranslate}px)`;
+    }
+
+    next() {
+        if (this.currentIndex < this.slides.length - 1) {
+            this.currentIndex++;
+        } else {
+            this.currentIndex = 0;
+        }
+        this.setPositionByIndex();
+        this.updateDots();
+    }
+
+    goTo(index) {
+        this.currentIndex = index;
+        this.setPositionByIndex();
+        this.updateDots();
+    }
+
+    updateDots() {
+        this.dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === this.currentIndex);
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    new ImageCarousel();
+});
+
+// ========================================
+// GENERAL SECTION CAROUSEL (UNIQUE CLASS)
+// ========================================
+class GeneralCarousel {
+    constructor() {
+        this.carouselTrack = document.getElementById('generalCarouselTrack');
+        this.dotsContainer = document.getElementById('generalCarouselDots');
+        this.slides = document.querySelectorAll('.general-carousel-slide');
+        this.currentIndex = 0;
+        this.isDragging = false;
+        this.startPos = 0;
+        this.currentTranslate = 0;
+        this.prevTranslate = 0;
+        this.animationID = 0;
+        this.threshold = 100;
+        this.autoPlayInterval = null;
+
+        this.init();
+    }
+
+    init() {
+        this.bindEvents();
+        this.createDots();
+        this.startAutoPlay();
+    }
+
+    bindEvents() {
+        this.carouselTrack.addEventListener('mousedown', this.dragStart.bind(this));
+        document.addEventListener('mousemove', this.drag.bind(this));
+        document.addEventListener('mouseup', this.dragEnd.bind(this));
+        document.addEventListener('touchstart', this.dragStart.bind(this));
+        document.addEventListener('touchmove', this.drag.bind(this));
+        document.addEventListener('touchend', this.dragEnd.bind(this));
+    }
+
+    createDots() {
+        this.slides.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.classList.add('general-dot');
+            if (index === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => this.goTo(index));
+            this.dotsContainer.appendChild(dot);
+        });
+        this.dots = document.querySelectorAll('.general-dot');
+    }
+
+    dragStart(e) {
+        this.pauseAutoPlay();
+        this.startPos = this.getPositionX(e);
+        this.isDragging = true;
+        this.animationID = requestAnimationFrame(this.animation.bind(this));
+        this.carouselTrack.classList.add('grabbing');
+    }
+
+    drag(e) {
+        if (this.isDragging) {
+            const currentPosition = this.getPositionX(e);
+            this.currentTranslate = this.prevTranslate + currentPosition - this.startPos;
+        }
+    }
+
+    dragEnd() {
+        this.isDragging = false;
+        cancelAnimationFrame(this.animationID);
+        this.carouselTrack.classList.remove('grabbing');
+        this.startAutoPlay();
+
+        const movedBy = this.currentTranslate - this.prevTranslate;
+
+        if (movedBy < -this.threshold && this.currentIndex < this.slides.length - 1) {
+            this.currentIndex += 1;
+        } else if (movedBy > this.threshold && this.currentIndex > 0) {
+            this.currentIndex -= 1;
+        }
+
+        this.setPositionByIndex();
+    }
+
+    getPositionX(e) {
+        return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+    }
+
+    animation() {
+        this.setSliderPosition();
+        if (this.isDragging) requestAnimationFrame(this.animation.bind(this));
+    }
+
+    setPositionByIndex() {
+        this.currentTranslate = this.currentIndex * -window.innerWidth;
+        this.prevTranslate = this.currentTranslate;
+        this.setSliderPosition();
+    }
+
+    setSliderPosition() {
+        this.carouselTrack.style.transform = `translateX(${this.currentTranslate}px)`;
+    }
+
+    next() {
+        if (this.currentIndex < this.slides.length - 1) {
+            this.currentIndex++;
+        } else {
+            this.currentIndex = 0;
+        }
+        this.setPositionByIndex();
+        this.updateDots();
+    }
+
+    goTo(index) {
+        this.currentIndex = index;
+        this.setPositionByIndex();
+        this.updateDots();
+    }
+
+    updateDots() {
+        this.dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === this.currentIndex);
+        });
+    }
+
+    startAutoPlay() {
+        this.autoPlayInterval = setInterval(() => this.next(), 4000);
+    }
+
+    pauseAutoPlay() {
+        if (this.autoPlayInterval) {
+            clearInterval(this.autoPlayInterval);
+        }
+    }
+}
+
+// Initialize ALL carousels (tidak bentrok)
+document.addEventListener('DOMContentLoaded', () => {
+    new ImageCarousel();        // Kampung Kopi (carousel lama)
+    new GeneralCarousel();      // General Section (carousel baru - UNIK)
+});
