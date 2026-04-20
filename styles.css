@@ -818,6 +818,7 @@ main {
     flex-grow: 1;
 }
 
+/* GENERAL SECTION - GAMBAR ATAS, TEKS BAWAH (SEMUA DEVICE) */
 .general-section {
     padding: 80px 0;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -828,20 +829,31 @@ main {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
-    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: clamp(35px, 6vw, 55px);
 }
 
-.general-slide-wrapper {
-    margin-bottom: 100px;
+.general-card {
     opacity: 0;
     transform: translateY(50px);
     animation: slideInUp 0.8s ease forwards;
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 25px 70px rgba(0,0,0,0.12);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.general-slide-wrapper:nth-child(1) { animation-delay: 0.1s; }
-.general-slide-wrapper:nth-child(2) { animation-delay: 0.2s; }
-.general-slide-wrapper:nth-child(3) { animation-delay: 0.3s; }
-.general-slide-wrapper:nth-child(4) { animation-delay: 0.4s; }
+.general-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 35px 90px rgba(0,0,0,0.18);
+}
+
+.general-card:nth-child(1) { animation-delay: 0.1s; }
+.general-card:nth-child(2) { animation-delay: 0.2s; }
+.general-card:nth-child(3) { animation-delay: 0.3s; }
+.general-card:nth-child(4) { animation-delay: 0.4s; }
 
 @keyframes slideInUp {
     to {
@@ -850,62 +862,72 @@ main {
     }
 }
 
-.general-slide-content {
+/* SEMUA: GAMBAR ATAS 60%, TEKS BAWAH 40% */
+.general-content {
     display: flex;
-    align-items: center;
-    gap: 60px;
+    flex-direction: column;
+    height: clamp(520px, 75vh, 680px);
+}
+
+.general-image {
+    flex: 0 0 60%; /* GAMBAR 60% */
     position: relative;
 }
 
-.general-slide-text {
-    flex: 1;
-    padding: 40px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    position: relative;
-    z-index: 2;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.general-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.general-slide-text:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+.general-card:hover .general-image img {
+    transform: scale(1.08);
 }
 
-.general-slide-text h3 {
-    font-size: 2.5rem;
+.general-text {
+    flex: 0 0 40%; /* TEKS 40% */
+    padding: clamp(30px, 6vw, 50px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(16px, 3vw, 24px);
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(12px);
+}
+
+.general-text h3 {
+    font-size: clamp(1.9rem, 5.5vw, 2.9rem);
     font-weight: 700;
-    color: #2c3e50;
-    margin-bottom: 20px;
+    color: #1a202c;
     line-height: 1.2;
+    margin: 0;
 }
 
-.general-slide-text p {
-    font-size: 1.2rem;
-    color: #5a6c7d;
-    line-height: 1.7;
-    margin-bottom: 24px;
+.general-text p {
+    font-size: clamp(1.05rem, 3.8vw, 1.3rem);
+    color: #4a5568;
+    line-height: 1.75;
+    margin: 0;
 }
 
-/* CTA Button Styles */
 .general-cta-button {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
-    padding: 16px 32px;
+    gap: clamp(10px, 2.5vw, 14px);
+    padding: clamp(15px, 4vw, 20px) clamp(30px, 6vw, 42px);
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     text-decoration: none;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: clamp(1rem, 3.2vw, 1.2rem);
     border-radius: 50px;
     position: relative;
     overflow: hidden;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.45);
     border: 2px solid transparent;
+    align-self: flex-start;
 }
 
 .general-cta-button::before {
@@ -915,8 +937,8 @@ main {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left 0.6s;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.7s;
 }
 
 .general-cta-button:hover::before {
@@ -924,178 +946,125 @@ main {
 }
 
 .general-cta-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.6);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 25px 55px rgba(102, 126, 234, 0.65);
     background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
 }
 
-.general-cta-button:active {
-    transform: translateY(-1px);
-    transition: all 0.2s ease;
-}
-
 .arrow-icon {
-    width: 20px;
-    height: 20px;
+    width: clamp(20px, 4.5vw, 24px);
+    height: clamp(20px, 4.5vw, 24px);
     transition: transform 0.3s ease;
 }
 
 .general-cta-button:hover .arrow-icon {
-    transform: translateX(4px);
+    transform: translateX(6px);
 }
 
-.general-slide-image {
-    flex: 1;
-    position: relative;
-}
-
-.general-slide-image img {
-    width: 100%;
-    height: 500px;
-    object-fit: cover;
-    border-radius: 20px;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
-    transition: transform 0.5s ease, box-shadow 0.5s ease;
-}
-
-.general-slide-image img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3);
-}
-
-/* Desktop Zigzag Layout */
-@media (min-width: 1024px) {
-    .general-slide-wrapper.even .general-slide-content {
-        flex-direction: row;
-    }
-    
-    .general-slide-wrapper.odd .general-slide-content {
-        flex-direction: row-reverse;
-    }
-    
-    .general-slide-wrapper.odd .general-slide-text {
-        text-align: right;
-    }
-    
-    .general-slide-wrapper.odd .general-cta-button {
-        justify-content: flex-end;
-    }
-}
-
-/* Tablet */
-@media (max-width: 1023px) and (min-width: 768px) {
-    .general-slide-content {
-        flex-direction: column !important;
-        gap: 40px;
-        text-align: center;
-    }
-    
-    .general-slide-text {
-        order: 2;
-        padding: 30px 20px;
-    }
-    
-    .general-slide-image {
-        order: 1;
-    }
-    
-    .general-slide-image img {
-        height: 400px;
-    }
-}
-
-/* Mobile */
+/* =======================================================
+   MOBILE - PERFECT FLEX
+   ======================================================= */
 @media (max-width: 767px) {
     .general-section {
         padding: 60px 0;
     }
     
     .general-container {
-        padding: 0 15px;
+        padding: 0 clamp(16px, 6vw, 28px);
+        grid-template-columns: 1fr;
+        gap: clamp(40px, 10vw, 60px);
     }
     
-    .general-slide-wrapper {
-        margin-bottom: 80px;
+    .general-content {
+        height: clamp(480px, 85vw, 620px);
+        border-radius: 22px;
     }
     
-    .general-slide-content {
-        flex-direction: column !important;
-        gap: 30px;
-        text-align: center;
+    .general-image {
+        flex: 0 0 clamp(55%, 50vw, 65%);
+        min-height: clamp(260px, 48vw, 340px);
     }
     
-    .general-slide-text {
-        order: 2;
-        padding: 25px 20px;
-        margin: 0 10px;
+    .general-text {
+        flex: 0 0 clamp(35%, 35vw, 45%);
+        padding: clamp(28px, 9vw, 40px);
+        gap: clamp(14px, 4vw, 22px);
     }
     
-    .general-slide-text h3 {
-        font-size: 2rem;
+    .general-text h3 {
+        font-size: clamp(1.8rem, 8vw, 2.6rem);
     }
     
-    .general-slide-text p {
-        font-size: 1.1rem;
-    }
-    
-    .general-slide-image {
-        order: 1;
-    }
-    
-    .general-slide-image img {
-        height: 300px;
-        border-radius: 15px;
+    .general-text p {
+        font-size: clamp(1rem, 4.5vw, 1.15rem);
     }
     
     .general-cta-button {
-        padding: 14px 28px;
-        font-size: 1rem;
-        margin-top: 20px;
-        justify-content: center;
+        padding: clamp(13px, 5vw, 18px) clamp(26px, 8vw, 38px);
+        font-size: clamp(0.98rem, 4.2vw, 1.1rem);
         width: 100%;
-        max-width: 280px;
-    }
-    
-    .general-cta-button .arrow-icon {
-        width: 18px;
-        height: 18px;
+        max-width: clamp(280px, 85vw, 340px);
+        justify-content: center;
+        margin-top: clamp(12px, 3.5vw, 18px);
     }
 }
 
-@media (max-width: 480px) {
-    .general-cta-button {
-        padding: 12px 24px;
-        font-size: 0.95rem;
+/* Small Mobile */
+@media (max-width: 430px) {
+    .general-container {
+        gap: clamp(35px, 12vw, 55px);
     }
     
-    .general-slide-text h3 {
-        font-size: 1.8rem;
+    .general-content {
+        height: clamp(460px, 90vw, 580px);
     }
     
-    .general-slide-image img {
-        height: 250px;
+    .general-image {
+        min-height: clamp(240px, 52vw, 320px);
+    }
+    
+    .general-text {
+        padding: clamp(25px, 11vw, 38px);
     }
 }
 
+@media (max-width: 360px) {
+    .general-container {
+        padding: 0 14px;
+    }
+    
+    .general-image {
+        min-height: clamp(220px, 55vw, 300px);
+    }
+}
+
+/* Focus */
 .general-cta-button:focus {
-    outline: 3px solid rgba(102, 126, 234, 0.5);
-    outline-offset: 3px;
+    outline: 3px solid rgba(102, 126, 234, 0.6);
+    outline-offset: 4px;
 }
 
+/* Touch */
 @media (max-width: 1023px) {
-    .general-slide-wrapper {
+    .general-card {
         touch-action: pan-y;
     }
 }
 
-.kampung-kopi-section {
+.kampung-kopi-section,
+.air-terjun-section,
+.pura-malen-section,
+.vihara-section {
     min-height: 100vh;
     padding: 80px 20px;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     overflow: hidden;
 }
 
-.kampung-container {
+.kampung-container,
+.terjun-container,
+.pura-malen-container,
+.vihara-container {
     max-width: 1400px;
     margin: 0 auto;
     display: grid;
@@ -1121,23 +1090,26 @@ main {
     cursor: grab;
 }
 
-.carousel:active {
-    cursor: grabbing;
+.carousel.grabbing {
+    cursor: grabbing !important;
 }
 
-.carousel-slide {
+.kampung-slide, .terjun-slide, .malen-slide, .vihara-slide {
     min-width: 100%;
     height: 100%;
     flex-shrink: 0;
 }
 
-.carousel-slide img {
+.kampung-slide img, 
+.terjun-slide img, 
+.malen-slide img, 
+.vihara-slide img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.carousel-dots {
+.kampung-dots, .terjun-dots, .malen-dots, .vihara-dots {
     display: flex;
     gap: 10px;
     justify-content: center;
@@ -1148,16 +1120,18 @@ main {
     z-index: 10;
 }
 
-.dot {
+.kampung-dot, .terjun-dot, .malen-dot, .vihara-dot {
     width: 12px;
     height: 12px;
     border-radius: 50%;
     background: rgba(255,255,255,0.5);
     cursor: pointer;
     transition: all 0.3s ease;
+    border: 2px solid transparent;
 }
 
-.dot.active {
+.kampung-dot.active, .terjun-dot.active, 
+.malen-dot.active, .vihara-dot.active {
     background: #fff;
     transform: scale(1.2);
     box-shadow: 0 0 10px rgba(255,255,255,0.8);
@@ -1167,20 +1141,12 @@ main {
     padding: 0 20px;
 }
 
-.destinasi-text h2 {
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 700;
-    color: #e0ff4fc2;
-    margin-bottom: 30px;
-    line-height: 1.1;
-}
-
 .destinasi-text h3 {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  color: #444;
-  font-weight: 500;
-  margin-bottom: 20px;
-  line-height: 1.1;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    color: #444;
+    font-weight: 500;
+    margin-bottom: 20px;
+    line-height: 1.1;
 }
 
 .destinasi-text p {
@@ -1215,7 +1181,10 @@ main {
 }
 
 @media (max-width: 768px) {
-    .kampung-container {
+    .kampung-container,
+    .terjun-container,
+    .pura-malen-container,
+    .vihara-container {
         grid-template-columns: 1fr;
         gap: 40px;
         text-align: center;
@@ -1225,13 +1194,18 @@ main {
         height: 400px;
         margin: 0 auto;
         max-width: 90%;
+        order: 1;
     }
 
     .destinasi-text {
         padding: 0;
+        order: 2;
     }
 
-    .kampung-kopi-section {
+    .kampung-kopi-section,
+    .air-terjun-section,
+    .pura-malen-section,
+    .vihara-section {
         padding: 60px 15px;
     }
 }
@@ -1241,7 +1215,7 @@ main {
         height: 300px;
     }
 
-    .destinasi-text h2 {
+    .destinasi-text h3 {
         margin-bottom: 20px;
     }
 
@@ -1249,14 +1223,43 @@ main {
         font-size: 1rem;
         margin-bottom: 30px;
     }
-}
 
-@media (min-width: 769px) {
-    .kampung-container {
-        transition: all 0.4s ease;
+    .cta-button {
+        padding: 16px 32px;
+        font-size: 1rem;
+        width: 100%;
+        max-width: 300px;
     }
 }
 
+@media (min-width: 769px) {
+    .kampung-container,
+    .terjun-container,
+    .pura-malen-container,
+    .vihara-container {
+        transition: all 0.4s ease;
+    }
+
+    .carousel-container:hover {
+        transform: scale(1.02);
+        box-shadow: 0 35px 70px rgba(0,0,0,0.2);
+    }
+}
+
+.cta-button:focus,
+.kampung-dot:focus,
+.terjun-dot:focus,
+.malen-dot:focus,
+.vihara-dot:focus {
+    outline: 3px solid rgba(102, 126, 234, 0.5);
+    outline-offset: 2px;
+}
+
+@media (max-width: 1023px) {
+    .carousel {
+        touch-action: pan-y;
+    }
+}
 .main-footer {
     position: relative;
     background: #000;
@@ -1381,7 +1384,6 @@ main {
     color: #FFD700;
 }
 
-/* Animations */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -1393,7 +1395,6 @@ main {
     }
 }
 
-/* Responsive */
 @media (min-width: 1025px) {
     .photo-grid {
         grid-template-columns: repeat(2, 1fr);

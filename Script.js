@@ -225,48 +225,78 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 class ImageCarousel {
-    constructor() {
-        this.carousel = document.getElementById('carousel');
-        this.dotsContainer = document.getElementById('carouselDots');
-        this.slides = document.querySelectorAll('.carousel-slide');
+    constructor(config = {}) {
+        // Konfigurasi fleksibel
+        this.config = {
+            containerId: config.containerId || 'carousel',
+            dotsId: config.dotsId || 'carouselDots',
+            slideClass: config.slideClass || 'carousel-slide',
+            dotClass: config.dotClass || 'dot',
+            autoPlayDelay: config.autoPlayDelay || 5000,
+            threshold: config.threshold || 100,
+            ...config
+        };
+
+        this.carousel = document.getElementById(this.config.containerId);
+        this.dotsContainer = document.getElementById(this.config.dotsId);
+        this.slides = this.carousel?.querySelectorAll(`.${this.config.slideClass}`);
+        
         this.currentIndex = 0;
         this.isDragging = false;
         this.startPos = 0;
         this.currentTranslate = 0;
         this.prevTranslate = 0;
         this.animationID = 0;
-        this.threshold = 100;
+        this.autoPlayInterval = null;
 
+        // Validasi
+        if (!this.carousel || !this.dotsContainer || this.slides.length === 0) {
+            console.warn(`❌ ImageCarousel ${this.config.containerId}: Elements missing`);
+            return;
+        }
+
+        console.log(`📸 ${this.config.containerId}: ${this.slides.length} slides ready`);
         this.init();
     }
 
     init() {
         this.bindEvents();
         this.createDots();
-        window.setInterval(() => this.next(), 5000); // Auto slide
+        this.startAutoPlay();
     }
 
     bindEvents() {
         this.carousel.addEventListener('mousedown', this.dragStart.bind(this));
         document.addEventListener('mousemove', this.drag.bind(this));
         document.addEventListener('mouseup', this.dragEnd.bind(this));
-        document.addEventListener('touchstart', this.dragStart.bind(this));
-        document.addEventListener('touchmove', this.drag.bind(this));
+        document.addEventListener('touchstart', this.dragStart.bind(this), { passive: true });
+        document.addEventListener('touchmove', this.drag.bind(this), { passive: false });
         document.addEventListener('touchend', this.dragEnd.bind(this));
+        
+        // Resize handler
+        window.addEventListener('resize', this.onResize.bind(this));
     }
 
     createDots() {
-        this.slides.forEach((_, index) => {
-            const dot = document.createElement('div');
-            dot.classList.add('dot');
-            if (index === 0) dot.classList.add('active');
-            dot.addEventListener('click', () => this.goTo(index));
-            this.dotsContainer.appendChild(dot);
+        this.dotsContainer.innerHTML = '';
+        
+        this.slides.forEach((slide, index) => {
+            if (slide.querySelector('img') || slide.children.length > 0) {
+                const dot = document.createElement('div');
+                dot.className = this.config.dotClass;
+                if (index === 0) dot.classList.add('active');
+                dot.dataset.slide = index;
+                dot.addEventListener('click', () => this.goTo(index));
+                this.dotsContainer.appendChild(dot);
+            }
         });
-        this.dots = document.querySelectorAll('.dot');
+        
+        this.dots = this.dotsContainer.querySelectorAll(`.${this.config.dotClass}`);
+        console.log(`🔘 ${this.config.containerId}: ${this.dots.length} dots created`);
     }
 
     dragStart(e) {
+        this.pauseAutoPlay();
         this.startPos = this.getPositionX(e);
         this.isDragging = true;
         this.animationID = requestAnimationFrame(this.animation.bind(this));
@@ -284,15 +314,14 @@ class ImageCarousel {
         this.isDragging = false;
         cancelAnimationFrame(this.animationID);
         this.carousel.classList.remove('grabbing');
+        this.startAutoPlay();
 
         const movedBy = this.currentTranslate - this.prevTranslate;
-
-        if (movedBy < -this.threshold && this.currentIndex < this.slides.length - 1) {
-            this.currentIndex += 1;
-        } else if (movedBy > this.threshold && this.currentIndex > 0) {
-            this.currentIndex -= 1;
+        if (movedBy < -this.config.threshold && this.currentIndex < this.slides.length - 1) {
+            this.currentIndex++;
+        } else if (movedBy > this.config.threshold && this.currentIndex > 0) {
+            this.currentIndex--;
         }
-
         this.setPositionByIndex();
     }
 
@@ -309,6 +338,7 @@ class ImageCarousel {
         this.currentTranslate = this.currentIndex * -window.innerWidth;
         this.prevTranslate = this.currentTranslate;
         this.setSliderPosition();
+        this.updateDots();
     }
 
     setSliderPosition() {
@@ -316,143 +346,14 @@ class ImageCarousel {
     }
 
     next() {
-        if (this.currentIndex < this.slides.length - 1) {
-            this.currentIndex++;
-        } else {
-            this.currentIndex = 0;
-        }
+        this.currentIndex = this.currentIndex < this.slides.length - 1 ? 
+            this.currentIndex + 1 : 0;
         this.setPositionByIndex();
-        this.updateDots();
     }
 
     goTo(index) {
-        this.currentIndex = index;
+        this.currentIndex = Math.max(0, Math.min(index, this.slides.length - 1));
         this.setPositionByIndex();
-        this.updateDots();
-    }
-
-    updateDots() {
-        this.dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === this.currentIndex);
-        });
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    new ImageCarousel();
-});
-
-// ========================================
-// GENERAL SECTION CAROUSEL (UNIQUE CLASS)
-// ========================================
-class GeneralCarousel {
-    constructor() {
-        this.carouselTrack = document.getElementById('generalCarouselTrack');
-        this.dotsContainer = document.getElementById('generalCarouselDots');
-        this.slides = document.querySelectorAll('.general-carousel-slide');
-        this.currentIndex = 0;
-        this.isDragging = false;
-        this.startPos = 0;
-        this.currentTranslate = 0;
-        this.prevTranslate = 0;
-        this.animationID = 0;
-        this.threshold = 100;
-        this.autoPlayInterval = null;
-
-        this.init();
-    }
-
-    init() {
-        this.bindEvents();
-        this.createDots();
-        this.startAutoPlay();
-    }
-
-    bindEvents() {
-        this.carouselTrack.addEventListener('mousedown', this.dragStart.bind(this));
-        document.addEventListener('mousemove', this.drag.bind(this));
-        document.addEventListener('mouseup', this.dragEnd.bind(this));
-        document.addEventListener('touchstart', this.dragStart.bind(this));
-        document.addEventListener('touchmove', this.drag.bind(this));
-        document.addEventListener('touchend', this.dragEnd.bind(this));
-    }
-
-    createDots() {
-        this.slides.forEach((_, index) => {
-            const dot = document.createElement('div');
-            dot.classList.add('general-dot');
-            if (index === 0) dot.classList.add('active');
-            dot.addEventListener('click', () => this.goTo(index));
-            this.dotsContainer.appendChild(dot);
-        });
-        this.dots = document.querySelectorAll('.general-dot');
-    }
-
-    dragStart(e) {
-        this.pauseAutoPlay();
-        this.startPos = this.getPositionX(e);
-        this.isDragging = true;
-        this.animationID = requestAnimationFrame(this.animation.bind(this));
-        this.carouselTrack.classList.add('grabbing');
-    }
-
-    drag(e) {
-        if (this.isDragging) {
-            const currentPosition = this.getPositionX(e);
-            this.currentTranslate = this.prevTranslate + currentPosition - this.startPos;
-        }
-    }
-
-    dragEnd() {
-        this.isDragging = false;
-        cancelAnimationFrame(this.animationID);
-        this.carouselTrack.classList.remove('grabbing');
-        this.startAutoPlay();
-
-        const movedBy = this.currentTranslate - this.prevTranslate;
-
-        if (movedBy < -this.threshold && this.currentIndex < this.slides.length - 1) {
-            this.currentIndex += 1;
-        } else if (movedBy > this.threshold && this.currentIndex > 0) {
-            this.currentIndex -= 1;
-        }
-
-        this.setPositionByIndex();
-    }
-
-    getPositionX(e) {
-        return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-    }
-
-    animation() {
-        this.setSliderPosition();
-        if (this.isDragging) requestAnimationFrame(this.animation.bind(this));
-    }
-
-    setPositionByIndex() {
-        this.currentTranslate = this.currentIndex * -window.innerWidth;
-        this.prevTranslate = this.currentTranslate;
-        this.setSliderPosition();
-    }
-
-    setSliderPosition() {
-        this.carouselTrack.style.transform = `translateX(${this.currentTranslate}px)`;
-    }
-
-    next() {
-        if (this.currentIndex < this.slides.length - 1) {
-            this.currentIndex++;
-        } else {
-            this.currentIndex = 0;
-        }
-        this.setPositionByIndex();
-        this.updateDots();
-    }
-
-    goTo(index) {
-        this.currentIndex = index;
-        this.setPositionByIndex();
-        this.updateDots();
     }
 
     updateDots() {
@@ -462,18 +363,66 @@ class GeneralCarousel {
     }
 
     startAutoPlay() {
-        this.autoPlayInterval = setInterval(() => this.next(), 4000);
+        this.pauseAutoPlay();
+        this.autoPlayInterval = setInterval(() => this.next(), this.config.autoPlayDelay);
     }
 
     pauseAutoPlay() {
         if (this.autoPlayInterval) {
             clearInterval(this.autoPlayInterval);
+            this.autoPlayInterval = null;
         }
+    }
+
+    onResize() {
+        this.setPositionByIndex(); // Reset position saat resize
+    }
+
+    destroy() {
+        this.pauseAutoPlay();
+        window.removeEventListener('resize', this.onResize);
     }
 }
 
-// Initialize ALL carousels (tidak bentrok)
+// =================================================================
+// INIT - GANTI SESUAI HTML KAMU
+// =================================================================
 document.addEventListener('DOMContentLoaded', () => {
-    new ImageCarousel();        // Kampung Kopi (carousel lama)
-    new GeneralCarousel();      // General Section (carousel baru - UNIK)
+    // Kampung Kopi
+    new ImageCarousel({
+        containerId: 'kampungCarousel',
+        dotsId: 'kampungDots',
+        slideClass: 'kampung-slide',
+        dotClass: 'kampung-dot',
+        autoPlayDelay: 4000
+    });
+
+    // Air Terjun
+    new ImageCarousel({
+        containerId: 'terjunCarousel',
+        dotsId: 'terjunDots',
+        slideClass: 'terjun-slide',
+        dotClass: 'terjun-dot',
+        autoPlayDelay: 4000
+    });
+
+    // Pura Malen
+    new ImageCarousel({
+        containerId: 'malenCarousel',
+        dotsId: 'malenDots',
+        slideClass: 'malen-slide',
+        dotClass: 'malen-dot',
+        autoPlayDelay: 4000
+    });
+
+    // Vihara
+    new ImageCarousel({
+        containerId: 'viharaCarousel',
+        dotsId: 'viharaDots',
+        slideClass: 'vihara-slide',
+        dotClass: 'vihara-dot',
+        autoPlayDelay: 4000
+    });
+
+    console.log('✅ All ImageCarousels initialized!');
 });

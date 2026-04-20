@@ -314,35 +314,38 @@ Mandolin dibawa ke Desa Pujungan oleh para pedagang yang melintasi jalur Bulelen
                 </div>
            </section>
           
-          <section class="general-section" id="general">
+<!-- GENERAL SECTION - GRID LAYOUT (4 Cards Alternating) -->
+<section class="general-section" id="general">
     <div class="general-container">
-        <div class="general-slide-wrapper even">
-            <div class="general-slide-content">
-                <div class="general-slide-text">
+        <!-- Card 1: Text kiri, Image kanan -->
+        <article class="general-card even">
+            <div class="general-content">
+                <div class="general-text">
                     <h3>Kampung Kopi Camp</h3>
                     <p>Kampung Kopi Camp menawarkan pengalaman camping yang seru di tengah perkebunan kopi yang asri. Nikmati udara segar pegunungan dan pemandangan alam yang memukau.</p>
-                    <a href="#kampung-kopi" class="general-cta-button">
+                    <a href="#kampung-kopi" class="general-cta-button" aria-label="Lihat Kampung Kopi Camp">
                         <span>Lihat Selengkapnya</span>
                         <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7"/>
                         </svg>
                     </a>
                 </div>
-                <div class="general-slide-image">
+                <div class="general-image">
                     <img src="Camp2.jpg" alt="Kampung Kopi Camp" loading="lazy">
                 </div>
             </div>
-        </div>
+        </article>
 
-        <div class="general-slide-wrapper odd">
-            <div class="general-slide-content">
-                <div class="general-slide-image">
+        <!-- Card 2: Image kiri, Text kanan -->
+        <article class="general-card odd">
+            <div class="general-content">
+                <div class="general-image">
                     <img src="Terjun3.jpg" alt="Air Terjun Blemantung" loading="lazy">
                 </div>
-                <div class="general-slide-text">
+                <div class="general-text">
                     <h3>Air Terjun Blemantung</h3>
                     <p>Air terjun yang menyejukkan dengan aliran air jernih yang mengalir dari lereng Gunung Batukaru. Tempat ideal untuk melepas penat dan menikmati keindahan alam.</p>
-                    <a href="air-terjun-blemantung.html" class="general-cta-button">
+                    <a href="air-terjun-blemantung.html" class="general-cta-button" aria-label="Lihat Air Terjun Blemantung">
                         <span>Lihat Selengkapnya</span>
                         <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -350,35 +353,36 @@ Mandolin dibawa ke Desa Pujungan oleh para pedagang yang melintasi jalur Bulelen
                     </a>
                 </div>
             </div>
-        </div>
-        
-        <div class="general-slide-wrapper even">
-            <div class="general-slide-content">
-                <div class="general-slide-text">
+        </article>
+
+        <!-- Card 3: Text kiri, Image kanan -->
+        <article class="general-card even">
+            <div class="general-content">
+                <div class="general-text">
                     <h3>Pura Malen</h3>
                     <p>Pura Malen berdiri megah di lereng bukit dengan pemandangan hamparan sawah dan perkebunan yang hijau. Suasana spiritual yang tenang dan damai.</p>
-                    <a href="pura-malen.html" class="general-cta-button">
+                    <a href="pura-malen.html" class="general-cta-button" aria-label="Lihat Pura Malen">
                         <span>Lihat Selengkapnya</span>
                         <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7"/>
                         </svg>
                     </a>
                 </div>
-                <div class="general-slide-image">
+                <div class="general-image">
                     <img src="Malen1.jpg" alt="Pura Malen" loading="lazy">
                 </div>
             </div>
-        </div>
+        </article>
 
-        <div class="general-slide-wrapper odd">
-            <div class="general-slide-content">
-                <div class="general-slide-image">
+        <article class="general-card odd">
+            <div class="general-content">
+                <div class="general-image">
                     <img src="patung-buddha.jpeg" alt="Vihara Dharma Giri" loading="lazy">
                 </div>
-                <div class="general-slide-text">
+                <div class="general-text">
                     <h3>Vihara Dharma Giri</h3>
                     <p>Vihara megah dengan patung Buddha tidur yang menjadi daya tarik spiritual. Tempat yang cocok untuk meditasi dan refleksi diri di tengah alam.</p>
-                    <a href="vihara-dharma-giri.html" class="general-cta-button">
+                    <a href="vihara-dharma-giri.html" class="general-cta-button" aria-label="Lihat Vihara Dharma Giri">
                         <span>Lihat Selengkapnya</span>
                         <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -386,48 +390,109 @@ Mandolin dibawa ke Desa Pujungan oleh para pedagang yang melintasi jalur Bulelen
                     </a>
                 </div>
             </div>
+        </article>
+    </div>
+</section>
+
+<section class="kampung-kopi-section" id="kampung-kopi">
+    <div class="kampung-container">
+        <div class="carousel-container">
+            <div class="carousel" id="kampungCarousel">
+                <div class="kampung-slide">
+                    <img src="Camp1.jpg" alt="Kampung Kopi Camp 1">
+                </div>
+                <div class="kampung-slide">
+                    <img src="Camp2.jpg" alt="Kampung Kopi Camp 2">
+                </div>
+                <div class="kampung-slide">
+                    <img src="Camp3.jpg" alt="Kampung Kopi Camp 3">
+                </div>
+                <div class="kampung-slide">
+                    <img src="kopi-mutiara-pupuan.jpg" alt="Kampung Kopi Camp 4">
+                </div>
+            </div>
+            <div class="kampung-dots" id="kampungDots"></div>
+        </div>
+        <div class="destinasi-text"><h3>
+          Kampung Kopi Camp</h3>
+          <p>Kampung Kopi Camp merupakan sebuah destinasi wisata yang merepresentasikan kekayaan alam serta autentisitas kopi Robusta di wilayah Pupuan, Bali. Berawal dari sebuah penginapan sederhana pada tahun 2018, lokasi ini telah berkembang menjadi area glamping yang menawarkan suasana rehat di tengah udara sejuk pegunungan.
+<br>
+Terletak di lereng Gunung Batukaru, destinasi ini menyajikan panorama sawah terasering yang menjadi ciri khas bentang alam Pupuan. Kawasan perkebunan kopi seluas 65 are di tata sedemikian rupa untuk mengakomodasi para pencinta aktivitas luar ruangan yang menginginkan ketenangan di tengah lingkungan persawahan.
+<br>
+Di sini, pengunjung dapat berinteraksi langsung dengan kehidupan agraris melalui pengolahan kopi bean-to-cup, di mana kopi Robusta dipetik dan diproses secara murni dari perkebunan setempat. Selain fokus pada agrowisata, tersedia pula fasilitas penyewaan kendaraan yang memudahkan para wisatawan untuk menjangkau berbagai titik tersembunyi (hidden gems) lainnya di kawasan sekitar.
+<br>
+Pilihan akomodasi yang ditawarkan cukup beragam, mencakup unit glamping kayu dengan balkon pribadi dan fasilitas air panas, hingga area khusus bagi para pengguna camper van. Keseluruhan area ini dilengkapi dengan berbagai titik pandang yang estetis serta fasilitas rumah makan yang menyajikan hidangan lokal.
+Melalui semangat #ayokepupuan, Kampung Kopi Camp hadir sebagai ruang bagi siapa saja yang ingin merasakan kedalaman tradisi dan keasrian alam Bali secara menyeluruh.
+<br>
+Informasi lebih lanjut tersedia di website resmi kopicamp.</p>
         </div>
     </div>
 </section>
-        
-    <section class="kampung-kopi-section" id="kampung-kopi">
-        <div class="kampung-container">
-            <div class="carousel-container">
-                <div class="carousel" id="carousel">
-                    <div class="carousel-slide">
-                        <img src="Camp1.jpg" alt="Kampung Kopi Camp 1">
-                    </div>
-                    <div class="carousel-slide">
-                        <img src="Camp2.jpg" alt="Kampung Kopi Camp 2">
-                    </div>
-                    <div class="carousel-slide">
-                        <img src="Camp3.jpg" alt="Kampung Kopi Camp 3">
-                    </div>
-                    <div class="carousel-slide">
-                        <img src="kopi-mutiara-pupuan.jpg" alt="Kampung Kopi Camp 4">
-                    </div>
-                </div>
-                <div class="carousel-dots" id="carouselDots"></div>
-            </div>
 
-            <div class="destinasi-text">
-                <h3>Kampung Kopi Camp</h3>
-                <p>
-                    Kampung Kopi Camp merupakan sebuah destinasi wisata yang merepresentasikan kekayaan alam serta autentisitas kopi Robusta di wilayah Pupuan, Bali. Berawal dari sebuah penginapan sederhana pada tahun 2018, lokasi ini telah berkembang menjadi area glamping yang menawarkan suasana rehat di tengah udara sejuk pegunungan.
-​<br>
-Terletak di lereng Gunung Batukaru, destinasi ini menyajikan panorama sawah terasering yang menjadi ciri khas bentang alam Pupuan. Kawasan perkebunan kopi seluas 65 are di tata sedemikian rupa untuk mengakomodasi para pencinta aktivitas luar ruangan yang menginginkan ketenangan di tengah lingkungan persawahan.
-<br>
-​Di sini, pengunjung dapat berinteraksi langsung dengan kehidupan agraris melalui pengolahan kopi bean-to-cup, di mana kopi Robusta dipetik dan diproses secara murni dari perkebunan setempat. Selain fokus pada agrowisata, tersedia pula fasilitas penyewaan kendaraan yang memudahkan para wisatawan untuk menjangkau berbagai titik tersembunyi (hidden gems) lainnya di kawasan sekitar.
-<br>
-​Pilihan akomodasi yang ditawarkan cukup beragam, mencakup unit glamping kayu dengan balkon pribadi dan fasilitas air panas, hingga area khusus bagi para pengguna camper van. Keseluruhan area ini dilengkapi dengan berbagai titik pandang yang estetis serta fasilitas rumah makan yang menyajikan hidangan lokal.
-​Melalui semangat #ayokepupuan, Kampung Kopi Camp hadir sebagai ruang bagi siapa saja yang ingin merasakan kedalaman tradisi dan keasrian alam Bali secara menyeluruh.
-<br>
-​Informasi lebih lanjut tersedia di website resmi kopicamp.
-                </p>
-                <a href="https://kampungkopicamp.com/" class="cta-button">lihat selengkapnya</a></a>
+<section class="air-terjun-section" id="air-terjun">
+    <div class="terjun-container">
+        <div class="carousel-container">
+            <div class="carousel" id="terjunCarousel">
+                <div class="terjun-slide">
+                    <img src="air-terjun.jpeg" alt="air terjun">
+                </div>
+                <div class="terjun-slide">
+                    <img src="Terjun1.jpg" alt="blemantung-pujungan">
+                </div>
+                <div class="terjun-slide">
+                    <img src="Terjun2.jpg" alt="blemantung">
+                </div>
+                <div class="terjun-slide">
+                    <img src="Terjun3.jpg" alt="air-terjun">
+                </div>
             </div>
+            <div class="terjun-dots" id="terjunDots"></div>
         </div>
-    </section>
+        <div class="destinasi-text">...</div>
+    </div>
+</section>
+
+<!-- PURA MALEN CAROUSEL -->
+<section class="pura-malen-section" id="pura-malen">
+    <div class="pura-malen-container">
+        <div class="carousel-container">
+            <div class="carousel" id="malenCarousel">
+                <div class="malen-slide">
+                    <img src="Malen1.jpg" alt="pura malen">
+                </div>
+                <div class="malen-slide">
+                    <img src="Malen2.jpg" alt="pura malen">
+                </div>
+                <div class="malen-slide">
+                    <img src="Malen3.jpg" alt="pura malen">
+                </div>
+            </div>
+            <div class="malen-dots" id="malenDots"></div>
+        </div>
+        <div class="destinasi-text">...</div>
+    </div>
+</section>
+
+<!-- VIHARA CAROUSEL -->
+<section class="vihara-section" id="vihara">
+    <div class="vihara-container">
+        <div class="carousel-container">
+            <div class="carousel" id="viharaCarousel">
+                <div class="vihara-slide">
+                    <img src="Patung-buddha.jpeg" alt="patung buddha">
+                </div>
+                <div class="vihara-slide">
+                    <img src="vihara2.jpg" alt="vihara 2">
+                </div>
+                <div class="vihara-slide">
+                    <img src="vihara3.jpg" alt="vihara 3">
+                </div>
+            </div>
+            <div class="vihara-dots" id="viharaDots"></div>
+        </div>
+        <div class="destinasi-text">...</div>
+    </div>
+</section>
 
     </main>
 <footer class="main-footer">
