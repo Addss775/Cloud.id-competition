@@ -116,7 +116,6 @@ html { -webkit-overflow-scrolling: touch; }
     background-clip: text;
 }
 
-}
 
 .menu {
     display: flex;
@@ -128,7 +127,7 @@ html { -webkit-overflow-scrolling: touch; }
     gap: 2rem;
 }
 
-..menu-link {
+.menu-link {
     color: #37f6ba;
     font-weight: 500;
     text-decoration: none !important;
@@ -177,7 +176,6 @@ html { -webkit-overflow-scrolling: touch; }
     color: rgba(51,51,51,0.8); 
 }
 
-}
 .dropdown.active .dropdown-toggle i:last-child {
     transform: rotate(180deg);
     color: #FF8C00;
