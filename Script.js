@@ -224,9 +224,18 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = NavbarController;
 }
 
+window.addEventListener('scroll', function() {
+    const navbar = document.querySelector('.navbar');
+    
+    if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+});
+
 class ImageCarousel {
     constructor(config = {}) {
-        // Konfigurasi fleksibel
         this.config = {
             containerId: config.containerId || 'carousel',
             dotsId: config.dotsId || 'carouselDots',
@@ -249,7 +258,6 @@ class ImageCarousel {
         this.animationID = 0;
         this.autoPlayInterval = null;
 
-        // Validasi
         if (!this.carousel || !this.dotsContainer || this.slides.length === 0) {
             console.warn(`❌ ImageCarousel ${this.config.containerId}: Elements missing`);
             return;
@@ -273,7 +281,6 @@ class ImageCarousel {
         document.addEventListener('touchmove', this.drag.bind(this), { passive: false });
         document.addEventListener('touchend', this.dragEnd.bind(this));
         
-        // Resize handler
         window.addEventListener('resize', this.onResize.bind(this));
     }
 
@@ -375,7 +382,7 @@ class ImageCarousel {
     }
 
     onResize() {
-        this.setPositionByIndex(); // Reset position saat resize
+        this.setPositionByIndex();
     }
 
     destroy() {
@@ -384,11 +391,7 @@ class ImageCarousel {
     }
 }
 
-// =================================================================
-// INIT - GANTI SESUAI HTML KAMU
-// =================================================================
 document.addEventListener('DOMContentLoaded', () => {
-    // Kampung Kopi
     new ImageCarousel({
         containerId: 'kampungCarousel',
         dotsId: 'kampungDots',
@@ -397,7 +400,6 @@ document.addEventListener('DOMContentLoaded', () => {
         autoPlayDelay: 4000
     });
 
-    // Air Terjun
     new ImageCarousel({
         containerId: 'terjunCarousel',
         dotsId: 'terjunDots',
@@ -406,7 +408,6 @@ document.addEventListener('DOMContentLoaded', () => {
         autoPlayDelay: 4000
     });
 
-    // Pura Malen
     new ImageCarousel({
         containerId: 'malenCarousel',
         dotsId: 'malenDots',
@@ -415,7 +416,6 @@ document.addEventListener('DOMContentLoaded', () => {
         autoPlayDelay: 4000
     });
 
-    // Vihara
     new ImageCarousel({
         containerId: 'viharaCarousel',
         dotsId: 'viharaDots',
