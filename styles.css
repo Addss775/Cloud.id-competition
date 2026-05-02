@@ -24,6 +24,16 @@ body {
     overflow-x: hidden;
 }
 
+:root{
+  --color-primary: #00796B;
+  --color-accent: #D4A017;
+  --color-soft: #80CBC4;
+  --bg: #FBF9F6;
+  --text: #222222;
+  --radius-md: 8px;
+  --gap-md: 1rem;
+}
+
 body.menu-open {
     overflow: hidden;
     position: fixed;
@@ -82,6 +92,7 @@ html { -webkit-overflow-scrolling: touch; }
     padding: 0 2rem;
     z-index: 2000;
     text-decoration: general-content;
+    border-radius: 15px;
     background: rgba(0, 0, 0, 0.0);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
