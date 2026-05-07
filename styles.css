@@ -723,6 +723,7 @@ body {
     width: 100%;
     margin: 0 auto;
     max-width: 1400px;
+    background-color: linear-gradient (#21ff93cc, #00efe2c1);
 }
 
 .hero-title {
@@ -735,7 +736,6 @@ body {
 
 .hero-title h1 {
     font-size: clamp(2.5rem, 6vw, 5rem);
-    background: linear-gradient(45deg, #fff, #f8f9fa, #e9ecef);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -760,11 +760,11 @@ body {
     gap: 2rem;
     max-width: 800px;
     width: 100%;
-    margin: 0 auto 4rem auto; /* CENTER VERTICALLY & HORIZONTALLY */
+    margin: 0 auto 4rem auto;
     justify-content: center;
     align-items: center;
     animation: fadeInUp 1.8s ease-out 0.3s both;
-    padding: 0 1rem; /* Extra padding untuk mobile */
+    padding: 0 1rem;
 }
 
 .card {
@@ -809,20 +809,38 @@ body {
 }
 
 .card-icon {
-    font-size: clamp(3rem, 8vw, 5rem);
+    font-size: clamp(4rem, 10vw, 6rem) !important;
     margin-bottom: 1.5rem;
     background: linear-gradient(45deg, #fff, #f0f0f0);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    transition: all 0.4s ease;
-    display: block;
-    width: 100%;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    display: inline-block !important;
+    width: 1.1em !important;
+    height: 1.1em !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+    font-weight: 900 !important;
+    font-variation-settings: 'wght' 900 !important;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
 }
 
 .card:hover .card-icon {
-    transform: scale(1.2) rotate(10deg);
-    filter: drop-shadow(0 0 20px rgba(255,255,255,0.5));
+    transform: scale(1.15) rotate(5deg);
+    filter: drop-shadow(0 10px 30px rgba(255,255,255,0.6));
+}
+
+.card-icon.fa-users,
+.card-icon.fa-tree, 
+.card-icon.fa-music,
+.card-icon.fa-vihara {
+    font-size: clamp(3rem, 9vw, 5rem) !important;
+    width: 1.1em !important;
+    height: 1.1em !important;
+    font-weight: 800 !important;
 }
 
 .card h3 {
