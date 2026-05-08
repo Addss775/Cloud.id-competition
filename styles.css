@@ -731,6 +731,7 @@ body {
     margin-bottom: 4rem;
     width: 100%;
     max-width: 800px;
+    margin : 0 auto;
     animation: fadeInUp 1.5s ease-out;
 }
 
@@ -829,8 +830,9 @@ body {
 }
 
 .card:hover .card-icon {
-    transform: scale(1.15) rotate(5deg);
+    transform: scale(1.20) rotate(5deg);
     filter: drop-shadow(0 10px 30px rgba(255,255,255,0.6));
+
 }
 
 .card-icon.fa-users,
@@ -841,6 +843,7 @@ body {
     width: 1.1em !important;
     height: 1.1em !important;
     font-weight: 800 !important;
+    
 }
 
 .card h3 {
