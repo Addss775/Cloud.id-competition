@@ -39,20 +39,37 @@ class NavbarController {
     }
 
     bindEvents() {
-        this.elements.burger?.addEventListener('click', (e) => {
+        const toggleMenu = (e) => {
             e.preventDefault();
             e.stopPropagation();
             this.toggleMobileMenu();
-        });
+        };
 
-        this.elements.menuCloseBtn?.addEventListener('click', (e) => {
+        if (this.elements.burger) {
+            this.elements.burger.addEventListener('click', toggleMenu);
+            this.elements.burger.addEventListener('touchstart', toggleMenu, { passive: false });
+        }
+
+        const closeMenu = (e) => {
             e.preventDefault();
+            e.stopPropagation();
             this.closeMobileMenu();
-        });
+        };
 
-        this.elements.overlay?.addEventListener('click', () => this.closeMobileMenu());
+        if (this.elements.menuCloseBtn) {
+            this.elements.menuCloseBtn.addEventListener('click', closeMenu);
+            this.elements.menuCloseBtn.addEventListener('touchstart', closeMenu, { passive: false });
+        }
 
-        this.elements.mobileDropdowns.forEach(dropdown => {
+        if (this.elements.overlay) {
+            this.elements.overlay.addEventListener('click', () => this.closeMobileMenu());
+            this.elements.overlay.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                this.closeMobileMenu();
+            }, { passive: false });
+        }
+
+        Array.from(this.elements.mobileDropdowns).forEach(dropdown => {
             const toggle = dropdown.querySelector('.dropdown-toggle');
             if (toggle) {
                 toggle.addEventListener('click', (e) => {
@@ -63,23 +80,38 @@ class NavbarController {
             }
         });
 
-        this.elements.desktopDropdowns.forEach(dropdown => {
-            dropdown.addEventListener('mouseenter', () => {
-                if (window.innerWidth > 1024) {
-                    dropdown.classList.add('active');
-                }
-            });
-            
-            dropdown.addEventListener('mouseleave', () => {
-                if (window.innerWidth > 1024) {
-                    dropdown.classList.remove('active');
-                }
+        // Desktop dropdown: pastikan selalu toggle submenu pada click juga (bukan hanya hover)
+        Array.from(this.elements.desktopDropdowns).forEach(dropdown => {
+            const toggle = dropdown.querySelector('.dropdown-toggle');
+            if (!toggle) return;
+            toggle.addEventListener('click', (e) => {
+                // untuk desktop, klik harus memunculkan submenu
+                e.preventDefault();
+                e.stopPropagation();
+                Array.from(this.elements.desktopDropdowns).forEach(d => d !== dropdown && d.classList.remove('active'));
+                dropdown.classList.toggle('active');
             });
         });
 
-        this.elements.navLinks.forEach(link => {
+
+        // Desktop dropdown harus click saja (nonaktifkan hover intent)
+        // (hover handler masih ada di CSS, tapi JS tidak menambah/menghapus class active via mouse)
+
+        // Jangan tangkap click pada toggle dropdown (supaya menu bisa muncul)
+
+        Array.from(this.elements.navLinks).forEach(link => {
+            // Jika ini adalah toggle dropdown (menu link yang membuka submenu), jangan ditangani sebagai navigasi.
+            const parentDropdown = link.closest('.dropdown');
+            const isDropdownToggle = !!link.classList.contains('dropdown-toggle') || (parentDropdown && link === parentDropdown.querySelector('.dropdown-toggle'));
+            if (isDropdownToggle) return;
+
+            // Jika link adalah item di dalam submenu, biarkan handler default/anchor berjalan.
+            if (link.closest('.submenu')) return;
+
+
             link.addEventListener('click', (e) => this.handleNavClick(e, link));
         });
+
 
         window.addEventListener('scroll', () => this.onScroll(), { passive: true });
         window.addEventListener('resize', () => this.onResize(), { passive: true });
@@ -87,6 +119,13 @@ class NavbarController {
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 this.closeMobileMenu();
+                Array.from(this.elements.desktopDropdowns).forEach(dropdown => dropdown.classList.remove('active'));
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown')) {
+                Array.from(this.elements.desktopDropdowns).forEach(dropdown => dropdown.classList.remove('active'));
             }
         });
     }
@@ -99,20 +138,20 @@ class NavbarController {
         }
         
         this.elements.mobileMenu.classList.toggle('active');
-        this.elements.burger.classList.toggle('active');
-        this.elements.overlay?.classList.toggle('active');
-        this.elements.menuCloseBtn?.classList.toggle('show');
+        if (this.elements.burger) this.elements.burger.classList.toggle('active');
+        if (this.elements.overlay) this.elements.overlay.classList.toggle('active');
+        if (this.elements.menuCloseBtn) this.elements.menuCloseBtn.classList.toggle('show');
         this.elements.body.classList.toggle('menu-open');
     }
 
     closeMobileMenu() {
         this.elements.mobileMenu.classList.remove('active');
-        this.elements.burger?.classList.remove('active');
-        this.elements.overlay?.classList.remove('active');
-        this.elements.menuCloseBtn?.classList.remove('show');
+        if (this.elements.burger) this.elements.burger.classList.remove('active');
+        if (this.elements.overlay) this.elements.overlay.classList.remove('active');
+        if (this.elements.menuCloseBtn) this.elements.menuCloseBtn.classList.remove('show');
         this.elements.body.classList.remove('menu-open');
         
-        this.elements.allDropdowns.forEach(dropdown => dropdown.classList.remove('active'));
+        Array.from(this.elements.allDropdowns).forEach(dropdown => dropdown.classList.remove('active'));
 
         if (this.scrollSaver.enabled && this.savedScrollY > 0) {
             setTimeout(() => {
@@ -123,7 +162,7 @@ class NavbarController {
     }
 
     toggleMobileDropdown(targetDropdown) {
-        this.elements.mobileDropdowns.forEach(dropdown => {
+        Array.from(this.elements.mobileDropdowns).forEach(dropdown => {
             if (dropdown !== targetDropdown) {
                 dropdown.classList.remove('active');
             }
@@ -135,7 +174,7 @@ class NavbarController {
     handleNavClick(e, link) {
         const href = link.getAttribute('href');
       
-        if (href?.startsWith('#') && href !== '#') {
+        if (href && href.startsWith('#') && href !== '#') {
             e.preventDefault();
             e.stopPropagation();
 
@@ -184,6 +223,21 @@ class NavbarController {
             backToTop.classList.toggle('show', currentScrollY > 500);
         }
 
+        // Efek Parallax untuk Hero & Destinasi
+        const homeAnimate = document.querySelector('.home-animate');
+        if (homeAnimate) {
+            homeAnimate.style.setProperty('--scroll-offset', `${currentScrollY * 0.35}px`);
+        }
+
+        const destinasiAnimate = document.querySelector('.destinasi-animate');
+        if (destinasiAnimate) {
+            const rect = destinasiAnimate.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                const offset = (window.innerHeight - rect.top) * 0.25;
+                destinasiAnimate.style.setProperty('--scroll-offset', `${offset}px`);
+            }
+        }
+
         this.lastScrollY = currentScrollY;
     }
 
@@ -192,7 +246,7 @@ class NavbarController {
             this.closeMobileMenu();
         }
         
-        this.elements.desktopDropdowns.forEach(dropdown => {
+        Array.from(this.elements.desktopDropdowns).forEach(dropdown => {
             dropdown.classList.remove('active');
         });
     }
@@ -216,8 +270,8 @@ class NavbarController {
 document.addEventListener('DOMContentLoaded', () => {
     window.navbarController = new NavbarController();
     
-    window.openMobileMenu = () => window.navbarController?.openMobileMenu();
-    window.closeMobileMenu = () => window.navbarController?.closeAll();
+    window.openMobileMenu = () => { if (window.navbarController) window.navbarController.openMobileMenu(); };
+    window.closeMobileMenu = () => { if (window.navbarController) window.navbarController.closeAll(); };
 });
 
 if (typeof module !== 'undefined' && module.exports) {
@@ -248,7 +302,7 @@ class ImageCarousel {
 
         this.carousel = document.getElementById(this.config.containerId);
         this.dotsContainer = document.getElementById(this.config.dotsId);
-        this.slides = this.carousel?.querySelectorAll(`.${this.config.slideClass}`);
+        this.slides = this.carousel ? this.carousel.querySelectorAll(`.${this.config.slideClass}`) : [];
         
         this.currentIndex = 0;
         this.isDragging = false;
@@ -277,7 +331,7 @@ class ImageCarousel {
         this.carousel.addEventListener('mousedown', this.dragStart.bind(this));
         document.addEventListener('mousemove', this.drag.bind(this));
         document.addEventListener('mouseup', this.dragEnd.bind(this));
-        document.addEventListener('touchstart', this.dragStart.bind(this), { passive: true });
+        this.carousel.addEventListener('touchstart', this.dragStart.bind(this), { passive: true });
         document.addEventListener('touchmove', this.drag.bind(this), { passive: false });
         document.addEventListener('touchend', this.dragEnd.bind(this));
         
@@ -287,7 +341,7 @@ class ImageCarousel {
     createDots() {
         this.dotsContainer.innerHTML = '';
         
-        this.slides.forEach((slide, index) => {
+        Array.from(this.slides).forEach((slide, index) => {
             if (slide.querySelector('img') || slide.children.length > 0) {
                 const dot = document.createElement('div');
                 dot.className = this.config.dotClass;
@@ -318,6 +372,8 @@ class ImageCarousel {
     }
 
     dragEnd() {
+        if (!this.isDragging) return;
+
         this.isDragging = false;
         cancelAnimationFrame(this.animationID);
         this.carousel.classList.remove('grabbing');
@@ -364,7 +420,7 @@ class ImageCarousel {
     }
 
     updateDots() {
-        this.dots.forEach((dot, index) => {
+        Array.from(this.dots).forEach((dot, index) => {
             dot.classList.toggle('active', index === this.currentIndex);
         });
     }
