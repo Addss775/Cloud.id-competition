@@ -952,7 +952,6 @@ main {
     }
 }
 .tradisi-animate {
-    min-height: 100vh;
     padding: 5rem 2rem;
     display: flex;
     flex-direction: column;
@@ -1003,11 +1002,9 @@ main {
 }
 
 .tradisi-card, .photo-card {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: transparent;
     border-radius: 24px;
-    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.2);
+    box-shadow: none;
     overflow: hidden;
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
@@ -1017,8 +1014,8 @@ main {
 }
 
 .tradisi-card:hover, .photo-card:hover {
-    transform: translateY(-15px) scale(1.02);
-    box-shadow: 0 40px 120px rgba(0, 0, 0, 0.18);
+    transform: translateY(-10px);
+    box-shadow: none;
 }
 
 .photo-container {
@@ -1119,18 +1116,16 @@ main {
     opacity: 0;
     transform: translateY(50px);
     animation: slideInUp 0.8s ease forwards;
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: transparent;
     border-radius: 24px;
     overflow: hidden;
-    box-shadow: 0 25px 70px rgba(0,0,0,0.2);
+    box-shadow: none;
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .general-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 35px 90px rgba(0,0,0,0.18);
+    box-shadow: none;
 }
 
 .general-card:nth-child(1) { animation-delay: 0.1s; }
@@ -1341,7 +1336,6 @@ main {
 .air-terjun-section,
 .pura-malen-section,
 .vihara-section {
-    min-height: 100vh;
     padding: 80px 20px;
     background: transparent;
     overflow: hidden;
@@ -1365,7 +1359,7 @@ main {
     height: 500px;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    box-shadow: none;
     background: transparent;
 }
 
@@ -1536,7 +1530,7 @@ main {
 
     .carousel-container:hover {
         transform: scale(1.02);
-        box-shadow: 0 35px 70px rgba(0,0,0,0.2);
+        box-shadow: none;
     }
 }
 
