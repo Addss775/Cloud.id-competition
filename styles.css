@@ -551,7 +551,6 @@ html { -webkit-overflow-scrolling: touch; }
 @media (max-width: 480px) {
     .mobile-menu { width: 100vw; }
 }
-
 main { 
     margin-top: clamp(80px, 15vh, 110px); 
 }

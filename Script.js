@@ -4,6 +4,7 @@ class NavbarController {
         this.savedScrollY = 0;
         this.lastScrollY = 0;
         this.isTicking = false;
+        this.isToggling = false; // Sistem pengunci (Anti-Ghost Click)
         
         this.init();
     }
@@ -47,7 +48,6 @@ class NavbarController {
 
         if (this.elements.burger) {
             this.elements.burger.addEventListener('click', toggleMenu);
-            this.elements.burger.addEventListener('touchstart', toggleMenu, { passive: false });
         }
 
         const closeMenu = (e) => {
@@ -58,15 +58,10 @@ class NavbarController {
 
         if (this.elements.menuCloseBtn) {
             this.elements.menuCloseBtn.addEventListener('click', closeMenu);
-            this.elements.menuCloseBtn.addEventListener('touchstart', closeMenu, { passive: false });
         }
 
         if (this.elements.overlay) {
             this.elements.overlay.addEventListener('click', () => this.closeMobileMenu());
-            this.elements.overlay.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                this.closeMobileMenu();
-            }, { passive: false });
         }
 
         Array.from(this.elements.mobileDropdowns).forEach(dropdown => {
@@ -131,6 +126,11 @@ class NavbarController {
     }
 
     toggleMobileMenu() {
+        // Cegah eksekusi ganda jika tombol sedang ditekan
+        if (this.isToggling) return;
+        this.isToggling = true;
+        setTimeout(() => { this.isToggling = false; }, 350);
+
         const isOpening = !this.elements.mobileMenu.classList.contains('active');
         
         if (isOpening && this.scrollSaver.enabled) {
