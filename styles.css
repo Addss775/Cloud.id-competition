@@ -1501,6 +1501,7 @@ main {
 
 .destinasi-text {
     padding: 0 20px;
+    text-align: left;
 }
 
 .destinasi-text h3 {
@@ -1682,7 +1683,6 @@ main {
     list-style: none;
     padding: 0;
     text-align: left;
-    border: 1px solid #cff1ffeb;
     border-radius: 20px;
 }
 
