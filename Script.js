@@ -251,11 +251,6 @@ class ImageCarousel {
         this.slides = this.carousel?.querySelectorAll(`.${this.config.slideClass}`);
         
         this.currentIndex = 0;
-        this.isDragging = false;
-        this.startPos = 0;
-        this.currentTranslate = 0;
-        this.prevTranslate = 0;
-        this.animationID = 0;
         this.autoPlayInterval = null;
 
         if (!this.carousel || !this.dotsContainer || this.slides.length === 0) {
@@ -270,17 +265,34 @@ class ImageCarousel {
     init() {
         this.bindEvents();
         this.createDots();
+        this.createButtons();
         this.startAutoPlay();
     }
 
-    bindEvents() {
-        this.carousel.addEventListener('mousedown', this.dragStart.bind(this));
-        document.addEventListener('mousemove', this.drag.bind(this));
-        document.addEventListener('mouseup', this.dragEnd.bind(this));
-        document.addEventListener('touchstart', this.dragStart.bind(this), { passive: true });
-        document.addEventListener('touchmove', this.drag.bind(this), { passive: false });
-        document.addEventListener('touchend', this.dragEnd.bind(this));
+    createButtons() {
+        const container = this.carousel.parentElement;
         
+        this.prevBtn = document.createElement('button');
+        this.prevBtn.className = 'carousel-btn prev-btn';
+        this.prevBtn.innerHTML = '&#10094;'; // Simbol panah kiri
+        this.prevBtn.addEventListener('click', () => {
+            this.prev();
+            this.startAutoPlay();
+        });
+
+        this.nextBtn = document.createElement('button');
+        this.nextBtn.className = 'carousel-btn next-btn';
+        this.nextBtn.innerHTML = '&#10095;'; // Simbol panah kanan
+        this.nextBtn.addEventListener('click', () => {
+            this.next();
+            this.startAutoPlay();
+        });
+
+        container.appendChild(this.prevBtn);
+        container.appendChild(this.nextBtn);
+    }
+
+    bindEvents() {
         window.addEventListener('resize', this.onResize.bind(this));
     }
 
@@ -288,68 +300,27 @@ class ImageCarousel {
         this.dotsContainer.innerHTML = '';
         
         this.slides.forEach((slide, index) => {
-            if (slide.querySelector('img') || slide.children.length > 0) {
-                const dot = document.createElement('div');
-                dot.className = this.config.dotClass;
-                if (index === 0) dot.classList.add('active');
-                dot.dataset.slide = index;
-                dot.addEventListener('click', () => this.goTo(index));
-                this.dotsContainer.appendChild(dot);
-            }
+            const dot = document.createElement('div');
+            dot.className = this.config.dotClass;
+            if (index === 0) dot.classList.add('active');
+            dot.dataset.slide = index;
+            dot.addEventListener('click', () => this.goTo(index));
+            this.dotsContainer.appendChild(dot);
         });
         
         this.dots = this.dotsContainer.querySelectorAll(`.${this.config.dotClass}`);
         console.log(`🔘 ${this.config.containerId}: ${this.dots.length} dots created`);
     }
 
-    dragStart(e) {
-        this.pauseAutoPlay();
-        this.startPos = this.getPositionX(e);
-        this.isDragging = true;
-        this.animationID = requestAnimationFrame(this.animation.bind(this));
-        this.carousel.classList.add('grabbing');
-    }
-
-    drag(e) {
-        if (this.isDragging) {
-            const currentPosition = this.getPositionX(e);
-            this.currentTranslate = this.prevTranslate + currentPosition - this.startPos;
-        }
-    }
-
-    dragEnd() {
-        this.isDragging = false;
-        cancelAnimationFrame(this.animationID);
-        this.carousel.classList.remove('grabbing');
-        this.startAutoPlay();
-
-        const movedBy = this.currentTranslate - this.prevTranslate;
-        if (movedBy < -this.config.threshold && this.currentIndex < this.slides.length - 1) {
-            this.currentIndex++;
-        } else if (movedBy > this.config.threshold && this.currentIndex > 0) {
-            this.currentIndex--;
-        }
-        this.setPositionByIndex();
-    }
-
-    getPositionX(e) {
-        return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-    }
-
-    animation() {
-        this.setSliderPosition();
-        if (this.isDragging) requestAnimationFrame(this.animation.bind(this));
-    }
-
     setPositionByIndex() {
-        this.currentTranslate = this.currentIndex * -window.innerWidth;
-        this.prevTranslate = this.currentTranslate;
-        this.setSliderPosition();
+        this.carousel.style.transform = `translateX(-${this.currentIndex * 100}%)`;
         this.updateDots();
     }
 
-    setSliderPosition() {
-        this.carousel.style.transform = `translateX(${this.currentTranslate}px)`;
+    prev() {
+        this.currentIndex = this.currentIndex > 0 ? 
+            this.currentIndex - 1 : this.slides.length - 1;
+        this.setPositionByIndex();
     }
 
     next() {
@@ -361,11 +332,12 @@ class ImageCarousel {
     goTo(index) {
         this.currentIndex = Math.max(0, Math.min(index, this.slides.length - 1));
         this.setPositionByIndex();
+        this.startAutoPlay();
     }
 
     updateDots() {
-        this.dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === this.currentIndex);
+        this.dots.forEach((dot) => {
+            dot.classList.toggle('active', parseInt(dot.dataset.slide, 10) === this.currentIndex);
         });
     }
 

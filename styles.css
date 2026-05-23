@@ -339,13 +339,13 @@ html { -webkit-overflow-scrolling: touch; }
 
 .menu-close-btn {
     position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    background: rgba(25, 25, 112, 0.95);
-    border: 2px solid rgba(65, 105, 225, 0.8);
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
     color: #FFFFFF;
-    width: 52px;
-    height: 52px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -361,9 +361,8 @@ html { -webkit-overflow-scrolling: touch; }
 }
 
 .menu-close-btn:hover {
-    background: rgba(0, 0, 139, 1);
+    background: rgba(255, 255, 255, 0.2);
     transform: scale(1.1);
-    box-shadow: 0 8px 25px rgba(65, 105, 225, 0.5);
 }
 
 .mobile-menu.active .menu-close-btn {
@@ -372,38 +371,33 @@ html { -webkit-overflow-scrolling: touch; }
     pointer-events: auto;
 }
 
-/* MOBILE MENU DARI KIRI - NAVY + HITAM */
+/* MOBILE MENU DI TENGAH - HITAM */
 .mobile-menu {
     position: fixed;
-    top: 0;
-    left: 0; /* DARI KIRI */
-    transform: translateX(-100%);
-    width: 320px;
-    max-width: 90vw;
-    height: 100vh;
-    height: 100dvh;
-    /* Navy Blue + Hitam gradient premium */
-    background: linear-gradient(145deg, 
-        rgba(0, 0, 0, 0.98) 0%,
-        rgba(10, 15, 45, 0.98) 30%,
-        rgba(25, 25, 112, 0.98) 70%,
-        rgba(30, 35, 90, 0.98) 100%
-    );
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-    border-right: 2px solid rgba(65, 105, 225, 0.4);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 90vw;
+    max-width: 400px;
+    height: auto;
+    max-height: 85vh;
+    background: #000000;
+    border-radius: 24px;
     z-index: 9999;
-    padding: 4rem 2rem 2rem;
-    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    padding: 3.5rem 1.5rem 2rem;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     overflow-y: auto;
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    box-shadow: 4px 0 40px rgba(0, 0, 139, 0.3);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .mobile-menu.active { 
-    transform: translateX(0); 
+    transform: translate(-50%, -50%) scale(1);
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
 }
 
@@ -419,52 +413,47 @@ html { -webkit-overflow-scrolling: touch; }
 
 .mobile-menu-list > li {
     width: 100%;
-    margin: 0 0 12px 0;
+    margin: 0 0 8px 0;
     padding: 0;
-    border-radius: 16px;
     overflow: hidden;
     transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(65, 105, 225, 0.2);
+    background: transparent;
+    border: none;
 }
 
 .mobile-menu-list > li:hover {
-    background: rgba(65, 105, 225, 0.15);
-    border-color: rgba(65, 105, 225, 0.4);
-    transform: translateX(4px);
-    box-shadow: 0 6px 20px rgba(65, 105, 225, 0.25);
+    background: transparent;
+    transform: none;
+    box-shadow: none;
 }
 
 .mobile-menu .menu-link {
     color: #FFFFFF !important;
-    padding: 1.6rem 1.8rem !important;
+    padding: 1rem !important;
     margin: 0 !important;
     background: transparent !important;
     border: none !important;
-    font-size: 1.2rem !important;
-    font-weight: 700 !important;
+    font-size: 1.1rem !important;
+    font-weight: 500 !important;
     display: flex !important;
     align-items: center !important;
-    gap: 1.4rem !important;
+    gap: 0.8rem !important;
     width: 100% !important;
-    justify-content: flex-start !important;
+    justify-content: center !important;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-    border-right: 5px solid transparent !important;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.7) !important;
-    position: relative !important;
+    text-shadow: none !important;
 }
 
 .mobile-menu .menu-link:hover {
-    background: linear-gradient(90deg, rgba(65, 105, 225, 0.3), rgba(0, 0, 139, 0.25)) !important;
-    color: #E6F3FF !important;
-    border-right-color: #4169E1 !important;
-    transform: translateX(8px) !important;
-    box-shadow: inset 6px 0 0 #4169E1 !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #FFD700 !important;
+    transform: translateY(-2px) !important;
+    border-radius: 12px !important;
 }
 
 /* DROPDOWN INDICATOR */
 .mobile-menu .menu-link i:last-child {
-    margin-left: auto;
+    margin-left: 0;
     transition: transform 0.3s ease;
 }
 
@@ -473,137 +462,118 @@ html { -webkit-overflow-scrolling: touch; }
 }
 
 /* ========================================
-   MOBILE SUBMENU - SUPER JELAS & FIX BUG
+   MOBILE SUBMENU - SEDERHANA & LENGKAP
    ======================================= */
 .mobile-menu .submenu {
     position: static !important;
-    background: linear-gradient(180deg, 
-        rgba(15, 20, 50, 0.95) 0%, 
-        rgba(25, 25, 112, 0.92) 100%
-    ) !important;
-    backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(65, 105, 225, 0.3) !important;
-    border-radius: 0 0 16px 16px !important;
-    box-shadow: inset 0 2px 12px rgba(0,0,0,0.6) !important;
     max-height: 0 !important;
-    height: 0 !important;
     opacity: 0 !important;
     overflow: hidden !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    transition: all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
     list-style: none !important;
-    width: 100% !important;
-    transform: scaleY(0.9);
-    transform-origin: top;
+    background: #000000 !important;
+    border-radius: 12px !important;
+    margin: 0.5rem 0 0 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+    transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease !important;
+    transform: none !important;
+    visibility: hidden !important;
 }
 
 .mobile-menu .dropdown.active .submenu {
-    max-height: 1400px !important;
-    height: auto !important;
+    max-height: 500px !important;
     opacity: 1 !important;
-    padding: 2rem 0 1.5rem 0 !important;
+    visibility: visible !important;
     margin-top: 0.5rem !important;
-    transform: scaleY(1) !important;
+    margin-bottom: 0.5rem !important;
+    padding: 1rem 0 !important;
 }
 
 .mobile-menu .dropdown.active > .menu-link {
-    background: linear-gradient(135deg, 
-        rgba(0, 0, 139, 0.9), 
-        rgba(65, 105, 225, 0.85)
-    ) !important;
-    border-radius: 16px 16px 0 0 !important;
-    border-bottom: 3px solid #4169E1 !important;
-    margin-bottom: 0 !important;
-    font-size: 1.15rem !important;
-    box-shadow: 0 6px 20px rgba(65, 105, 225, 0.4);
-    position: relative;
-    z-index: 15;
+    color: #FFD700 !important;
+    background: transparent !important;
 }
 
 .mobile-menu .submenu li {
-    margin: 0.5rem 0 0 0 !important;
+    margin: 0 !important;
     padding: 0 !important;
-    border-left: 4px solid transparent !important;
-    background: rgba(255, 255, 255, 0.05) !important;
-    border-radius: 0 12px 12px 0 !important;
-    transition: all 0.3s ease !important;
+    border: none !important;
+    background: transparent !important;
 }
 
 .mobile-menu .submenu li:hover {
-    border-left-color: #4169E1 !important;
-    background: rgba(65, 105, 225, 0.18) !important;
-    transform: translateX(6px) !important;
+    transform: none !important;
+    background: transparent !important;
+    border: none !important;
 }
 
 .mobile-menu .submenu a {
-    color: #F0F8FF !important;
-    padding: 1.5rem 1.8rem 1.5rem 4.2rem !important;
-    margin: 0.2rem 0 !important;
-    font-size: 1.05rem !important;
+    color: #FFFFFF !important;
+    padding: 0.8rem 1rem !important;
+    margin: 0 !important;
+    font-size: 1rem !important;
     font-weight: 500 !important;
-    border-radius: 8px !important;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.8) !important;
-    position: relative !important;
+    text-shadow: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    display: block !important;
+    text-align: center !important;
     transition: all 0.3s ease !important;
 }
 
 .mobile-menu .submenu a::before {
-    content: "→" !important;
-    position: absolute !important;
-    left: 1.5rem !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    color: #87CEEB !important;
-    font-weight: 700 !important;
-    font-size: 1.1rem !important;
-    opacity: 0.85 !important;
+    display: none !important;
 }
 
 .mobile-menu .submenu a:hover {
-    color: #FFFFFF !important;
-    background: rgba(65, 105, 225, 0.25) !important;
-    padding-left: 3.6rem !important;
-    box-shadow: 0 4px 15px rgba(65, 105, 225, 0.3) !important;
-}
-
-.mobile-menu .submenu a:hover::before {
-    left: 1.3rem !important;
-    color: #4169E1 !important;
-    opacity: 1 !important;
+    color: #FFD700 !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    padding-left: 1rem !important;
+    box-shadow: none !important;
 }
 
 /* BURGER BUTTON */
 .burger {
     display: none;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
     cursor: pointer;
     z-index: 10000;
-    padding: 12px;
+    padding: 10px;
+    align-items: flex-end;
 }
 
 .burger span {
     width: 28px;
     height: 3px;
     background: #fff;
-    border-radius: 2px;
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    border-radius: 50px;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     transform-origin: center;
 }
 
+.burger span:nth-child(2) {
+    width: 18px;
+}
+
+.burger:hover span:nth-child(2) {
+    width: 28px;
+    background: #FFD700;
+}
+
 .burger.active span:nth-child(1) { 
-    transform: translateY(7px) rotate(45deg); 
+    transform: translateY(9px) rotate(45deg); 
+    background: #FFD700;
 }
 
 .burger.active span:nth-child(2) { 
     opacity: 0; 
-    transform: scale(0);
+    transform: translateX(15px);
 }
 
 .burger.active span:nth-child(3) { 
-    transform: translateY(-7px) rotate(-45deg); 
+    transform: translateY(-9px) rotate(-45deg); 
+    background: #FFD700;
 }
 
 @media (max-width: 1024px) {
@@ -1225,8 +1195,8 @@ main {
 .general-content {
     display: flex;
     flex-direction: column;
-    height: clamp(540px, 70vh, 650px);
-    min-height: 540px;
+    height: auto;
+    min-height: clamp(540px, 70vh, 650px);
 }
 
 .general-image {
@@ -1274,10 +1244,6 @@ main {
     color: rgba(255, 255, 255, 0.85);
     line-height: 1.6;
     margin: 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
 }
 
 .general-cta-button {
@@ -1342,7 +1308,8 @@ main {
     }
     
     .general-content {
-        height: clamp(480px, 85vw, 620px);
+        height: auto;
+        min-height: clamp(480px, 85vw, 620px);
         border-radius: 22px;
     }
     
@@ -1381,7 +1348,8 @@ main {
     }
     
     .general-content {
-        height: clamp(460px, 90vw, 580px);
+        height: auto;
+        min-height: clamp(460px, 90vw, 580px);
     }
     
     .general-image {
@@ -1414,6 +1382,44 @@ main {
     }
 }
 
+.bttn-primary, .bttn-secondary {
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.bttn-primary {
+    background: linear-gradient(135deg, #FF8C00, #FFD700);
+    box-shadow: 0 8px 25px rgba(255, 140, 0, 0.4);
+}
+
+.bttn-primary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(234, 172, 32, 0.6);
+}
+
+.bttn-secondary {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.bttn-secondary:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-4px);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+
 .kampung-kopi-section,
 .air-terjun-section,
 .pura-malen-section,
@@ -1421,6 +1427,21 @@ main {
     padding: 80px 20px;
     background: transparent;
     overflow: hidden;
+    position: relative;
+}
+
+.kampung-kopi-section::after,
+.air-terjun-section::after,
+.pura-malen-section::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: clamp(250px, 60vw, 800px);
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255, 140, 0, 0.25), rgba(255, 215, 0, 0.4), rgba(255, 140, 0, 0.25), transparent);
+    box-shadow: 0 0 15px rgba(255, 140, 0, 0.15);
 }
 
 .kampung-container,
@@ -1429,37 +1450,66 @@ main {
 .vihara-container {
     max-width: 1400px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
     align-items: center;
-    min-height: 600px;
 }
 
 .carousel-container {
     position: relative;
     height: 500px;
+    width: 100%;
+    max-width: 1000px;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: none;
     background: transparent;
 }
 
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.carousel-btn:hover {
+    background: #FF8C00;
+    box-shadow: 0 0 15px rgba(255, 140, 0, 0.6);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.prev-btn { left: 15px; }
+.next-btn { right: 15px; }
+
 .carousel {
     display: flex;
     height: 100%;
     transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    cursor: grab;
-}
-
-.carousel.grabbing {
-    cursor: grabbing !important;
 }
 
 .kampung-slide, .terjun-slide, .malen-slide, .vihara-slide {
     min-width: 100%;
     height: 100%;
     flex-shrink: 0;
+    background: rgba(0, 0, 0, 0.25); /* Latar belakang gelap untuk menyeimbangkan gambar contain */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .kampung-slide img, 
@@ -1468,7 +1518,8 @@ main {
 .vihara-slide img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center;
 }
 
 .kampung-dots, .terjun-dots, .malen-dots, .vihara-dots {
@@ -1502,6 +1553,8 @@ main {
 .destinasi-text {
     padding: 0 20px;
     text-align: left;
+    width: 100%;
+    max-width: 1000px;
 }
 
 .destinasi-text h3 {
@@ -1556,7 +1609,6 @@ main {
     .terjun-container,
     .pura-malen-container,
     .vihara-container {
-        grid-template-columns: 1fr;
         gap: 40px;
         text-align: center;
     }
@@ -1564,7 +1616,6 @@ main {
     .carousel-container {
         height: 400px;
         margin: 0 auto;
-        max-width: 90%;
         order: 1;
     }
 
@@ -1584,6 +1635,18 @@ main {
 @media (max-width: 480px) {
     .carousel-container {
         height: 300px;
+    }
+
+    .carousel-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1.2rem;
+        left: 10px;
+    }
+
+    .next-btn {
+        left: auto;
+        right: 10px;
     }
 
     .destinasi-text h3 {
@@ -1832,7 +1895,10 @@ main {
 @media (max-width: 480px) {
     .burger span { 
         width: clamp(24px, 8vw, 28px); 
-        height: clamp(2.5px, 1vw, 3px); 
+        height: 3px; 
+    }
+    .burger span:nth-child(2) {
+        width: clamp(16px, 5vw, 20px);
     }
     .photo-container { 
         height: 45vh;
