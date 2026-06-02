@@ -398,3 +398,69 @@ document.addEventListener('DOMContentLoaded', () => {
 
     console.log('✅ All ImageCarousels initialized!');
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    // 1. DAFTARKAN CONTAINER UTAMA WEBMU DI SINI
+    const targetContainers = document.querySelectorAll('.photo-grid, .footer-grid, .tradisi-animate');
+
+    const observerOptions = { root: null, rootMargin: '0px', threshold: 0.10 };
+
+    const scrollObserver = new IntersectionObserver(function (entries, observer) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const container = entry.target;
+                const columns = container.children;
+
+                // Loop membaca setiap kolom di dalam container grid
+                for (let i = 0; i < columns.length; i++) {
+                    const col = columns[i];
+                    
+                    // Tentukan arah geser: kolom kiri (indeks genap) geser ke kanan, kolom kanan sebaliknya
+                    const directionX = (i % 2 === 0) ? -60 : 60;
+
+                    // Cek apakah kolom ini berisi teks boks (mempunyai tag h2, h3, p, dll di dalamnya)
+                    const subElements = col.querySelectorAll('h1, h2, h3, h4, p, img, .social-link, .source-link');
+                    
+                    if (subElements.length > 0) {
+                        // JIKA BERISI TEKS: Animasikan isinya satu per satu secara berurutan (Staggered effect)
+                        subElements.forEach((el, index) => {
+                            el.animate([
+                                { opacity: 0, transform: `translateX(${directionX}px)` },
+                                { opacity: 1, transform: 'translateX(0px)' }
+                            ], {
+                                duration: 800,
+                                easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                                fill: 'forwards',
+                                delay: index * 150 // Memberikan jeda 0.15 detik antar baris teks agar estetik
+                            });
+                        });
+                    } else {
+                        // JIKA HANYA GAMBAR TUNGGAL: Langsung jalankan animasi normal
+                        col.animate([
+                            { opacity: 0, transform: `translateX(${directionX}px)` },
+                            { opacity: 1, transform: 'translateX(0px)' }
+                        ], {
+                            duration: 800,
+                            easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                            fill: 'forwards'
+                        });
+                    }
+                }
+                observer.unobserve(container); // Matikan sensor setelah animasi berjalan sekali
+            }
+        });
+    }, observerOptions);
+
+    // Persiapan awal agar konten tidak berkedip patah saat halaman dimuat
+    targetContainers.forEach(container => {
+        Array.from(container.children).forEach(col => {
+            const subElements = col.querySelectorAll('h1, h2, h3, h4, p, img, .social-link, .source-link');
+            if (subElements.length > 0) {
+                subElements.forEach(el => el.style.opacity = '0');
+            } else {
+                col.style.opacity = '0';
+            }
+        });
+        scrollObserver.observe(container);
+    });
+});

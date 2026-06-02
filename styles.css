@@ -75,50 +75,43 @@ p {
 }
 html { -webkit-overflow-scrolling: touch; }
 
+/* ==========================================================================
+   KONDISI 1: NAVBAR SAAT DIAM DI ATAS (TRANSPARAN MEWAH & BERSIH)
+   ========================================================================== */
 .navbar {
     position: fixed;
     top: 0;
+    left: 0; /* Pastikan menempel rata kiri */
     width: 100%;
     display: flex;
     justify-content: space-between;
     flex-direction: row;
     align-items: center;
     z-index: 2000;
-    text-decoration: general-content;
-    border-radius: 15px;
-    background: rgba(0, 0, 0, 0.0);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    box-sizing: border-box; /* Mencegah navbar melar melebihi layar */
+    padding: 24px 5%; /* Jarak napas lega saat posisi di atas */
+    
+    /* Efek gradasi gelap tipis dari atas ke bawah pelindung teks di atas foto */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
+    
+    border: 1px solid transparent; /* Sembunyikan border bawaan saat di atas */
+    border-radius: 0; /* Hapus border-radius kaku agar memenuhi ujung layar atas */
+    backdrop-filter: blur(0px); /* Saat transparan total tidak perlu blur gambar */
+    -webkit-backdrop-filter: blur(0px);
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.navbar.scrolled {
-    background: var(--navfot-color);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-}
-
+/* Judul / Logo saat posisi diam di atas (Dibuat Putih Bersih agar Menyala) */
 .judul {
     font-weight: 700;
-    font-size: clamp(1rem, 2vw, 1.3rem);
-    background: #9a9a9ad5;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    color: #ffffff; /* Mengganti abu-abu kusam bawaan dengan putih solid */
     white-space: nowrap;
     transition: all 0.3s ease;
+    letter-spacing: 0.5px;
 }
 
-.navbar.scrolled .judul {
-    background: #fff;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-
+/* Pengaturan Jarak Menu Utama */
 .menu {
     display: flex;
     flex-direction: row;
@@ -126,11 +119,12 @@ html { -webkit-overflow-scrolling: touch; }
     margin: 0;
     padding: 0;
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem; /* Jarak proporsional antar tombol menu */
 }
 
+/* Desain Tombol Menu saat Diam di Atas */
 .menu-link {
-    color: #fff;
+    color: #e2e8f0; /* Putih agak abu-abu kalem */
     font-weight: 500;
     text-decoration: none !important;
     padding: 0.6rem 1.2rem;
@@ -143,76 +137,84 @@ html { -webkit-overflow-scrolling: touch; }
     gap: 0.5rem;
 }
 
-.navbar.scrolled .menu-link {
-    color: #fff !important;
-}
-
+/* Efek Hover Tombol Menu saat Diam di Atas */
 .menu-link:hover, .menu-link.active {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.12); /* Efek sorot transparan putih */
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    color: #fff;
-}
-
-.navbar.scrolled .menu-link:hover, .navbar.scrolled .menu-link.active {
-    background: rgba(255, 140, 0, 0.15);
-    color: #FF8C00 !important;
+    color: #ffffff;
 }
 
 
+/* ==========================================================================
+   KONDISI 2: NAVBAR SAAT DI-SCROLL (CHARCOAL KACA - ANTI DEKIL)
+   ========================================================================== */
+.navbar.scrolled {
+    padding: 14px 5%; /* Navbar menipis otomatis saat di-scroll agar estetik */
+    
+    /* Ganti warna navy lamamu dengan Hitam Charcoal Mewah yang menyatu dengan web */
+    background: rgba(18, 20, 26, 0.85); 
+    
+    /* Border putih tebal 0.3 diturunkan jadi 0.06 super halus */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06); 
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px); /* Efek blur kaca aktif saat di-scroll */
+    -webkit-backdrop-filter: blur(15px);
+}
+
+/* Judul / Logo saat di-scroll */
+.navbar.scrolled .judul {
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+/* Mengunci warna teks link menu saat di-scroll agar tetap bersih */
+.navbar.scrolled .menu-link {
+    color: #cbd5e1 !important; 
+}
+
+/* Efek Hover Tombol Menu saat di-scroll (Berubah Oranye Senada Tombol & Footer) */
+.navbar.scrolled .menu-link:hover, 
+.navbar.scrolled .menu-link.active {
+    background: rgba(255, 140, 0, 0.15) !important; /* Latar belakang oranye tipis */
+    color: #ff9f43 !important; /* Warna teks berganti oranye hangat Pupuan */
+    box-shadow: 0 4px 12px rgba(255, 140, 0, 0.1);
+}
+
+
+/* ==========================================================================
+   BAGIAN SUBMENU DROPDOWN DESKTOP (YANG SUDAH DISINKRONKAN)
+   ========================================================================== */
 .dropdown {
     position: relative;
 }
 
-.dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: white;
-    min-width: 200px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
-    list-style: none;
-    border-radius: 8px;
-    padding: 10px 0;
-}
-
-.dropdown:hover .dropdown-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-.dropdown-menu li {
-    padding: 10px 20px;
-}
-
-.dropdown-menu a {
-    display: block;
-    padding: 8px 0;
-}
-
+/* Desain Wadah Dropdown Menu Utama */
 .submenu {
     position: absolute;
     top: calc(100% + 12px);
     left: 50%;
     transform: translateX(-50%) translateY(-10px);
-    background: linear-gradient(145deg, rgba(20, 20, 20, 0.98) 0%, rgba(45, 45, 45, 0.98) 100%);
+    
+    /* Background mengikuti warna charcoal mewah bergradasi */
+    background: linear-gradient(145deg, rgba(18, 20, 26, 0.98) 0%, rgba(30, 34, 45, 0.98) 100%);
+    
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
-    border-radius: 20px;
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06);
     list-style: none;
-    min-width: 280px;
+    min-width: 260px;
     max-width: 320px;
     opacity: 0;
     visibility: hidden;
     transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     margin: 0;
     padding: 0;
-    border: none;
     z-index: 2001;
     overflow: hidden;
 }
@@ -232,74 +234,77 @@ html { -webkit-overflow-scrolling: touch; }
         opacity: 1;
         visibility: visible;
         transform: translateX(-50%) translateY(0);
-        padding: 1.5rem;
+        padding: 0.75rem; /* Padding disesuaikan agar tidak terlalu longgar */
     }
 }
 
 .submenu {
     display: flex;
     flex-direction: column;
-    gap: 0;
+    gap: 2px;
 }
 
 .submenu li {
     width: 100%;
     margin: 0;
     padding: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
     transition: all 0.3s ease;
 }
 
 .submenu li:hover {
-    background: rgba(255, 140, 0, 0.08);
-    border-bottom-color: rgba(255, 140, 0, 0.2);
+    background: rgba(255, 140, 0, 0.05);
+    border-bottom-color: rgba(255, 140, 0, 0.15);
 }
 
 .submenu li:last-child {
     border-bottom: none;
 }
 
+/* Link di Dalam Submenu Dropdown */
 .submenu a {
     display: block;
-    color: #fff;
+    color: #cbd5e1;
     font-weight: 500;
-    padding: 1.2rem 1.5rem;
+    padding: 0.9rem 1.2rem; /* Ukuran padding yang lebih pas di desktop */
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 0.95rem;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     position: relative;
     width: 100%;
-    border-radius: 12px;
-    margin: 0.25rem 0;
+    border-radius: 10px;
+    margin: 0.15rem 0;
     border: 1px solid transparent;
+    box-sizing: border-box;
 }
 
+/* Efek Hover di Dalam Submenu */
 .submenu a:hover {
-    background: linear-gradient(135deg, rgba(255, 140, 0, 0.2), rgba(255, 179, 71, 0.15));
-    color: #FFD700;
-    border-color: rgba(255, 140, 0, 0.3);
-    transform: translateX(8px);
-    box-shadow: 0 8px 25px rgba(255, 140, 0, 0.25);
-    padding-left: 2.4rem;
+    background: linear-gradient(135deg, rgba(255, 140, 0, 0.15), rgba(255, 179, 71, 0.1));
+    color: #ff9f43; /* Menyamakan warna emas ke oranye aksen */
+    border-color: rgba(255, 140, 0, 0.2);
+    transform: translateX(6px); /* Geser anggun ke kanan */
+    box-shadow: 0 6px 20px rgba(255, 140, 0, 0.15);
+    padding-left: 2rem;
 }
 
+/* Animasi Panah Muncul Saat Di-hover */
 .submenu a::before {
     content: "→";
     position: absolute;
-    left: 1.2rem;
+    left: 0.8rem;
     top: 50%;
     transform: translateY(-50%);
-    color: rgba(255, 140, 0, 0.7);
+    color: #ff9f43;
     font-weight: bold;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     opacity: 0;
     transition: all 0.3s ease;
 }
 
 .submenu a:hover::before {
     opacity: 1;
-    left: 1.4rem;
-    color: #FF8C00;
+    left: 1rem;
 }
 
 .dropdown:hover .menu-link {
@@ -314,16 +319,16 @@ html { -webkit-overflow-scrolling: touch; }
     }
 }
 
-/* ========================================
-   MOBILE OVERLAY & MENU - NAVY BLUE + HITAM
-   ======================================= */
+/* ==========================================================================
+   WADAH OVERLAY MOBILE (LATAR BELAKANG GELAP SAAT MENU AKTIF)
+   ========================================================================== */
 .mobile-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.6); /* Gelap transparan lebih lembut */
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -337,15 +342,55 @@ html { -webkit-overflow-scrolling: touch; }
     pointer-events: auto;
 }
 
+/* ==========================================================================
+   SISTEM SLIDE DARI ATAS KE BAWAH (MOBILE MENU RE-DESIGN)
+   ========================================================================== */
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; /* Lebar penuh memenuhi layar HP */
+    height: auto;
+    max-height: 90vh; /* Membatasi tinggi agar tidak off-screen */
+    
+    /* Ganti warna hitam pekat kaku dengan warna Charcoal mewah senada footer */
+    background: #12141c; 
+    
+    /* Mengubah titik awal animasi tersembunyi ke atas luar layar (-100%) */
+    transform: translateY(-100%); 
+    
+    /* Hapus border-radius kotak di tengah layar, ganti lengkungan anggun di bawah */
+    border-radius: 0 0 28px 24px; 
+    
+    z-index: 9999;
+    padding: 6rem 1.5rem 2.5rem 1.5rem; /* Padding disesuaikan agar tidak menumpuk navbar */
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Memicu Menu Meluncur Turun saat Aktif (Translate Menjadi 0) */
+.mobile-menu.active { 
+    transform: translateY(0); 
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* Tombol Tutup Menu (X) */
 .menu-close-btn {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     color: #FFFFFF;
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -353,16 +398,14 @@ html { -webkit-overflow-scrolling: touch; }
     cursor: pointer;
     transition: all 0.3s ease;
     z-index: 10001;
-    font-size: 1.3rem;
-    font-weight: bold;
     opacity: 0;
     transform: scale(0.8);
     pointer-events: none;
 }
 
 .menu-close-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.1);
+    background: rgba(255, 140, 0, 0.15);
+    border-color: #ff9f43;
 }
 
 .mobile-menu.active .menu-close-btn {
@@ -371,111 +414,90 @@ html { -webkit-overflow-scrolling: touch; }
     pointer-events: auto;
 }
 
-/* MOBILE MENU DI TENGAH - HITAM */
-.mobile-menu {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.9);
-    width: 90vw;
-    max-width: 400px;
-    height: auto;
-    max-height: 85vh;
-    background: #000000;
-    border-radius: 24px;
-    z-index: 9999;
-    padding: 3.5rem 1.5rem 2rem;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    overflow-y: auto;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.mobile-menu.active { 
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-}
-
-/* MENU LIST VERTIKAL */
+/* ==========================================================================
+   PENATAAN DAFTAR LINK MENU UTAMA MOBILE (RATA KANAN)
+   ========================================================================== */
 .mobile-menu-list {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0;
+    gap: 4px;
 }
 
 .mobile-menu-list > li {
     width: 100%;
-    margin: 0 0 8px 0;
+    margin: 0;
     padding: 0;
     overflow: hidden;
-    transition: all 0.3s ease;
     background: transparent;
     border: none;
 }
 
-.mobile-menu-list > li:hover {
-    background: transparent;
-    transform: none;
-    box-shadow: none;
-}
-
+/* Mengubah posisi teks menu utama dari Rata Kiri ke Rata Kanan */
 .mobile-menu .menu-link {
-    color: #FFFFFF !important;
-    padding: 1rem !important;
+    color: #e2e8f0 !important; 
+    padding: 0.9rem 1.2rem !important;
     margin: 0 !important;
     background: transparent !important;
     border: none !important;
     font-size: 1.1rem !important;
-    font-weight: 500 !important;
+    font-weight: 600 !important;
     display: flex !important;
     align-items: center !important;
     gap: 0.8rem !important;
     width: 100% !important;
-    justify-content: center !important;
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-    text-shadow: none !important;
+    
+    /* Mengubah arah susunan ikon dan teks agar ikon berada di kanan teks */
+    flex-direction: row-reverse !important; 
+    justify-content: flex-start !important; /* Mendorong semua elemen ke kanan */
+    transition: all 0.3s ease !important;
 }
 
-.mobile-menu .menu-link:hover {
-    background: rgba(255, 255, 255, 0.05) !important;
-    color: #FFD700 !important;
-    transform: translateY(-2px) !important;
-    border-radius: 12px !important;
+/* Mengatur Jarak Ikon Utama agar Tidak Menempel dengan Teks di Rata Kanan */
+.mobile-menu .menu-link i:not(.fa-chevron-down) {
+    margin-left: 0.8rem;
+    margin-right: 0;
 }
 
-/* DROPDOWN INDICATOR */
-.mobile-menu .menu-link i:last-child {
-    margin-left: 0;
+/* Mengatur Posisi Ikon Panah Dropdown di Paling Kiri Menu (Karena kebalikan rata kanan) */
+.mobile-menu .menu-link i:last-child.fa-chevron-down {
+    margin-right: auto !important; /* Memaksa panah nempel ke ujung kiri */
+    margin-left: 0 !important;
+    font-size: 0.9rem;
     transition: transform 0.3s ease;
 }
 
-.mobile-menu .dropdown.active .menu-link i:last-child {
+.mobile-menu .dropdown.active .menu-link i:last-child.fa-chevron-down {
     transform: rotate(180deg);
 }
 
-/* ========================================
-   MOBILE SUBMENU - SEDERHANA & LENGKAP
-   ======================================= */
+/* Efek Sorot Menu Utama Mobile */
+.mobile-menu .menu-link:hover,
+.mobile-menu .dropdown.active > .menu-link {
+    background: rgba(255, 140, 0, 0.1) !important;
+    color: #ff9f43 !important;
+    border-radius: 12px !important;
+}
+
+/* ==========================================================================
+   PENATAAN SUBMENU DROPDOWN MOBILE (RATA KANAN)
+   ========================================================================== */
 .mobile-menu .submenu {
     position: static !important;
     max-height: 0 !important;
     opacity: 0 !important;
     overflow: hidden !important;
     list-style: none !important;
-    background: #000000 !important;
+    background: #0b0c10 !important; 
     border-radius: 12px !important;
-    margin: 0.5rem 0 0 0 !important;
+    
+    /* Beri jarak menjorok ke dalam di bagian KANAN */
+    margin: 0 1rem 0 0 !important; 
     padding: 0 !important;
-    text-align: center !important;
-    transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease !important;
+    text-align: right !important; /* Diubah ke rata kanan */
+    transition: max-height 0.35s ease, opacity 0.3s ease !important;
     transform: none !important;
     visibility: hidden !important;
 }
@@ -484,41 +506,22 @@ html { -webkit-overflow-scrolling: touch; }
     max-height: 500px !important;
     opacity: 1 !important;
     visibility: visible !important;
-    margin-top: 0.5rem !important;
-    margin-bottom: 0.5rem !important;
-    padding: 1rem 0 !important;
+    margin-top: 4px !important;
+    margin-bottom: 8px !important;
+    padding: 0.5rem 0 !important;
 }
 
-.mobile-menu .dropdown.active > .menu-link {
-    color: #FFD700 !important;
-    background: transparent !important;
-}
-
-.mobile-menu .submenu li {
-    margin: 0 !important;
-    padding: 0 !important;
-    border: none !important;
-    background: transparent !important;
-}
-
-.mobile-menu .submenu li:hover {
-    transform: none !important;
-    background: transparent !important;
-    border: none !important;
-}
-
+/* Link di Dalam Submenu Mobile */
 .mobile-menu .submenu a {
-    color: #FFFFFF !important;
-    padding: 0.8rem 1rem !important;
+    color: #94a3b8 !important;
+    padding: 0.8rem 1.2rem !important;
     margin: 0 !important;
     font-size: 1rem !important;
     font-weight: 500 !important;
-    text-shadow: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
     display: block !important;
-    text-align: center !important;
-    transition: all 0.3s ease !important;
+    text-align: right !important; /* Rata kanan */
+    transition: all 0.25s ease !important;
+    border-radius: 8px;
 }
 
 .mobile-menu .submenu a::before {
@@ -526,13 +529,16 @@ html { -webkit-overflow-scrolling: touch; }
 }
 
 .mobile-menu .submenu a:hover {
-    color: #FFD700 !important;
-    background: rgba(255, 255, 255, 0.1) !important;
-    padding-left: 1rem !important;
+    color: #ff9f43 !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    padding-right: 1.5rem !important; /* Efek geser ke kiri sedikit saat disentuh karena posisi kanan */
+    padding-left: 1.2rem !important;
     box-shadow: none !important;
 }
 
-/* BURGER BUTTON */
+/* ==========================================================================
+   TOMBOL BURGER UTAMA (DI KANAN NAVBAR)
+   ========================================================================== */
 .burger {
     display: none;
     flex-direction: column;
@@ -556,14 +562,15 @@ html { -webkit-overflow-scrolling: touch; }
     width: 18px;
 }
 
+/* Warna interaktif tombol burger */
 .burger:hover span:nth-child(2) {
     width: 28px;
-    background: #FFD700;
+    background: #ff9f43;
 }
 
 .burger.active span:nth-child(1) { 
     transform: translateY(9px) rotate(45deg); 
-    background: #FFD700;
+    background: #ff9f43;
 }
 
 .burger.active span:nth-child(2) { 
@@ -573,9 +580,12 @@ html { -webkit-overflow-scrolling: touch; }
 
 .burger.active span:nth-child(3) { 
     transform: translateY(-9px) rotate(-45deg); 
-    background: #FFD700;
+    background: #ff9f43;
 }
 
+/* ==========================================================================
+   MEDIA QUERIES UTK RESPONSIVE JALUR MOBILE
+   ========================================================================== */
 @media (max-width: 1024px) {
     .burger { 
         display: flex !important; 
@@ -585,21 +595,23 @@ html { -webkit-overflow-scrolling: touch; }
     }
     
     .navbar {
-        padding: 0 1.5rem;
+        padding: 14px 1.5rem; /* Membuat navbar sedikit lebih ramping di layar tab/HP */
         width: 100%;
     }
     
     .mobile-menu-list > li + li {
-        margin-top: 8px;
+        margin-top: 4px;
     }
 }
 
 @media (max-width: 480px) {
+    /* Mencegah menu meluber ke samping di layar HP yang sangat ramping */
     .mobile-menu { 
         width: 100vw; 
-        padding: 4rem 1.5rem 2rem;
+        padding: 5.5rem 1.2rem 2rem 1.2rem;
     }
 }
+
 
 main { 
     margin-top: clamp(80px, 15vh, 110px); 
@@ -794,7 +806,6 @@ main {
     border-color: rgba(255, 255, 255, 0.5);
 }
 
-/* TENTANG SECTION - BACKGROUND ANIMASI WARNAWAN */
 .tentang-animate {
     min-height: 100vh;
     display: flex;
@@ -812,7 +823,6 @@ main {
     overflow: hidden;
 }
 
-/* HERO TITLE - TEXT PUTIH BIAR KONTRAS */
 .hero-title {
     text-align: center;
     margin-bottom: 4rem;
@@ -843,7 +853,6 @@ main {
     text-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
 
-/* CARDS GRID */
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -854,7 +863,6 @@ main {
     animation: fadeInUp 1.8s ease-out 0.3s both;
 }
 
-/* CARD DESIGN */
 .card {
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(20px);
@@ -895,7 +903,6 @@ main {
     box-shadow: 0 25px 50px rgba(0,0,0,0.4);
 }
 
-/* ICONS */
 .card-icon {
     font-size: clamp(4rem, 10vw, 6rem) !important;
     margin-bottom: 1.5rem;
@@ -929,7 +936,6 @@ main {
     text-shadow: 0 1px 5px rgba(0,0,0,0.5);
 }
 
-/* WELCOME TEXT */
 .welcome-text {
     text-align: center;
     max-width: 700px;
@@ -958,7 +964,6 @@ main {
     text-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
 
-/* ANIMASI FADE IN */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -970,7 +975,6 @@ main {
     }
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
     .tentang-animate {
         padding: 1.5rem 1rem;
@@ -1506,7 +1510,7 @@ main {
     min-width: 100%;
     height: 100%;
     flex-shrink: 0;
-    background: rgba(0, 0, 0, 0.25); /* Latar belakang gelap untuk menyeimbangkan gambar contain */
+    background: rgba(0, 0, 0, 0.25); 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1694,132 +1698,143 @@ main {
         touch-action: pan-y;
     }
 }
+
 .main-footer {
     position: relative;
-    background: transparent;
-    display: flex;
+    background: #121620;
+    width: 100%;
+    margin-top: 120px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05); 
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    display: block;
     color: #fff;
     padding: 0;
-    margin-top: 100px;
-}
-
-.footer-wave {
-    position: absolute;
-    top: -100px;
-    left: 0;
-    width: 100%;
-    overflow: hidden;
-    line-height: 0;
-}
-
-.footer-wave svg {
-    position: relative;
-    display: block;
-    width: calc(100% + 1.3px);
-    height: 100px;
-}
-
-.footer-wave .shape-fill {
-    fill: #fff;
 }
 
 .footer-content {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 40px 20px 20px;
+    padding: 60px 24px 30px 24px;
 }
 
 .footer-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 40px;
+    grid-template-columns: 2fr 1fr 1.5fr; 
+    gap: 50px;
 }
 
 .footer-box h4 {
-    color: #fff;
-    margin-bottom: 20px;
-    font-size: 1.2rem;
+    color: #ffffff;
+    margin-bottom: 25px;
+    font-size: 1.15rem;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 8px;
     background: transparent;
+}
+
+.footer-box h4::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 35px;
+    height: 3px;
+    background: #ff9f43;
+    border-radius: 2px;
 }
 
 .footer-links {
     list-style: none;
     padding: 0;
+    margin: 0;
     text-align: left;
     border-radius: 20px;
 }
 
 .footer-links li {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
-.footer-links a {
-    color: #9bf;
-    transition: 0.3s;
+.source-link {
+    color: #a0aec0;
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    display: inline-block;
+    letter-spacing: 0.3px;
+    padding-bottom: 2px;
 }
 
-.footer-links a:hover {
-    color: #fff;
-    padding-left: 5px;
+.source-link:hover {
+    color: #ff9f43;
+    transform: translateX(5px);
 }
 
 .creators {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
 }
 
 .social-link {
-    color: #fff;
+    color: #e2e8f0;
+    text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 10px;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 10px 15px;
-    border-radius: 8px;
-    transition: 0.3s;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.social-link i {
+    font-size: 1.1rem;
 }
 
 .social-link:hover {
-    background: #FF8C;
+    background: rgba(255, 159, 67, 0.15);
+    border-color: #ff9f43;
+    color: #ff9f43;
+}
+
+.footer-brand .footer-logo {
+    color: #ffffff;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+    letter-spacing: 0.5px;
+}
+
+.footer-brand .footer-tagline {
+    color: #ff9f43;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0 0 15px 0;
+}
+
+.footer-brand .footer-desc {
+    color: #718096;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin: 0;
 }
 
 .footer-bottom {
     text-align: center;
-    margin-top: 50px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255,255,255,1);
-    font-size: 0.8rem;
-    color: #777;
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.85rem;
+    color: #4a5568;
 }
 
-.source-link {
-    font-weight: 700;
-    color: #9bfefdeb;
-    border-bottom: 2px solid transparent;
-    position: relative;
-    transition: all 0.3s ease;
-    letter-spacing: 0.3px;
-    padding-bottom: 2px;
-}
-
-.source-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--color-soft);
-    transition: width 0.3s ease;
-}
-
-.source-link:hover::after {
-    width: 100%;
-}
-
-.source-link:hover {
-    color: #FFD700;
+.footer-bottom p {
+    margin: 0;
 }
 
 @keyframes fadeInUp {
@@ -1884,8 +1899,21 @@ main {
         max-width: 18rem; 
         justify-content: center; 
     }
+    
     .footer-grid {
+        grid-template-columns: 1fr !important;
+        gap: 35px;
         text-align: center;
+    }
+    .footer-brand {
+        grid-column: span 1;
+    }
+    .footer-box h4::after {
+        left: 50%;
+        transform: translateX(-50%); 
+    }
+    .source-link:hover {
+        transform: translateY(-2px);
     }
     .social-link {
         justify-content: center;
