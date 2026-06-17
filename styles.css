@@ -75,43 +75,36 @@ p {
 }
 html { -webkit-overflow-scrolling: touch; }
 
-/* ==========================================================================
-   KONDISI 1: NAVBAR SAAT DIAM DI ATAS (TRANSPARAN MEWAH & BERSIH)
-   ========================================================================== */
 .navbar {
     position: fixed;
     top: 0;
-    left: 0; /* Pastikan menempel rata kiri */
+    left: 0;
     width: 100%;
     display: flex;
     justify-content: space-between;
     flex-direction: row;
     align-items: center;
     z-index: 2000;
-    box-sizing: border-box; /* Mencegah navbar melar melebihi layar */
-    padding: 24px 5%; /* Jarak napas lega saat posisi di atas */
-    
-    /* Efek gradasi gelap tipis dari atas ke bawah pelindung teks di atas foto */
+    box-sizing: border-box;
+    padding: 24px 5%; 
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
     
-    border: 1px solid transparent; /* Sembunyikan border bawaan saat di atas */
-    border-radius: 0; /* Hapus border-radius kaku agar memenuhi ujung layar atas */
-    backdrop-filter: blur(0px); /* Saat transparan total tidak perlu blur gambar */
+    border: 1px solid transparent
+    border-radius: 0;
+    backdrop-filter: blur(0px);
     -webkit-backdrop-filter: blur(0px);
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Judul / Logo saat posisi diam di atas (Dibuat Putih Bersih agar Menyala) */
 .judul {
     font-weight: 700;
     font-size: clamp(1.1rem, 2vw, 1.4rem);
-    color: #ffffff; /* Mengganti abu-abu kusam bawaan dengan putih solid */
+    color: #ffffff;
     white-space: nowrap;
     transition: all 0.3s ease;
     letter-spacing: 0.5px;
 }
 
-/* Pengaturan Jarak Menu Utama */
 .menu {
     display: flex;
     flex-direction: row;
@@ -119,12 +112,11 @@ html { -webkit-overflow-scrolling: touch; }
     margin: 0;
     padding: 0;
     align-items: center;
-    gap: 1.5rem; /* Jarak proporsional antar tombol menu */
+    gap: 1.5rem;
 }
 
-/* Desain Tombol Menu saat Diam di Atas */
 .menu-link {
-    color: #e2e8f0; /* Putih agak abu-abu kalem */
+    color: #e2e8f0;
     font-weight: 500;
     text-decoration: none !important;
     padding: 0.6rem 1.2rem;
@@ -137,24 +129,15 @@ html { -webkit-overflow-scrolling: touch; }
     gap: 0.5rem;
 }
 
-/* Efek Hover Tombol Menu saat Diam di Atas */
 .menu-link:hover, .menu-link.active {
-    background: rgba(255, 255, 255, 0.12); /* Efek sorot transparan putih */
+    background: rgba(255, 255, 255, 0.12);
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     color: #ffffff;
 }
 
-
-/* ==========================================================================
-   KONDISI 2: NAVBAR SAAT DI-SCROLL (CHARCOAL KACA - ANTI DEKIL)
-   ========================================================================== */
 .navbar.scrolled {
-    padding: 14px 5%; /* Navbar menipis otomatis saat di-scroll agar estetik */
-    
-    /* Ganti warna navy lamamu dengan Hitam Charcoal Mewah yang menyatu dengan web */
+    padding: 14px 5%;
     background: rgba(18, 20, 26, 0.85); 
-    
-    /* Border putih tebal 0.3 diturunkan jadi 0.06 super halus */
     border-bottom: 1px solid rgba(255, 255, 255, 0.06); 
     border-top: none;
     border-left: none;
@@ -162,45 +145,35 @@ html { -webkit-overflow-scrolling: touch; }
     border-radius: 0;
     
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(15px); /* Efek blur kaca aktif saat di-scroll */
+    backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
 }
-
-/* Judul / Logo saat di-scroll */
 .navbar.scrolled .judul {
     color: #ffffff;
     text-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
-/* Mengunci warna teks link menu saat di-scroll agar tetap bersih */
 .navbar.scrolled .menu-link {
     color: #cbd5e1 !important; 
 }
 
-/* Efek Hover Tombol Menu saat di-scroll (Berubah Oranye Senada Tombol & Footer) */
 .navbar.scrolled .menu-link:hover, 
 .navbar.scrolled .menu-link.active {
-    background: rgba(255, 140, 0, 0.15) !important; /* Latar belakang oranye tipis */
-    color: #ff9f43 !important; /* Warna teks berganti oranye hangat Pupuan */
+    background: rgba(255, 140, 0, 0.15) !important;
+    color: #ff9f43 !important;
     box-shadow: 0 4px 12px rgba(255, 140, 0, 0.1);
 }
 
-
-/* ==========================================================================
-   BAGIAN SUBMENU DROPDOWN DESKTOP (YANG SUDAH DISINKRONKAN)
-   ========================================================================== */
 .dropdown {
     position: relative;
 }
 
-/* Desain Wadah Dropdown Menu Utama */
 .submenu {
     position: absolute;
     top: calc(100% + 12px);
     left: 50%;
     transform: translateX(-50%) translateY(-10px);
     
-    /* Background mengikuti warna charcoal mewah bergradasi */
     background: linear-gradient(145deg, rgba(18, 20, 26, 0.98) 0%, rgba(30, 34, 45, 0.98) 100%);
     
     backdrop-filter: blur(30px);
@@ -234,7 +207,7 @@ html { -webkit-overflow-scrolling: touch; }
         opacity: 1;
         visibility: visible;
         transform: translateX(-50%) translateY(0);
-        padding: 0.75rem; /* Padding disesuaikan agar tidak terlalu longgar */
+        padding: 0.75rem;
     }
 }
 
@@ -261,12 +234,11 @@ html { -webkit-overflow-scrolling: touch; }
     border-bottom: none;
 }
 
-/* Link di Dalam Submenu Dropdown */
 .submenu a {
     display: block;
     color: #cbd5e1;
     font-weight: 500;
-    padding: 0.9rem 1.2rem; /* Ukuran padding yang lebih pas di desktop */
+    padding: 0.9rem 1.2rem;
     text-decoration: none;
     font-size: 0.95rem;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -278,17 +250,15 @@ html { -webkit-overflow-scrolling: touch; }
     box-sizing: border-box;
 }
 
-/* Efek Hover di Dalam Submenu */
 .submenu a:hover {
     background: linear-gradient(135deg, rgba(255, 140, 0, 0.15), rgba(255, 179, 71, 0.1));
-    color: #ff9f43; /* Menyamakan warna emas ke oranye aksen */
+    color: #ff9f43; 
     border-color: rgba(255, 140, 0, 0.2);
-    transform: translateX(6px); /* Geser anggun ke kanan */
+    transform: translateX(6px);
     box-shadow: 0 6px 20px rgba(255, 140, 0, 0.15);
     padding-left: 2rem;
 }
 
-/* Animasi Panah Muncul Saat Di-hover */
 .submenu a::before {
     content: "→";
     position: absolute;
@@ -319,16 +289,13 @@ html { -webkit-overflow-scrolling: touch; }
     }
 }
 
-/* ==========================================================================
-   WADAH OVERLAY MOBILE (LATAR BELAKANG GELAP SAAT MENU AKTIF)
-   ========================================================================== */
 .mobile-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.6); /* Gelap transparan lebih lembut */
+    background: rgba(0, 0, 0, 0.6);
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -342,28 +309,18 @@ html { -webkit-overflow-scrolling: touch; }
     pointer-events: auto;
 }
 
-/* ==========================================================================
-   SISTEM SLIDE DARI ATAS KE BAWAH (MOBILE MENU RE-DESIGN)
-   ========================================================================== */
 .mobile-menu {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%; /* Lebar penuh memenuhi layar HP */
+    width: 100%; 
     height: auto;
-    max-height: 90vh; /* Membatasi tinggi agar tidak off-screen */
-    
-    /* Ganti warna hitam pekat kaku dengan warna Charcoal mewah senada footer */
+    max-height: 90vh;
     background: #12141c; 
-    
-    /* Mengubah titik awal animasi tersembunyi ke atas luar layar (-100%) */
     transform: translateY(-100%); 
-    
-    /* Hapus border-radius kotak di tengah layar, ganti lengkungan anggun di bawah */
     border-radius: 0 0 28px 24px; 
-    
     z-index: 9999;
-    padding: 6rem 1.5rem 2.5rem 1.5rem; /* Padding disesuaikan agar tidak menumpuk navbar */
+    padding: 6rem 1.5rem 2.5rem 1.5rem
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     overflow-y: auto;
     opacity: 0;
@@ -373,7 +330,6 @@ html { -webkit-overflow-scrolling: touch; }
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* Memicu Menu Meluncur Turun saat Aktif (Translate Menjadi 0) */
 .mobile-menu.active { 
     transform: translateY(0); 
     opacity: 1;
@@ -381,7 +337,6 @@ html { -webkit-overflow-scrolling: touch; }
     pointer-events: auto;
 }
 
-/* Tombol Tutup Menu (X) */
 .menu-close-btn {
     position: absolute;
     top: 1.5rem;
@@ -414,9 +369,6 @@ html { -webkit-overflow-scrolling: touch; }
     pointer-events: auto;
 }
 
-/* ==========================================================================
-   PENATAAN DAFTAR LINK MENU UTAMA MOBILE (RATA KANAN)
-   ========================================================================== */
 .mobile-menu-list {
     list-style: none;
     margin: 0;
@@ -435,7 +387,6 @@ html { -webkit-overflow-scrolling: touch; }
     border: none;
 }
 
-/* Mengubah posisi teks menu utama dari Rata Kiri ke Rata Kanan */
 .mobile-menu .menu-link {
     color: #e2e8f0 !important; 
     padding: 0.9rem 1.2rem !important;
@@ -449,21 +400,18 @@ html { -webkit-overflow-scrolling: touch; }
     gap: 0.8rem !important;
     width: 100% !important;
     
-    /* Mengubah arah susunan ikon dan teks agar ikon berada di kanan teks */
     flex-direction: row-reverse !important; 
-    justify-content: flex-start !important; /* Mendorong semua elemen ke kanan */
+    justify-content: flex-start !important
     transition: all 0.3s ease !important;
 }
 
-/* Mengatur Jarak Ikon Utama agar Tidak Menempel dengan Teks di Rata Kanan */
 .mobile-menu .menu-link i:not(.fa-chevron-down) {
     margin-left: 0.8rem;
     margin-right: 0;
 }
 
-/* Mengatur Posisi Ikon Panah Dropdown di Paling Kiri Menu (Karena kebalikan rata kanan) */
 .mobile-menu .menu-link i:last-child.fa-chevron-down {
-    margin-right: auto !important; /* Memaksa panah nempel ke ujung kiri */
+    margin-right: auto !important;
     margin-left: 0 !important;
     font-size: 0.9rem;
     transition: transform 0.3s ease;
@@ -473,7 +421,6 @@ html { -webkit-overflow-scrolling: touch; }
     transform: rotate(180deg);
 }
 
-/* Efek Sorot Menu Utama Mobile */
 .mobile-menu .menu-link:hover,
 .mobile-menu .dropdown.active > .menu-link {
     background: rgba(255, 140, 0, 0.1) !important;
@@ -481,9 +428,7 @@ html { -webkit-overflow-scrolling: touch; }
     border-radius: 12px !important;
 }
 
-/* ==========================================================================
-   PENATAAN SUBMENU DROPDOWN MOBILE (RATA KANAN)
-   ========================================================================== */
+
 .mobile-menu .submenu {
     position: static !important;
     max-height: 0 !important;
@@ -493,10 +438,9 @@ html { -webkit-overflow-scrolling: touch; }
     background: #0b0c10 !important; 
     border-radius: 12px !important;
     
-    /* Beri jarak menjorok ke dalam di bagian KANAN */
     margin: 0 1rem 0 0 !important; 
     padding: 0 !important;
-    text-align: right !important; /* Diubah ke rata kanan */
+    text-align: right !important; 
     transition: max-height 0.35s ease, opacity 0.3s ease !important;
     transform: none !important;
     visibility: hidden !important;
@@ -511,7 +455,6 @@ html { -webkit-overflow-scrolling: touch; }
     padding: 0.5rem 0 !important;
 }
 
-/* Link di Dalam Submenu Mobile */
 .mobile-menu .submenu a {
     color: #94a3b8 !important;
     padding: 0.8rem 1.2rem !important;
@@ -519,7 +462,7 @@ html { -webkit-overflow-scrolling: touch; }
     font-size: 1rem !important;
     font-weight: 500 !important;
     display: block !important;
-    text-align: right !important; /* Rata kanan */
+    text-align: right !important;
     transition: all 0.25s ease !important;
     border-radius: 8px;
 }
@@ -531,14 +474,11 @@ html { -webkit-overflow-scrolling: touch; }
 .mobile-menu .submenu a:hover {
     color: #ff9f43 !important;
     background: rgba(255, 255, 255, 0.03) !important;
-    padding-right: 1.5rem !important; /* Efek geser ke kiri sedikit saat disentuh karena posisi kanan */
+    padding-right: 1.5rem !important;
     padding-left: 1.2rem !important;
     box-shadow: none !important;
 }
 
-/* ==========================================================================
-   TOMBOL BURGER UTAMA (DI KANAN NAVBAR)
-   ========================================================================== */
 .burger {
     display: none;
     flex-direction: column;
@@ -562,7 +502,6 @@ html { -webkit-overflow-scrolling: touch; }
     width: 18px;
 }
 
-/* Warna interaktif tombol burger */
 .burger:hover span:nth-child(2) {
     width: 28px;
     background: #ff9f43;
@@ -583,9 +522,6 @@ html { -webkit-overflow-scrolling: touch; }
     background: #ff9f43;
 }
 
-/* ==========================================================================
-   MEDIA QUERIES UTK RESPONSIVE JALUR MOBILE
-   ========================================================================== */
 @media (max-width: 1024px) {
     .burger { 
         display: flex !important; 
@@ -595,7 +531,7 @@ html { -webkit-overflow-scrolling: touch; }
     }
     
     .navbar {
-        padding: 14px 1.5rem; /* Membuat navbar sedikit lebih ramping di layar tab/HP */
+        padding: 14px 1.5rem; 
         width: 100%;
     }
     
@@ -605,7 +541,6 @@ html { -webkit-overflow-scrolling: touch; }
 }
 
 @media (max-width: 480px) {
-    /* Mencegah menu meluber ke samping di layar HP yang sangat ramping */
     .mobile-menu { 
         width: 100vw; 
         padding: 5.5rem 1.2rem 2rem 1.2rem;
@@ -1153,236 +1088,195 @@ main {
     flex-grow: 1;
 }
 
-.general-section {
-    padding: 80px 0;
-    background: transparent;
-    overflow: hidden;
-}
-
 .general-container {
-    max-width: 1400px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 0 20px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-    gap: clamp(35px, 6vw, 55px);
+    display: flex;
+    flex-direction: column;
+    gap: 60px; /* Jarak antar kartu */
 }
 
+/* --- TATA LETAK KARTU (ZIGZAG) --- */
 .general-card {
-    opacity: 0;
-    transform: translateY(50px);
-    animation: slideInUp 0.8s ease forwards;
-    background: transparent;
-    border-radius: 24px;
-    overflow: hidden;
-    box-shadow: none;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.general-card:hover {
-    transform: translateY(-10px);
-    box-shadow: none;
-}
-
-.general-card:nth-child(1) { animation-delay: 0.1s; }
-.general-card:nth-child(2) { animation-delay: 0.2s; }
-.general-card:nth-child(3) { animation-delay: 0.3s; }
-.general-card:nth-child(4) { animation-delay: 0.4s; }
-
-@keyframes slideInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    width: 100%;
 }
 
 .general-content {
     display: flex;
-    flex-direction: column;
-    height: auto;
-    min-height: clamp(540px, 70vh, 650px);
+    align-items: center;
+    gap: 40px;
+}
+
+/* Mengatur urutan teks dan gambar */
+.even .general-content {
+    flex-direction: row;
+}
+
+.odd .general-content {
+    flex-direction: row-reverse;
+}
+
+.general-text {
+    flex: 1;
 }
 
 .general-image {
-    flex: 0 0 60%;
-    min-height: 320px;
-    position: relative;
+    flex: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    aspect-ratio: 16 / 10;
 }
 
 .general-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: transform 0.5s ease;
 }
 
-.general-card:hover .general-image img {
-    transform: scale(1.08);
+.general-image:hover img {
+    transform: scale(1.05);
 }
 
-.general-text {
-    flex: 0 0 40%;
-    min-height: 220px;
-    padding: 2rem 2.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 1rem;
-    background: transparent;
-}
-
-.general-card.even .general-image {
-  order: -1;
-}
-
+/* --- KOMPONEN TEKS --- */
 .general-text h3 {
-    font-size: clamp(1.4rem, 3vw, 1.8rem);
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.2;
-    margin: 0;
+    font-size: 2rem;
+    color: #ffffff;
+    margin-bottom: 12px;
+    font-weight: 600;
 }
 
 .general-text p {
     font-size: 1rem;
-    color: rgba(255, 255, 255, 0.85);
     line-height: 1.6;
-    margin: 0;
+    color: #aaaaaa;
+    margin-bottom: 24px;
 }
 
+/* --- KOMPONEN METADATA (RATING, LOKASI, RUTE) --- */
+.meta-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: #bbbbbb;
+}
+
+.icon-star {
+    width: 16px;
+    height: 16px;
+    color: #ffbc00; /* Warna kuning bintang */
+}
+
+.icon-svg {
+    width: 16px;
+    height: 16px;
+    color: #ffa500; /* Warna oranye tema */
+}
+
+.review-count {
+    color: #777777;
+    font-size: 0.85rem;
+}
+
+/* --- GRUP TOMBOL --- */
+.cta-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* Tombol Lihat Selengkapnya */
 .general-cta-button {
     display: inline-flex;
     align-items: center;
-    gap: clamp(10px, 2.5vw, 14px);
-    padding: clamp(15px, 4vw, 20px) clamp(30px, 6vw, 42px);
-    background: linear-gradient(135deg, #FF8C00 0%, #FFD700 100%);
-    color: white;
+    gap: 8px;
+    background-color: #ffa500; /* Warna utama oranye */
+    color: #121212;
+    padding: 12px 24px;
+    border-radius: 6px;
     text-decoration: none;
     font-weight: 600;
-    font-size: clamp(1rem, 3.2vw, 1.2rem);
-    border-radius: 50px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 15px 40px rgba(255, 140, 0, 0.4);
-    border: 2px solid transparent;
-    align-self: flex-start;
-}
-
-.general-cta-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-    transition: left 0.7s;
-}
-
-.general-cta-button:hover::before {
-    left: 100%;
+    font-size: 0.95rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .general-cta-button:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 25px 55px rgba(255, 140, 0, 0.6);
-    background: linear-gradient(135deg, #FF9500 0%, #FFDF00 100%);
+    background-color: #ffb732;
+    transform: translateY(-2px);
 }
 
 .arrow-icon {
-    width: clamp(20px, 4.5vw, 24px);
-    height: clamp(20px, 4.5vw, 24px);
-    transition: transform 0.3s ease;
+    width: 18px;
+    height: 18px;
 }
 
-.general-cta-button:hover .arrow-icon {
-    transform: translateX(6px);
+/* Tombol Petunjuk Rute Google Maps */
+.maps-cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: transparent;
+    color: #ffa500;
+    border: 2px solid #ffa500;
+    padding: 10px 22px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
 }
 
-@media (max-width: 767px) {
-    .general-section {
-        padding: 60px 0;
-    }
-    
+.maps-cta-button:hover {
+    background-color: #ffa500;
+    color: #121212;
+    transform: translateY(-2px);
+}
+
+.maps-icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* --- RESPONSIVE DESIGN (Tampilan HP) --- */
+@media (max-width: 768px) {
     .general-container {
-        padding: 0 clamp(16px, 6vw, 28px);
-        grid-template-columns: 1fr;
-        gap: clamp(40px, 10vw, 60px);
+        gap: 40px;
     }
-    
-    .general-content {
-        height: auto;
-        min-height: clamp(480px, 85vw, 620px);
-        border-radius: 22px;
+
+    .general-content, 
+    .even .general-content, 
+    .odd .general-content {
+        flex-direction: column; /* Ubah tumpukan menjadi vertikal di HP */
+        gap: 20px;
     }
-    
+
     .general-image {
-        flex: 0 0 clamp(55%, 50vw, 65%);
-        min-height: clamp(260px, 48vw, 340px);
-    }
-    
-    .general-text {
-        flex: 0 0 clamp(35%, 35vw, 45%);
-        padding: clamp(28px, 9vw, 40px);
-        gap: clamp(14px, 4vw, 22px);
-    }
-    
-    .general-text h3 {
-        font-size: clamp(1.8rem, 8vw, 2.6rem);
-    }
-    
-    .general-text p {
-        font-size: clamp(1rem, 4.5vw, 1.15rem);
-    }
-    
-    .general-cta-button {
-        padding: clamp(13px, 5vw, 18px) clamp(26px, 8vw, 38px);
-        font-size: clamp(0.98rem, 4.2vw, 1.1rem);
         width: 100%;
-        max-width: clamp(280px, 85vw, 340px);
+        order: -1; /* Gambar selalu berada di atas teks saat di HP */
+    }
+
+    .general-text h3 {
+        font-size: 1.6rem;
+    }
+    
+    .cta-group {
+        flex-direction: column; /* Tombol bertumpuk vertikal di HP */
+        width: 100%;
+    }
+
+    .general-cta-button, .maps-cta-button {
+        width: 100%;
         justify-content: center;
-        margin-top: clamp(12px, 3.5vw, 18px);
-    }
-}
-
-@media (max-width: 430px) {
-    .general-container {
-        gap: clamp(35px, 12vw, 55px);
-    }
-    
-    .general-content {
-        height: auto;
-        min-height: clamp(460px, 90vw, 580px);
-    }
-    
-    .general-image {
-        min-height: clamp(240px, 52vw, 320px);
-    }
-    
-    .general-text {
-        padding: clamp(25px, 11vw, 38px);
-    }
-}
-
-@media (max-width: 360px) {
-    .general-container {
-        padding: 0 14px;
-    }
-    
-    .general-image {
-        min-height: clamp(220px, 55vw, 300px);
-    }
-}
-
-.general-cta-button:focus {
-    outline: 3px solid rgba(102, 126, 234, 0.6);
-    outline-offset: 4px;
-}
-
-@media (max-width: 1023px) {
-    .general-card {
-        touch-action: pan-y;
     }
 }
 
