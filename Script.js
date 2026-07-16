@@ -274,7 +274,7 @@ class ImageCarousel {
         
         this.prevBtn = document.createElement('button');
         this.prevBtn.className = 'carousel-btn prev-btn';
-        this.prevBtn.innerHTML = '&#10094;'; // Simbol panah kiri
+        this.prevBtn.innerHTML = '&#10094;'; 
         this.prevBtn.addEventListener('click', () => {
             this.prev();
             this.startAutoPlay();
@@ -282,7 +282,7 @@ class ImageCarousel {
 
         this.nextBtn = document.createElement('button');
         this.nextBtn.className = 'carousel-btn next-btn';
-        this.nextBtn.innerHTML = '&#10095;'; // Simbol panah kanan
+        this.nextBtn.innerHTML = '&#10095;'; 
         this.nextBtn.addEventListener('click', () => {
             this.next();
             this.startAutoPlay();
@@ -411,18 +411,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 const container = entry.target;
                 const columns = container.children;
 
-                // Loop membaca setiap kolom di dalam container grid
                 for (let i = 0; i < columns.length; i++) {
                     const col = columns[i];
                     
-                    // Tentukan arah geser: kolom kiri (indeks genap) geser ke kanan, kolom kanan sebaliknya
                     const directionX = (i % 2 === 0) ? -60 : 60;
 
-                    // Cek apakah kolom ini berisi teks boks (mempunyai tag h2, h3, p, dll di dalamnya)
                     const subElements = col.querySelectorAll('h1, h2, h3, h4, p, img, .social-link, .source-link');
                     
                     if (subElements.length > 0) {
-                        // JIKA BERISI TEKS: Animasikan isinya satu per satu secara berurutan (Staggered effect)
+
                         subElements.forEach((el, index) => {
                             el.animate([
                                 { opacity: 0, transform: `translateX(${directionX}px)` },
@@ -431,11 +428,11 @@ document.addEventListener("DOMContentLoaded", function () {
                                 duration: 800,
                                 easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                                 fill: 'forwards',
-                                delay: index * 150 // Memberikan jeda 0.15 detik antar baris teks agar estetik
+                                delay: index * 150
                             });
                         });
                     } else {
-                        // JIKA HANYA GAMBAR TUNGGAL: Langsung jalankan animasi normal
+                      
                         col.animate([
                             { opacity: 0, transform: `translateX(${directionX}px)` },
                             { opacity: 1, transform: 'translateX(0px)' }
@@ -446,12 +443,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         });
                     }
                 }
-                observer.unobserve(container); // Matikan sensor setelah animasi berjalan sekali
+                observer.unobserve(container);
             }
         });
     }, observerOptions);
 
-    // Persiapan awal agar konten tidak berkedip patah saat halaman dimuat
     targetContainers.forEach(container => {
         Array.from(container.children).forEach(col => {
             const subElements = col.querySelectorAll('h1, h2, h3, h4, p, img, .social-link, .source-link');
